@@ -2,11 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 typedef StringList = List<String>;
 
-enum SharedPrefKey {
-  isFirstTime,
-  isLogin,
-  userProfileData,
-}
+enum SharedPrefKey { isFirstTime, isLogin, userProfileData, token }
 
 ///Used for SharedPref save and get the value.
 class UserPreference {

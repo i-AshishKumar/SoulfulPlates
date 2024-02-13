@@ -253,6 +253,12 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
     color: AppColor.blackTextColor,
   );
+  static final textStyleGreyOTP = TextStyle(
+    fontSize: SizeConfig.font22,
+    fontWeight: FontWeight.bold,
+    color: AppColor.black4TextColor,
+  );
+
   static final textStyleGreen14With400 = TextStyle(
     fontSize: SizeConfig.font14,
     fontWeight: FontWeight.w400,

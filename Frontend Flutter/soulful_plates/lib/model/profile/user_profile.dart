@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class UserProfile {
+import 'package:soulful_plates/network/network_interfaces/generic_model.dart';
+
+class UserProfile extends GenericModel {
   UserProfile({
     String? id,
     String? fullName,
@@ -63,5 +65,10 @@ class UserProfile {
   @override
   String toString() {
     return 'UserProfile{_id: $_id, _fullName: $_fullName, _email: $_email, _phoneNumber: $_phoneNumber,}';
+  }
+
+  @override
+  from(json) {
+    return UserProfile.fromJson(json);
   }
 }

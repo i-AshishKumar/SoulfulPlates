@@ -1,9 +1,9 @@
 class AppIcons {
   /// app's all icons declared here like (svg,png or json)format
 
-  static const String _svg = "assets/icons/svgs/";
+  // static const String _svg = "assets/icons/svgs/";
   static const String _drawables = "assets/icons/drawables/";
-  static const String _lottie = "assets/lottie/";
+  // static const String _lottie = "assets/lottie/";
 
   ///Mention all drawables file paths here
   static String logoWhite = "${_drawables}logo-white.png";

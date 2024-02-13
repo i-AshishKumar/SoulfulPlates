@@ -25,25 +25,16 @@ class _IntroductionViewPageState extends State<IntroductionViewPage> {
       body: SafeArea(
         child: Column(
           children: [
-            Image.asset(
-              AppIcons.logoWhite,
-              width: 200,
-            ),
             Expanded(
-                child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  50.rVerticalSizedBox(),
-                  Text(
-                    LanguageConst.appName,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.textStyleBlack22With700,
-                  ).paddingHorizontal24(),
-                  24.rVerticalSizedBox(),
-                ],
-              ),
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  AppIcons.logoWhite,
+                  width: 200,
+                ),
+              ],
             )),
             8.rVerticalSizedBox(),
             BaseButton(

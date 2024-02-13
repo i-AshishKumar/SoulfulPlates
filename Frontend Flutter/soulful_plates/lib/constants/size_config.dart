@@ -7,8 +7,8 @@ class SizeConfig {
   static MediaQueryData? _mediaQueryData;
   static double? screenWidth;
   static double? screenHeight;
-  static double? _blockSizeHorizontal;
-  static double? _blockSizeVertical;
+  // static double? _blockSizeHorizontal;
+  // static double? _blockSizeVertical;
 
   static double? _safeAreaWidth;
   static double? _safeAreaHeight;
@@ -20,8 +20,8 @@ class SizeConfig {
     screenWidth = _mediaQueryData?.size.width;
     screenHeight = _mediaQueryData?.size.height;
 
-    _blockSizeHorizontal = screenWidth! / 100;
-    _blockSizeVertical = screenHeight! / 100;
+    // _blockSizeHorizontal = screenWidth! / 100;
+    // _blockSizeVertical = screenHeight! / 100;
 
     _safeAreaWidth = safeAreaBox.maxWidth;
     _safeAreaHeight = safeAreaBox.maxHeight;

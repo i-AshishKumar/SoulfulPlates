@@ -68,7 +68,7 @@ class _InternetPageViewState extends State<InternetPageView> {
   checkInternetConnection() async {
     bool hasInternetConnection =
         await ConnectionStatus().checkConnection(fromInternetScreen: true);
-    print('This is the internet connection $hasInternetConnection');
+    debugPrint('This is the internet connection $hasInternetConnection');
     if (hasInternetConnection) {
       Get.back();
     } else {

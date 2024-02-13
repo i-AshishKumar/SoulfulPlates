@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/ui/pages/dashboard/dashboard_binding.dart';
+import 'package:soulful_plates/ui/pages/dashboard/dashboard_screen.dart';
+import 'package:soulful_plates/ui/pages/forgot_password/forgot_password_binding.dart';
+import 'package:soulful_plates/ui/pages/forgot_password/forgot_password_screen.dart';
 import 'package:soulful_plates/ui/pages/introduction_screen.dart';
+import 'package:soulful_plates/ui/pages/login/login_binding.dart';
+import 'package:soulful_plates/ui/pages/login/login_screen.dart';
+import 'package:soulful_plates/ui/pages/restaurant_detail/restaurant_detail_binding.dart';
+import 'package:soulful_plates/ui/pages/restaurant_detail/restaurant_detail_screen.dart';
+import 'package:soulful_plates/ui/pages/sign_up/sign_up_binding.dart';
+import 'package:soulful_plates/ui/pages/sign_up/sign_up_screen.dart';
 import 'package:soulful_plates/ui/pages/splash_screen.dart';
+import 'package:soulful_plates/ui/pages/view_cart/view_cart_binding.dart';
+import 'package:soulful_plates/ui/pages/view_cart/view_cart_screen.dart';
 
 import '../ui/pages/internet_page/internet_page_view.dart';
 import 'route_names.dart';
@@ -33,7 +45,46 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
       return getPageRoutes(
         routeName: loginViewRoute,
         settings: settings,
-        page: () => const InternetPageView(),
+        bindings: [LoginBinding()],
+        page: () => LoginScreen(),
+      );
+    case signUpViewRoute:
+      return getPageRoutes(
+        routeName: signUpViewRoute,
+        settings: settings,
+        bindings: [SignUpBinding()],
+        page: () => SignUpScreen(),
+      );
+    case forgotPasswordPageViewRoute:
+      return getPageRoutes(
+        routeName: forgotPasswordPageViewRoute,
+        settings: settings,
+        bindings: [ForgotPasswordBinding()],
+        page: () => ForgotPasswordScreen(),
+      );
+
+    case dashboardViewRoute:
+      return getPageRoutes(
+        routeName: dashboardViewRoute,
+        settings: settings,
+        bindings: [DashboardBinding()],
+        page: () => DashboardScreen(),
+      );
+
+    case restaurantDetailViewRoute:
+      return getPageRoutes(
+        routeName: restaurantDetailViewRoute,
+        settings: settings,
+        bindings: [RestaurantDetailBinding()],
+        page: () => RestaurantDetailScreen(),
+      );
+
+    case viewCartViewRoute:
+      return getPageRoutes(
+        routeName: viewCartViewRoute,
+        settings: settings,
+        bindings: [ViewCartBinding()],
+        page: () => ViewCartScreen(),
       );
   }
   return null;

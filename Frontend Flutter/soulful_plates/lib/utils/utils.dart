@@ -34,6 +34,16 @@ class Utils {
     }
   }
 
+  static String padString(String input, int targetLength, String padChar) {
+    if (input.length >= targetLength) {
+      return input;
+    } else {
+      int padLength = targetLength - input.length;
+      String padding = padChar * padLength;
+      return input + padding;
+    }
+  }
+
   static showSuccessToast(String message, bool isError) {
     Fluttertoast.showToast(
       gravity: ToastGravity.BOTTOM,

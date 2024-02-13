@@ -11,7 +11,7 @@ import '../../utils/extensions.dart';
 /*
 All common widgets through out the application is mentioned here.
  */
-class BaseCommonWidget {
+mixin BaseCommonWidget {
   Widget getProgressBar(ViewStateEnum viewState) {
     if (viewState == ViewStateEnum.busy) {
       return Container(

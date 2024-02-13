@@ -10,9 +10,9 @@ class AppTheme {
     return ThemeData(
       primaryColor: colorThemeModel.primaryColor,
       primaryColorDark: colorThemeModel.primaryColorDark,
-      backgroundColor: colorThemeModel.backgroundColor,
+      // backgroundColor: colorThemeModel.backgroundColor,
       brightness: colorThemeModel.brightness,
-      errorColor: colorThemeModel.errorColor,
+      // errorColor: colorThemeModel.errorColor,
       // textTheme: GoogleFonts.rubikTextTheme(),
       appBarTheme: const AppBarTheme(
         titleTextStyle: AppTextStyles.textStyleAppbar,
