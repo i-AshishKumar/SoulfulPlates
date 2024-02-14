@@ -1,4 +1,4 @@
-package com.Group11.soulfulplates.payload.request;
+package com.Group11.SoulfulPlates.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
 

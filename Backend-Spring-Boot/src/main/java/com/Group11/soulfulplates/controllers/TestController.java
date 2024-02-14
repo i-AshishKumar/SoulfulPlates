@@ -1,4 +1,5 @@
-package com.Group11.soulfulplates.controllers;
+package com.Group11.SoulfulPlates.controllers;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,20 +15,20 @@ public class TestController {
     return "Public Content.";
   }
 
-  @GetMapping("/buyer")
-  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+  @GetMapping("/user")
+  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
   public String userAccess() {
-    return "Buyer Content.";
+    return "User Content.";
   }
 
-  @GetMapping("/seller")
-  @PreAuthorize("hasRole('ROLE_SELLER')")
+  @GetMapping("/mod")
+  @PreAuthorize("hasRole('MODERATOR')")
   public String moderatorAccess() {
-    return "Seller Board.";
+    return "Moderator Board.";
   }
 
   @GetMapping("/admin")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   public String adminAccess() {
     return "Admin Board.";
   }

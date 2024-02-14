@@ -1,35 +1,38 @@
-package com.Group11.soulfulplates.controllers;
+package com.Group11.SoulfulPlates.controllers;
 
-import com.Group11.soulfulplates.models.ERole;
-import com.Group11.soulfulplates.models.Role;
-import com.Group11.soulfulplates.models.User;
-import com.Group11.soulfulplates.payload.request.ForgetPasswordRequest;
-import com.Group11.soulfulplates.payload.request.LoginRequest;
-import com.Group11.soulfulplates.payload.request.SignupRequest;
-import com.Group11.soulfulplates.payload.response.JwtResponse;
-import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.repository.RoleRepository;
-import com.Group11.soulfulplates.repository.UserRepository;
-import com.Group11.soulfulplates.security.jwt.JwtUtils;
-import com.Group11.soulfulplates.security.services.UserDetailsImpl;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.Group11.SoulfulPlates.models.ERole;
+import com.Group11.SoulfulPlates.models.Role;
+import com.Group11.SoulfulPlates.models.User;
+import com.Group11.SoulfulPlates.payload.request.LoginRequest;
+import com.Group11.SoulfulPlates.payload.request.SignupRequest;
+import com.Group11.SoulfulPlates.payload.response.JwtResponse;
+import com.Group11.SoulfulPlates.payload.response.MessageResponse;
+import com.Group11.SoulfulPlates.repository.RoleRepository;
+import com.Group11.SoulfulPlates.repository.UserRepository;
+import com.Group11.SoulfulPlates.security.jwt.JwtUtils;
+import com.Group11.SoulfulPlates.security.services.UserDetailsImpl;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -122,47 +125,5 @@ public class AuthController {
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-  }
-
-//  @PostMapping("/forget-password")
-//  public ResponseEntity<?> generateForgetPasswordCode(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
-//    // Generate a random 4-digit code
-//    String code = generateRandomCode();
-//
-//    // Authenticate the user for the purpose of generating a JWT token
-//    Authentication authentication = authenticationManager.authenticate(
-//            new UsernamePasswordAuthenticationToken(forgetPasswordRequest.getUsername(), forgetPasswordRequest.getPassword()));
-//
-//    // Generate JWT token
-//    String jwt = jwtUtils.generateJwtToken(authentication);
-//
-//    // Here you can send this code to the user's email or phone number
-//    // and return the JWT token for further authentication
-//
-//    return ResponseEntity.ok(new ForgetPasswordResponse(code, jwt));
-//  }
-@PostMapping("/forget-password")
-@PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
-public String generateForgetPasswordCode(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
-  // Generate a random 4-digit code
-
-//  // Authenticate the user for the purpose of generating a JWT token
-//  Authentication authentication = authenticationManager.authenticate(
-//          new UsernamePasswordAuthenticationToken(forgetPasswordRequest.getUsername(), forgetPasswordRequest.getPassword()));
-
-  // Generate JWT token
-//  String jwt = jwtUtils.generateJwtToken(authentication);
-
-  // Here you can send this code to the user's email or phone number
-  // and return the JWT token for further authentication
-
-//  return ResponseEntity.ok(new ForgetPasswordResponse(code, jwt));
-  return generateRandomCode();
-}
-
-  private String generateRandomCode() {
-    Random random = new Random();
-    int code = 1000 + random.nextInt(9000); // Random 4-digit code
-    return String.valueOf(code);
   }
 }

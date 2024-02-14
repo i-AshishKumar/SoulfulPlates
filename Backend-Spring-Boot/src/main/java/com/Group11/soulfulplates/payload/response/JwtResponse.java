@@ -1,4 +1,4 @@
-package com.Group11.soulfulplates.payload.response;
+package com.Group11.SoulfulPlates.payload.response;
 
 import java.util.List;
 
