@@ -1,4 +1,4 @@
-package com.Group11.SoulfulPlates.security.jwt;
+package com.Group11.soulfulplates.security.jwt;
 
 import java.security.Key;
 import java.util.Date;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.Group11.SoulfulPlates.security.services.UserDetailsImpl;
+import com.Group11.soulfulplates.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.Group11.SoulfulPlates.security.services.UserDetailsImpl;
+import com.Group11.soulfulplates.security.services.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

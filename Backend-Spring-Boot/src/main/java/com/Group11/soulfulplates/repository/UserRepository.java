@@ -1,11 +1,11 @@
-package com.Group11.SoulfulPlates.repository;
+package com.Group11.soulfulplates.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.Group11.SoulfulPlates.models.User;
+import com.Group11.soulfulplates.models.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

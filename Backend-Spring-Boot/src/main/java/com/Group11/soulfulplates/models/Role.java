@@ -1,4 +1,4 @@
-package com.Group11.SoulfulPlates.models;
+package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
