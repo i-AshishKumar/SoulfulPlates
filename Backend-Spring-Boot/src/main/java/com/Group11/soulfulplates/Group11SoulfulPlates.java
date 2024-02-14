@@ -1,13 +1,14 @@
-package com.Group11.soulfulplates;
+package com.Group11.SoulfulPlates;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import static org.springframework.boot.SpringApplication.run;
 
 @SpringBootApplication
 public class Group11SoulfulPlates {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Group11SoulfulPlates.class, args);
+    run(Group11SoulfulPlates.class, args);
 	}
 
 }

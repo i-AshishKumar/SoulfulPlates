@@ -1,4 +1,4 @@
-package com.Group11.soulfulplates;
+package com.Group11.SoulfulPlates;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
