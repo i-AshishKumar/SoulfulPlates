@@ -10,26 +10,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
+
   @GetMapping("/all")
-  public String allAccess() {
+  public String publicContent() {
     return "Public Content.";
   }
 
   @GetMapping("/buyer")
   @PreAuthorize("hasRole('ROLE_BUYER')")
-  public String userAccess() {
+  public String buyerContent() {
     return "Buyer Content.";
   }
 
   @GetMapping("/seller")
   @PreAuthorize("hasRole('ROLE_SELLER')")
-  public String moderatorAccess() {
+  public String sellerContent() {
     return "Seller Board.";
   }
 
   @GetMapping("/admin")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public String adminAccess() {
+  public String adminContent() {
     return "Admin Board.";
   }
 }

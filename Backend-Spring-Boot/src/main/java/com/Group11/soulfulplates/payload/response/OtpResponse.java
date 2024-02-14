@@ -1,17 +1,16 @@
-package com.Group11.soulfulplates.payload.response;
+package com.Group11.SoulfulPlates.payload.response;
 
+import lombok.Data;
 import java.util.Random;
 
+@Data
 public class OtpResponse {
-    private final String OtpCode;
+    private String OtpCode;
 
-    public OtpResponse() {
+    public static String OtpCode() {
         Random random = new Random();
         int otpCode = 1000 + random.nextInt(9000);
-        OtpCode = String.valueOf(otpCode);
+        return String.valueOf(otpCode);
     }
 
-    public String getOtpCode() {
-        return OtpCode;
-    }
 }
