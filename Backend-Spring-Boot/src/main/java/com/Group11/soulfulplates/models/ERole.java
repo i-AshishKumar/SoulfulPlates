@@ -1,4 +1,4 @@
-package com.Group11.SoulfulPlates.models;
+package com.Group11.soulfulplates.models;
 
 public enum ERole {
   ROLE_BUYER,

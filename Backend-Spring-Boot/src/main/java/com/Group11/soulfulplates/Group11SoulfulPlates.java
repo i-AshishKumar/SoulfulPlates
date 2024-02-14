@@ -1,4 +1,4 @@
-package com.Group11.SoulfulPlates;
+package com.Group11.soulfulplates;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
