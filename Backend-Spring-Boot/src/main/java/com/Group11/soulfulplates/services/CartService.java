@@ -10,5 +10,7 @@ public interface CartService {
     Cart createOrUpdateCart(Long userId, Long sellerId);
 
     Optional<Cart> getCartsByUserId(Long userId);
+
+    boolean existsByCartId(Long id);
 }
 
