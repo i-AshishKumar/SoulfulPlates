@@ -38,6 +38,13 @@ public class CartRepository {
         }
     }
 
+    public boolean existsByCartId(Long id) {
+        Long count = entityManager.createQuery("SELECT COUNT(c) FROM Cart c WHERE c.cartId = :id", Long.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        return count > 0;
+    }
+
     // Save a cart
     public Cart save(Cart cart) {
         if (cart.getCartId() == null) {
