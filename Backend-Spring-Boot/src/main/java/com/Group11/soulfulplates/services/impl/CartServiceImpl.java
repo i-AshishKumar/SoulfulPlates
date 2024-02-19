@@ -38,6 +38,11 @@ public class CartServiceImpl implements CartService {
 //    }
 
     @Override
+    public boolean existsByCartId(Long id) {
+        return cartRepository.existsByCartId(id);
+    }
+
+    @Override
     public Cart createOrUpdateCart(Long userId, Long sellerId) {
         // Check if a cart exists for the given userId and sellerId
         Optional<Cart> existingCart = cartRepository.findByUserIdAndServiceProviderId(userId, sellerId);
