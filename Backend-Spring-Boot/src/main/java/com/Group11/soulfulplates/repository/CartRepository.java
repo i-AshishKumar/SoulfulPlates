@@ -37,4 +37,14 @@ public class CartRepository {
             return Optional.empty();
         }
     }
+
+    // Save a cart
+    public Cart save(Cart cart) {
+        if (cart.getCartId() == null) {
+            entityManager.persist(cart);
+            return cart;
+        } else {
+            return entityManager.merge(cart);
+        }
+    }
 }
