@@ -6,6 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 public interface CartService {
+    @Transactional
+    Cart createOrUpdateCart(Long userId, Long sellerId);
 
     Optional<Cart> getCartsByUserId(Long userId);
 }
+
