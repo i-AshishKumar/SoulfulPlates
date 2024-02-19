@@ -43,6 +43,23 @@ public class CartController {
                 .orElseGet(() -> ResponseEntity.ok().body(null)); // No cart found case
     }
 
+    @PostMapping("/createOrUpdate")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public ResponseEntity<?> createOrUpdateCart(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long sellerId) {
+        // Check if userId is provided and valid
+        if (userId == null || !userRepository.existsById(userId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid userId.", null));
+        }
+
+        // Check if sellerId is provided and valid
+        if (sellerId == null || !sellerService.existsById(sellerId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid sellerId.", null));
+        }
+
+        Cart cart = cartService.createOrUpdateCart(userId, sellerId);
+        return ResponseEntity.ok(cart);
+    }
+
     static class ResponseObject {
         private int code;
         private String description;
