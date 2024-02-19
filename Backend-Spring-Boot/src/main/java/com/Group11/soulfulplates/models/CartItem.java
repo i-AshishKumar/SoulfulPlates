@@ -4,36 +4,35 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "cart_items")
+@Table(name = "cart_item")
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartItemId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "cart_id")
+    private Long cartId;
 
-    @Column(name = "menu_id")
-    private Long menuId;
+    @Column(name = "menu_item_id")
+    private Long menuItemId;
 
     private Integer quantity;
-    private String notes;
 
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    @Column(name = "added_date")
+    private LocalDateTime addedDate;
+
+    private String notes;
 
     @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
-
-    // Constructors
+    // Default constructor
     public CartItem() {
     }
 
-    // Getters and Setters
+    // Getters and setters
+
     public Long getCartItemId() {
         return cartItemId;
     }
@@ -42,20 +41,20 @@ public class CartItem {
         this.cartItemId = cartItemId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getCartId() {
+        return cartId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setCartId(Long cartId) {
+        this.cartId = cartId;
     }
 
-    public Long getMenuId() {
-        return menuId;
+    public Long getMenuItemId() {
+        return menuItemId;
     }
 
-    public void setMenuId(Long menuId) {
-        this.menuId = menuId;
+    public void setMenuItemId(Long menuItemId) {
+        this.menuItemId = menuItemId;
     }
 
     public Integer getQuantity() {
@@ -66,28 +65,20 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    public LocalDateTime getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(LocalDateTime addedDate) {
+        this.addedDate = addedDate;
+    }
+
     public String getNotes() {
         return notes;
     }
 
     public void setNotes(String notes) {
         this.notes = notes;
-    }
-
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(LocalDateTime updated) {
-        this.updated = updated;
     }
 
     public Long getOrderId() {
@@ -98,11 +89,16 @@ public class CartItem {
         this.orderId = orderId;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean active) {
-        isActive = active;
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "cartItemId=" + cartItemId +
+                ", cartId=" + cartId +
+                ", menuItemId=" + menuItemId +
+                ", quantity=" + quantity +
+                ", addedDate=" + addedDate +
+                ", notes='" + notes + '\'' +
+                ", orderId=" + orderId +
+                '}';
     }
 }
