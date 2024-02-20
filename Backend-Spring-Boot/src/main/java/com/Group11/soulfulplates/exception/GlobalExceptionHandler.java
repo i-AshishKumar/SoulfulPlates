@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.http.HttpStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,5 +20,14 @@ public class GlobalExceptionHandler {
         errorDetails.put("data", null);
 
         return ResponseEntity.badRequest().body(errorDetails);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("code", HttpStatus.BAD_REQUEST.value());
+        response.put("description", "Invalid request: " + ex.getMessage());
+        response.put("data", null); // Adjust based on your error response structure
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
