@@ -1,18 +1,19 @@
-package com.Group11.SoulfulPlates.controllers;
+package com.Group11.soulfulplates.controllers;
 
-import com.Group11.SoulfulPlates.models.ERole;
-import com.Group11.SoulfulPlates.models.Role;
-import com.Group11.SoulfulPlates.models.User;
-import com.Group11.SoulfulPlates.payload.request.ForgetPasswordRequest;
-import com.Group11.SoulfulPlates.payload.request.LoginRequest;
-import com.Group11.SoulfulPlates.payload.request.SignupRequest;
-import com.Group11.SoulfulPlates.payload.response.JwtResponse;
-import com.Group11.SoulfulPlates.payload.response.MessageResponse;
-import com.Group11.SoulfulPlates.payload.response.OtpResponse;
-import com.Group11.SoulfulPlates.repository.RoleRepository;
-import com.Group11.SoulfulPlates.repository.UserRepository;
-import com.Group11.SoulfulPlates.security.jwt.JwtUtils;
-import com.Group11.SoulfulPlates.security.services.UserDetailsImpl;
+import com.Group11.soulfulplates.models.ERole;
+import com.Group11.soulfulplates.models.Role;
+import com.Group11.soulfulplates.models.User;
+import com.Group11.soulfulplates.payload.request.ForgetPasswordRequest;
+import com.Group11.soulfulplates.payload.request.LoginRequest;
+import com.Group11.soulfulplates.payload.request.ResetPasswordRequest;
+import com.Group11.soulfulplates.payload.request.SignupRequest;
+import com.Group11.soulfulplates.payload.response.JwtResponse;
+import com.Group11.soulfulplates.payload.response.MessageResponse;
+import com.Group11.soulfulplates.payload.response.OtpResponse;
+import com.Group11.soulfulplates.repository.RoleRepository;
+import com.Group11.soulfulplates.repository.UserRepository;
+import com.Group11.soulfulplates.security.jwt.JwtUtils;
+import com.Group11.soulfulplates.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
@@ -132,6 +130,33 @@ public class AuthController {
       return ResponseEntity
               .badRequest()
               .body(new MessageResponse(-1, "Error: Email does not exists!", null));
+    }
+  }
+  @PostMapping("/reset-password")
+  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+  public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+    if (userRepository.existsByEmail(resetPasswordRequest.getEmail())) {
+      try {
+        Optional<User> optionalUser = userRepository.findByEmail(resetPasswordRequest.getEmail());
+        if (optionalUser.isPresent()) {
+          User user = optionalUser.get();
+          user.setPassword(encoder.encode(resetPasswordRequest.getNewPassword()));
+          userRepository.save(user);
+
+          return ResponseEntity.ok(new MessageResponse(1, "Password reset successfully!", null));
+        } else {
+          return ResponseEntity.badRequest()
+                  .body(new MessageResponse(-1, "Error: User with provided email not found.", null));
+        }
+      } catch (Exception e) {
+        return ResponseEntity.badRequest()
+                .body(new MessageResponse(-1, "Error occurred while resetting password.", null));
+      }
+
+    } else {
+      return ResponseEntity
+              .badRequest()
+              .body(new MessageResponse(-1, "Error: Email does not exist!", null));
     }
   }
 }

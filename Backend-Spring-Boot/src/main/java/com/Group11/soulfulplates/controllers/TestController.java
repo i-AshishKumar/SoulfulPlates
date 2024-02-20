@@ -1,4 +1,4 @@
-package com.Group11.SoulfulPlates.controllers;
+package com.Group11.soulfulplates.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;

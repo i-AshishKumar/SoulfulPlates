@@ -1,4 +1,4 @@
-package com.Group11.SoulfulPlates.security;
+package com.Group11.soulfulplates.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,9 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.Group11.SoulfulPlates.security.jwt.AuthEntryPointJwt;
-import com.Group11.SoulfulPlates.security.jwt.AuthTokenFilter;
-import com.Group11.SoulfulPlates.security.services.UserDetailsServiceImpl;
+import com.Group11.soulfulplates.security.jwt.AuthEntryPointJwt;
+import com.Group11.soulfulplates.security.jwt.AuthTokenFilter;
+import com.Group11.soulfulplates.security.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableMethodSecurity

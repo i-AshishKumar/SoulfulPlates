@@ -1,10 +1,10 @@
-package com.Group11.SoulfulPlates.security.jwt;
+package com.Group11.soulfulplates.security.jwt;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.Group11.SoulfulPlates.payload.response.MessageResponse;
+import com.Group11.soulfulplates.payload.response.MessageResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

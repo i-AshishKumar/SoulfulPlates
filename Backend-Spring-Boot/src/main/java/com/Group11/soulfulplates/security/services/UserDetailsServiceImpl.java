@@ -1,7 +1,7 @@
-package com.Group11.SoulfulPlates.security.services;
+package com.Group11.soulfulplates.security.services;
 
-import com.Group11.SoulfulPlates.models.User;
-import com.Group11.SoulfulPlates.repository.UserRepository;
+import com.Group11.soulfulplates.models.User;
+import com.Group11.soulfulplates.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
