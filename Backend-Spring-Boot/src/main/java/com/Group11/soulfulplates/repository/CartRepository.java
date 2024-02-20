@@ -4,6 +4,7 @@ import com.Group11.soulfulplates.models.Cart;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -43,6 +44,14 @@ public class CartRepository {
                 .setParameter("id", id)
                 .getSingleResult();
         return count > 0;
+    }
+
+    @Transactional
+    public void deleteById(Long id) {
+        Cart cart = entityManager.find(Cart.class, id);
+        if (cart != null) {
+            entityManager.remove(cart);
+        }
     }
 
     // Save a cart
