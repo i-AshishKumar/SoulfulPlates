@@ -23,5 +23,17 @@ public class CartItemRepository {
                 .getResultList();
     }
 
+    // Find cart items by cart and menu item ID
+    public Optional<CartItem> findByCartIdAndMenuItemId(Long cartId, Long menuItemId) {
+        try {
+            CartItem cartItem = entityManager.createQuery("SELECT ci FROM CartItem ci WHERE ci.cartId = :cartId AND ci.menuItemId = :menuItemId", CartItem.class)
+                    .setParameter("cartId", cartId)
+                    .setParameter("menuItemId", menuItemId)
+                    .getSingleResult();
+            return Optional.of(cartItem);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
     }
 }
