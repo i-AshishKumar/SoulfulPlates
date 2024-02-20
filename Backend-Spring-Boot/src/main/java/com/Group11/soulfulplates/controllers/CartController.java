@@ -60,6 +60,15 @@ public class CartController {
         return ResponseEntity.ok(cart);
     }
 
+    @DeleteMapping("/{cartId}")
+    public ResponseEntity<?> deleteCart(@PathVariable Long cartId) {
+        if (!cartService.existsByCartId(cartId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(1, "Cart Not Available.", null));
+        }
+        cartService.deleteCartAndItems(cartId);
+        return ResponseEntity.ok().body(new ResponseObject(1, "Cart Deleted.", null));
+    }
+
     static class ResponseObject {
         private int code;
         private String description;
