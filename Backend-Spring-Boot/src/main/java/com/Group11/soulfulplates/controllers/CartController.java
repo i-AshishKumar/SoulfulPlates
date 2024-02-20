@@ -1,6 +1,7 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Cart;
+import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,8 @@ public class CartController {
         }
 
         Cart cart = cartService.createOrUpdateCart(userId, sellerId);
-        return ResponseEntity.ok(cart);
+//        return ResponseEntity.ok(cart);
+        return ResponseEntity.ok(new MessageResponse(1, "Cart Updated successfully!", cart));
     }
 
     @DeleteMapping("/{cartId}")
@@ -66,7 +68,7 @@ public class CartController {
             return ResponseEntity.badRequest().body(new ResponseObject(1, "Cart Not Available.", null));
         }
         cartService.deleteCartAndItems(cartId);
-        return ResponseEntity.ok().body(new ResponseObject(1, "Cart Deleted.", null));
+        return ResponseEntity.ok(new MessageResponse(1, "Cart Deleted successfully!", cartId));
     }
 
     static class ResponseObject {
