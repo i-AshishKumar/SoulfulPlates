@@ -46,19 +46,29 @@ public class CartItem {
     }
 
     public Long getCartId() {
-        return cart.getCartId();
+        if(this.cart != null) {
+            return cart.getCartId();
+        }
+        return null;
     }
 
     public void setCartId(Long cartId) {
-        this.cart.setCartId(cartId);
+        if(this.cart != null) {
+            this.cart.setCartId(cartId);
+        }
     }
 
     public Long getMenuItemId() {
-        return menuItem.getMenuItemId();
+        if(this.menuItem != null) {
+            return menuItem.getMenuItemId();
+        }
+        return null;
     }
 
     public void setMenuItemId(Long menuItemId) {
-        this.menuItem.setMenuItemId(menuItemId);
+        if(this.menuItem != null) {
+            this.menuItem.setMenuItemId(menuItemId);
+        }
     }
 
     public Integer getQuantity() {
