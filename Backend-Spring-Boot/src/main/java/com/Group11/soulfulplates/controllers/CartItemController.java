@@ -46,6 +46,23 @@ public class CartItemController {
         CartItem newCartItem = cartItemService.addOrUpdateCartItem(cartItem.getCartId(), cartItem.getMenuItemId(), cartItem.getQuantity(), cartItem.getNotes());
         return ResponseEntity.ok(newCartItem);
     }
+
+    @PreAuthorize("hasRole('ROLE_BUYER')")
+    @PutMapping("/{cartItemId}")
+    public ResponseEntity<?> updateCartItem(@PathVariable Long cartItemId, @RequestBody CartItem cartItem) {
+        // Check if cartItemId is present
+        Optional<CartItem> existingCartItem = cartItemService.findById(cartItemId);
+        if (!existingCartItem.isPresent()) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Cart Item does not exist.", null));
+        }
+
+        // Check if menuItemId matches the one in the existing cart item
+//        if (!existingCartItem.get().getMenuItemId().equals(cartItem.getMenuItemId())) {
+//            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Menu Item not present in cart.", null));
+//        }
+        CartItem updatedCartItem = cartItemService.updateCartItem(cartItemId, cartItem.getQuantity(), cartItem.getNotes());
+        return ResponseEntity.ok(updatedCartItem);
+    }
         }
     }
     static class ResponseObject {
