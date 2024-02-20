@@ -62,5 +62,11 @@ public class CartItemServiceImpl implements CartItemService {
         cartItem.setNotes(notes);
         return cartItemRepository.save(cartItem);
     }
+
+    @Override
+    @Transactional
+    public void removeCartItem(Long cartItemId) {
+        cartItemRepository.deleteById(cartItemId);
+    }
     }
 }
