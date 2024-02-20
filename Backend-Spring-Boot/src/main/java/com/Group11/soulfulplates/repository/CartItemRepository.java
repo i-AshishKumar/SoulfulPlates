@@ -35,5 +35,12 @@ public class CartItemRepository {
             return Optional.empty();
         }
     }
+
+
+    // Method to find a cart item by ID
+    public Optional<CartItem> findById(Long cartItemId) {
+        CartItem cartItem = entityManager.find(CartItem.class, cartItemId);
+        return Optional.ofNullable(cartItem);
+    }
     }
 }
