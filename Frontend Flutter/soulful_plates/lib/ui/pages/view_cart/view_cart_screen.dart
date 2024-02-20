@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/size_config.dart';
 
 import '../../../constants/app_colors.dart';
-import '../../../constants/app_sized_box.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../constants/enums/view_state.dart';
-import '../../../utils/extensions.dart';
+import '../../../constants/size_config.dart';
 import '../../widgets/base_common_widget.dart';
 import 'view_cart_controller.dart';
 
-class ViewCartScreen extends GetView<ViewCartController>
-    with BaseCommonWidget {
+class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
   ViewCartScreen({Key? key}) : super(key: key);
 
   @override
@@ -38,7 +33,6 @@ class ViewCartScreen extends GetView<ViewCartController>
         12.rVerticalSizedBox(),
         const Text("ViewCart Screen"),
         12.rVerticalSizedBox(),
-
       ],
     );
   }

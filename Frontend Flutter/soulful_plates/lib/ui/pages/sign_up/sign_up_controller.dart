@@ -33,11 +33,6 @@ class SignUpController extends BaseController {
 
   final formKey = GlobalKey<FormState>();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   Future<void> signUpUser({data}) async {
     try {
       setLoaderState(ViewStateEnum.busy);
@@ -47,8 +42,8 @@ class SignUpController extends BaseController {
           endPoint: "/auth/signup",
           apiCallType: ApiCallType.simple,
           parameters: data);
-      print('This is response $response ${response.runtimeType}');
-      print('This is response $response ${response['code']}');
+      debugPrint('This is response $response ${response.runtimeType}');
+      debugPrint('This is response $response ${response['code']}');
       if (response != null) {
         Utils.showSuccessToast("Account created successfully.", true);
         onWidgetDidBuild(callback: () {
@@ -61,7 +56,7 @@ class SignUpController extends BaseController {
       }
     } catch (e) {
       setLoaderState(ViewStateEnum.idle);
-      print('This is error $e');
+      debugPrint('This is error $e');
       Utils.showSuccessToast(e.toString(), false);
     }
   }

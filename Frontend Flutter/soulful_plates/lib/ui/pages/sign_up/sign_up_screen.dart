@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/app_singleton.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_icons.dart';
@@ -54,7 +55,7 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
               ),
               16.rVerticalSizedBox(),
               Text(
-                'Full name',
+                'Username',
                 style: AppTextStyles.textStyleBlackTwo12With400,
               ),
               8.rVerticalSizedBox(),
@@ -66,7 +67,7 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
                 onSubmitted: (val) {
                   controller.lastNameFocusNode.requestFocus();
                 },
-                hintText: 'Full name',
+                hintText: 'Username',
               ),
               // Text(
               //   'Last name',
@@ -175,7 +176,7 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
                           controller.passwordEditingController.text.trim(),
                       "username":
                           controller.firstNameEditingController.text.trim(),
-                      "role": ['buyer'],
+                      "role": AppSingleton.isBuyer() ? ['buyer'] : ['seller'],
                     });
                   }
                 },
@@ -246,12 +247,12 @@ class SignUpScreen extends GetView<SignUpController> with BaseCommonWidget {
     return BaseButton(
         text: 'Sign Up',
         onSubmit: () async {
-                    if (controller.formKey.currentState!.validate()) {
+          if (controller.formKey.currentState!.validate()) {
             controller.signUpUser(data: {
               'email': controller.emailEditingController.text.trim(),
               'password': controller.passwordEditingController.text.trim(),
               "username": controller.firstNameEditingController.text.trim(),
-              "role": ['buyer'],
+              "role": AppSingleton.isBuyer() ? ['buyer'] : ['seller'],
             });
           }
         });

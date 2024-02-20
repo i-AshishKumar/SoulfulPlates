@@ -47,7 +47,7 @@ class DioSing implements IDioSing {
         String token =
             await UserPreference.getValue(key: SharedPrefKey.token.name) ?? '';
         UserProfile? userModel = AppSingleton.loggedInUserProfile;
-        print('This is called usermodel ${userModel} ${userModel?.id}');
+        debugPrint('This is called usermodel $userModel ${userModel?.id}');
         headers = <String, dynamic>{
           'Content-Type': 'application/json',
           'token': token,

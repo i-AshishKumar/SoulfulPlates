@@ -9,7 +9,6 @@ import '../../../constants/app_text_styles.dart';
 import '../../../constants/size_config.dart';
 import '../../../routing/route_names.dart';
 import '../../../utils/extensions.dart';
-import '../../../utils/utils.dart';
 import '../../../utils/validator.dart';
 import '../../widgets/base_button.dart';
 import '../../widgets/base_common_widget.dart';

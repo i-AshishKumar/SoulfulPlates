@@ -16,19 +16,14 @@ class LoginController extends BaseController {
   bool obscureText = true;
 
   TextEditingController emailEditingController =
-      TextEditingController(text: '');
+      TextEditingController(text: 'nikul@raftlabs.co');
   TextEditingController passwordEditingController =
-      TextEditingController(text: '');
+      TextEditingController(text: 'Nikul@1234');
 
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
 
   final formKey = GlobalKey<FormState>();
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   void login() async {
     try {
@@ -60,7 +55,7 @@ class LoginController extends BaseController {
       }
     } catch (e) {
       setLoaderState(ViewStateEnum.idle);
-      print('This is error $e');
+      debugPrint('This is error $e');
       Utils.showSuccessToast(e.toString(), true);
     }
   }
