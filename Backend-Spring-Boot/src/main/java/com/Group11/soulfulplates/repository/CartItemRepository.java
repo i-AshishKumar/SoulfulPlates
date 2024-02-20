@@ -51,5 +51,14 @@ public class CartItemRepository {
         );
         entityManager.remove(cartItem);
     }
+
+    // Save a cart item
+    public CartItem save(CartItem cartItem) {
+        if (cartItem.getCartItemId() == null) {
+            entityManager.persist(cartItem);
+            return cartItem;
+        } else {
+            return entityManager.merge(cartItem);
+        }
     }
 }
