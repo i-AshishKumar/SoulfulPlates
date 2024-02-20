@@ -1,41 +1,53 @@
 package com.Group11.soulfulplates.services.impl;
 
 import com.Group11.soulfulplates.models.CartItem;
-import com.Group11.soulfulplates.payload.response.CartItemDTO;
 import com.Group11.soulfulplates.repository.CartItemRepository;
 import com.Group11.soulfulplates.services.CartItemService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class CartItemServiceImpl implements CartItemService {
 
-    @Autowired
-    private CartItemRepository cartItemRepository;
+    private final CartItemRepository cartItemRepository;
 
-    @Override
-    public List<CartItemDTO> getCartItemsByUserId(Long userId) {
-        List<CartItem> cartItems = cartItemRepository.findCartItemsByUserId(userId);
-        return cartItems.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    @Autowired
+    public CartItemServiceImpl(CartItemRepository cartItemRepository) {
+        this.cartItemRepository = cartItemRepository;
     }
 
-    private CartItemDTO convertToDTO(CartItem cartItem) {
-        CartItemDTO dto = new CartItemDTO();
+    @Override
+    public CartItem addCartItem(Long cartId, Long menuItemId, Integer quantity, String notes) {
+        CartItem cartItem = new CartItem();
+        cartItem.setCartId(cartId);
+        cartItem.setMenuItemId(menuItemId);
+        cartItem.setQuantity(quantity);
+        cartItem.setAddedDate(LocalDateTime.now());
+        cartItem.setNotes(notes);
+        return cartItemRepository.save(cartItem);
+    }
 
-        dto.setCartItemId(cartItem.getCartItemId());
-        dto.setUserId(cartItem.getUserId());
-        dto.setMenuId(cartItem.getMenuId());
-        dto.setQuantity(cartItem.getQuantity());
-        dto.setNotes(cartItem.getNotes());
-        dto.setCreated(cartItem.getCreated());
-        dto.setUpdated(cartItem.getUpdated());
-        dto.setOrderId(cartItem.getOrderId());
-        dto.setIsActive(cartItem.getIsActive());
+    public CartItem addOrUpdateCartItem(Long cartId, Long menuItemId, Integer quantity, String notes) {
+        Optional<CartItem> existingCartItem = cartItemRepository.findByCartIdAndMenuItemId(cartId, menuItemId);
+
+        if (existingCartItem.isPresent()) {
+            CartItem cartItemToUpdate = existingCartItem.get();
+            cartItemToUpdate.setQuantity(quantity); // Update quantity
+            return cartItemRepository.save(cartItemToUpdate); // Save updated cart item
+        } else {
+            CartItem newCartItem = new CartItem();
+            newCartItem.setCartId(cartId);
+            newCartItem.setMenuItemId(menuItemId);
+            newCartItem.setQuantity(quantity);
+            newCartItem.setNotes(notes);
+            return cartItemRepository.save(newCartItem); // Save new cart item
+        }
+    }
 
         return dto;
     }
