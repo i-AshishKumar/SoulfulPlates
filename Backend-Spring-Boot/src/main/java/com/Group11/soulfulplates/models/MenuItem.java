@@ -29,7 +29,7 @@ public class MenuItem {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private MenuItemType type;
+    private EMenuItem type;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;

@@ -21,7 +21,7 @@ public class DeliveryPerson {
     private EDeliveryPerson vehicleType;
 
     @Column(name = "current_location")
-    private String currentLocation; 
+    private String currentLocation;
 
 
 }

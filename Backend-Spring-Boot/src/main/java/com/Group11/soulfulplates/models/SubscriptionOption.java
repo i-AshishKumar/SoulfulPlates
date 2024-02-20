@@ -20,7 +20,7 @@ public class SubscriptionOption {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "duration", nullable = false)
-    private Duration duration;
+    private ESubscriptionOption duration;
 
     @Column(name = "price", nullable = false)
     private int price;
@@ -30,10 +30,5 @@ public class SubscriptionOption {
 
     // Getters and setters omitted for brevity
 
-    public enum Duration {
-        DAYS,
-        WEEKS,
-        MONTHS
-    }
 }
 
