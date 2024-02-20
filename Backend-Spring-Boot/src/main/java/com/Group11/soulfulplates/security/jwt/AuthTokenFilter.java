@@ -1,6 +1,5 @@
 package com.Group11.soulfulplates.security.jwt;
 
-import com.Group11.soulfulplates.security.jwt.JwtUtils;
 import com.Group11.soulfulplates.security.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
