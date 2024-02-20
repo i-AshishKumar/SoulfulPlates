@@ -12,5 +12,7 @@ public interface CartService {
     Optional<Cart> getCartsByUserId(Long userId);
 
     boolean existsByCartId(Long id);
+
+    void deleteCartAndItems(Long cartId);
 }
 
