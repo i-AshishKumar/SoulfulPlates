@@ -142,6 +142,8 @@ class HomeScreen extends GetView<HomeController> with BaseCommonWidget {
                 CardTwo(),
                 const SizedBox(height: 20),
                 CardThree(),
+                const SizedBox(height: 20),
+                CardFour(),
               ],
             ),
           ),
@@ -296,7 +298,7 @@ class CardTwo extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '\$50 CAD',
+                      '\$60 CAD',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -373,7 +375,7 @@ class CardThree extends StatelessWidget {
                       onPressed: () {},
                       child: Text('Food Preparing'),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.orangeAccent, // Change color as needed
+                        primary: Colors.yellow, // Change color as needed
                       ),
                     ),
                     Text(
@@ -390,27 +392,84 @@ class CardThree extends StatelessWidget {
     );
   }
 }
-/*Widget getBody(BuildContext context) {
-    return Column(
-      children: [
-        12.rVerticalSizedBox(),
-        const Text("Home Screen"),
-        16.rVerticalSizedBox(),
-        BaseButton(
-            text: "Go to restaurant details",
-            onSubmit: () {
-              Get.toNamed(restaurantDetailViewRoute);
-            }).paddingHorizontal16(),
-        16.rVerticalSizedBox(),
-        BaseButton(
-            text: "Go to view cart",
-            onSubmit: () {
-              Get.toNamed(viewCartViewRoute);
-            }).paddingHorizontal16(),
-        16.rVerticalSizedBox(),
-        12.rVerticalSizedBox(),
-      ],
+
+class CardFour extends StatelessWidget {
+  const CardFour({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 3,
+      shadowColor: Colors.teal,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        width: double.infinity,
+        height: 240,
+        constraints: BoxConstraints(maxWidth: 400),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          elevation: 0,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // Icon and Time of Order section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      Icons
+                          .check_circle, // Use appropriate icon based on order status
+                      color: Colors
+                          .deepPurple, // Adjust color based on order status
+                    ),
+                    Text(
+                      'Time of Order',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                // Order ID and Items section
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Order ID',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '2x BBQ Pizza\n1x Mango Shake\n1x Lotus Biscoff Icecream',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                // Status of Order and Amount in CAD section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text('Received'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.lightBlue, // Change color as needed
+                      ),
+                    ),
+                    Text(
+                      '\$50 CAD',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
-
-}*/
+}
