@@ -63,7 +63,15 @@ public class CartItemController {
         CartItem updatedCartItem = cartItemService.updateCartItem(cartItemId, cartItem.getQuantity(), cartItem.getNotes());
         return ResponseEntity.ok(updatedCartItem);
     }
+
+    @PreAuthorize("hasRole('ROLE_BUYER')")
+    @DeleteMapping("/{cartItemId}")
+    public ResponseEntity<?> removeCartItem(@PathVariable Long cartItemId) {
+        if (!cartItemService.findById(cartItemId).isPresent()) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Cart item not present.", null));
         }
+        cartItemService.removeCartItem(cartItemId);
+        return ResponseEntity.ok().body(new ResponseObject(1, "Cart item successfully deleted.", null));
     }
     static class ResponseObject {
         private int code;
