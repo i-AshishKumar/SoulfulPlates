@@ -6,8 +6,10 @@ const String splashViewRoute = 'splashViewRoute';
 const String loginViewRoute = 'loginViewRoute';
 const String signUpViewRoute = 'signUpViewRoute';
 const String forgotPasswordPageViewRoute = 'forgotPasswordPageViewRoute';
+const String webViewRoute = 'webViewRoute';
 
 const String dashboardViewRoute = 'dashboardViewRoute';
 
 const String restaurantDetailViewRoute = 'restaurantDetailViewRoute';
 const String viewCartViewRoute = 'viewCartViewRoute';
+const String storeDetailsViewRoute = 'storeDetailsViewRoute';

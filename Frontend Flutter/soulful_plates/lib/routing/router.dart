@@ -12,10 +12,13 @@ import 'package:soulful_plates/ui/pages/restaurant_detail/restaurant_detail_scre
 import 'package:soulful_plates/ui/pages/sign_up/sign_up_binding.dart';
 import 'package:soulful_plates/ui/pages/sign_up/sign_up_screen.dart';
 import 'package:soulful_plates/ui/pages/splash_screen.dart';
+import 'package:soulful_plates/ui/pages/store_details/store_details_binding.dart';
 import 'package:soulful_plates/ui/pages/view_cart/view_cart_binding.dart';
 import 'package:soulful_plates/ui/pages/view_cart/view_cart_screen.dart';
 
 import '../ui/pages/internet_page/internet_page_view.dart';
+import '../ui/pages/store_details/store_details_screen.dart';
+import '../ui/pages/web_view/web_view_screen.dart';
 import 'route_names.dart';
 
 Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -85,6 +88,21 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
         settings: settings,
         bindings: [ViewCartBinding()],
         page: () => ViewCartScreen(),
+      );
+
+    case storeDetailsViewRoute:
+      return getPageRoutes(
+        routeName: storeDetailsViewRoute,
+        settings: settings,
+        bindings: [StoreDetailsBinding()],
+        page: () => StoreDetailsScreen(),
+      );
+
+    case webViewRoute:
+      return getPageRoutes(
+        routeName: webViewRoute,
+        settings: settings,
+        page: () => const WebViewScreen(),
       );
   }
   return null;
