@@ -18,4 +18,6 @@ public interface CartItemService {
     @Transactional
     CartItem updateCartItem(Long cartItemId, Integer quantity, String notes);
 
+
+    void removeCartItem(Long cartItemId);
 }
