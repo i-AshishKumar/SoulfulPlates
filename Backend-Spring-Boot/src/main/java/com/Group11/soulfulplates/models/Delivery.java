@@ -1,39 +1,19 @@
+// Delivery.java
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "delivery")
+@Table(name = "deliveries")
 public class Delivery {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long deliveryId;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private int order;
+    // Other fields and relationships
 
-    @Column(name = "expected_delivery_time", nullable = false)
-    private LocalDateTime expectedDeliveryTime;
+    @OneToOne(mappedBy = "delivery")
+    private Order order;
 
-    @Column(name = "delivery_start_time")
-    private LocalDateTime deliveryStartTime;
-
-    @Column(name = "delivery_end_time")
-    private LocalDateTime deliveryEndTime;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "current_status", nullable = false)
-    private EDelivery currentStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "delivery_person_id", nullable = false)
-    private DeliveryPerson deliveryPerson;
-
-
-
-
+    // Constructors, getters, and setters
 }

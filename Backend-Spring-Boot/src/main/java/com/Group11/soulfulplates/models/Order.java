@@ -1,44 +1,20 @@
+// Order.java
 package com.Group11.soulfulplates.models;
+
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    // Other fields and relationships
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
+    @OneToOne
+    @JoinColumn(name = "delivery_id", referencedColumnName = "id")
+    private Delivery delivery;
 
-    @Column(name = "order_date", nullable = false)
-    private LocalDateTime orderDate;
-
-    @ManyToOne
-    @JoinColumn(name = "delivery_address_id", nullable = false)
-    private Address deliveryAddress;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private EOrder status;
-
-    // Getters and setters for each field
-
-    // ...
-
-
-
-    // Consider additional methods:
-    // - Calculate total order cost based on cart items
-    // - track payment information if implemented
-    // - etc.
+    // Constructors, getters, and setters
 }
-
