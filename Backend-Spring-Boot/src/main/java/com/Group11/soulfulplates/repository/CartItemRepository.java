@@ -42,5 +42,14 @@ public class CartItemRepository {
         CartItem cartItem = entityManager.find(CartItem.class, cartItemId);
         return Optional.ofNullable(cartItem);
     }
+
+    // Method to delete a cart item by ID
+    @Transactional
+    public void deleteById(Long cartItemId) {
+        CartItem cartItem = findById(cartItemId).orElseThrow(
+                () -> new RuntimeException("Cart item not found with id: " + cartItemId)
+        );
+        entityManager.remove(cartItem);
+    }
     }
 }
