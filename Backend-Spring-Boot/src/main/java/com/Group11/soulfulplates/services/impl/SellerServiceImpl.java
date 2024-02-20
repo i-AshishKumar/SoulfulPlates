@@ -9,4 +9,14 @@ import org.springframework.stereotype.Service;
 public class SellerServiceImpl implements SellerService {
 
     private final SellerRepository sellerRepository;
+
+    @Autowired
+    public SellerServiceImpl(SellerRepository sellerRepository) {
+        this.sellerRepository = sellerRepository;
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return sellerRepository.existsById(id);
+    }
 }
