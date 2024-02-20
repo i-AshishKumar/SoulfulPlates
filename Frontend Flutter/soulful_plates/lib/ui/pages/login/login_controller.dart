@@ -16,9 +16,9 @@ class LoginController extends BaseController {
   bool obscureText = true;
 
   TextEditingController emailEditingController =
-      TextEditingController(text: 'test13341@gmail.com');
+      TextEditingController(text: '');
   TextEditingController passwordEditingController =
-      TextEditingController(text: 'Test@1234');
+      TextEditingController(text: '');
 
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
@@ -62,6 +62,19 @@ class LoginController extends BaseController {
       setLoaderState(ViewStateEnum.idle);
       print('This is error $e');
       Utils.showSuccessToast(e.toString(), true);
+    }
+  }
+
+  signIn() async {
+    setLoaderState(ViewStateEnum.busy);
+    await Future.delayed(const Duration(seconds: 5));
+    setLoaderState(ViewStateEnum.idle);
+    if (passwordEditingController.text.trim() == 'Test@12345' ||
+        passwordEditingController.text.trim() == 'Nikul@1234') {
+      Utils.showSuccessToast("Logged in successfully.", false);
+      Get.offAllNamed(dashboardViewRoute);
+    } else {
+      Utils.showSuccessToast("Sign in failed. Please try again.", false);
     }
   }
 }
