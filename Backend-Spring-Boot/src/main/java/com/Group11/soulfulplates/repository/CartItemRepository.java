@@ -52,6 +52,14 @@ public class CartItemRepository {
         entityManager.remove(cartItem);
     }
 
+    // Method to delete cart items by cart id
+    @Transactional
+    public void deleteByCartId(Long cartId) {
+        entityManager.createQuery("DELETE FROM CartItem ci WHERE ci.cartId = :cartId")
+                .setParameter("cartId", cartId)
+                .executeUpdate();
+    }
+
     // Save a cart item
     public CartItem save(CartItem cartItem) {
         if (cartItem.getCartItemId() == null) {
