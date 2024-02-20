@@ -73,6 +73,21 @@ public class CartItemController {
         cartItemService.removeCartItem(cartItemId);
         return ResponseEntity.ok().body(new ResponseObject(1, "Cart item successfully deleted.", null));
     }
+
+    @PreAuthorize("hasRole('ROLE_BUYER')")
+    @GetMapping("/cart/{cartId}")
+    public ResponseEntity<?> getCartItemsByCartId(@PathVariable Long cartId) {
+        if (!cartService.existsByCartId(cartId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid Cart Id.", null));
+        }
+
+        List<CartItem> cartItems = cartItemService.getCartItemsByCartId(cartId);
+        if (cartItems.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(cartItems);
+    }
+
     static class ResponseObject {
         private int code;
         private String description;
