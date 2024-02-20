@@ -14,4 +14,8 @@ public interface CartItemService {
     CartItem addOrUpdateCartItem(Long cartId, Long menuItemId, Integer quantity, String notes);
 
     Optional<CartItem> findById(Long cartItemId);
+
+    @Transactional
+    CartItem updateCartItem(Long cartItemId, Integer quantity, String notes);
+
 }
