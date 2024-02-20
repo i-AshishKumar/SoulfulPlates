@@ -1,5 +1,7 @@
 package com.Group11.soulfulplates.models;
+
 import jakarta.persistence.*;
+
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -31,6 +33,12 @@ public class Address {
     @Column(name = "label")
     private String label;
 
-    // Getters and setters omitted for brevity
+    // Getters and setters
+    public Long getAddressId() {
+        return addressId;
+    }
 
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
 }

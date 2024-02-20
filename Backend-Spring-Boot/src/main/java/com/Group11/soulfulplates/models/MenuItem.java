@@ -37,7 +37,14 @@ public class MenuItem {
     @Column(name = "category")
     private String category;
 
-    // Getters and setters omitted for brevity
+    // Getters and setters
+    public Long getMenuItemId() {
+        return menuItemId;
+    }
 
+    public Long setMenuItemId(Long menuItemId) {
+        this.menuItemId = menuItemId;
+        return menuItemId;
+    }
 
 }

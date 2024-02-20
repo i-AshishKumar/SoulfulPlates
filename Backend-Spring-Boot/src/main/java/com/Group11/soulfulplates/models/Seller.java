@@ -3,9 +3,9 @@ package com.Group11.soulfulplates.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "sellers")
-public class Seller {
+@Table(name = "seller")
 
+public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seller_id")
@@ -24,6 +24,47 @@ public class Seller {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    // Getters and setters omitted for brevity
+    public Seller() {
+    }
 
+    // Getters and setters
+    public Long getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(Long sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public Long getAddressId() {
+        return address.getAddressId();
+    }
+
+    public void setAddressId(Long addressId) {
+        this.address.setAddressId(addressId);
+    }
 }
