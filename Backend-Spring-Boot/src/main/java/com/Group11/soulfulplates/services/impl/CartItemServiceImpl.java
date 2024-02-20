@@ -49,6 +49,9 @@ public class CartItemServiceImpl implements CartItemService {
         }
     }
 
-        return dto;
+    @Override
+    public Optional<CartItem> findById(Long cartItemId) {
+        return cartItemRepository.findById(cartItemId);
+    }
     }
 }
