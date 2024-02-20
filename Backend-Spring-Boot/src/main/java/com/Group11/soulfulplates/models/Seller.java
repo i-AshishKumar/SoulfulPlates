@@ -4,20 +4,25 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "seller")
-public class Seller {
 
+public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "seller_id")
     private Long sellerId;
 
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "contact_number")
     private String contactNumber;
 
-    @Column(name = "addressId")
-    private Long addressId;
-
-    // Constructors, Getters, and Setters
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id", nullable = false)
+    private Address address;
 
     public Seller() {
     }
@@ -56,10 +61,10 @@ public class Seller {
     }
 
     public Long getAddressId() {
-        return addressId;
+        return address.getAddressId();
     }
 
     public void setAddressId(Long addressId) {
-        this.addressId = addressId;
+        this.address.setAddressId(addressId);
     }
 }

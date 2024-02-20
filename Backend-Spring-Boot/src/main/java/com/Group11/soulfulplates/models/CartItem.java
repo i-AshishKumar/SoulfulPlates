@@ -11,17 +11,21 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartItemId;
 
-    @Column(name = "cart_id")
-    private Long cartId;
+    @ManyToOne
+    @JoinColumn(name = "cart_id", nullable = false)
+    private Cart cart;
 
-    @Column(name = "menu_item_id")
-    private Long menuItemId;
+    @ManyToOne
+    @JoinColumn(name = "menu_item_id", nullable = false)
+    private MenuItem menuItem;
 
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "added_date")
+    @Column(name = "added_date", nullable = false)
     private LocalDateTime addedDate;
 
+    @Column(name = "notes")
     private String notes;
 
     @Column(name = "order_id")
@@ -42,19 +46,19 @@ public class CartItem {
     }
 
     public Long getCartId() {
-        return cartId;
+        return cart.getCartId();
     }
 
     public void setCartId(Long cartId) {
-        this.cartId = cartId;
+        this.cart.setCartId(cartId);
     }
 
     public Long getMenuItemId() {
-        return menuItemId;
+        return menuItem.getMenuItemId();
     }
 
     public void setMenuItemId(Long menuItemId) {
-        this.menuItemId = menuItemId;
+        this.menuItem.setMenuItemId(menuItemId);
     }
 
     public Integer getQuantity() {
@@ -93,12 +97,13 @@ public class CartItem {
     public String toString() {
         return "CartItem{" +
                 "cartItemId=" + cartItemId +
-                ", cartId=" + cartId +
-                ", menuItemId=" + menuItemId +
+                ", cartId=" + cart.getCartId() +
+                ", menuItemId=" + menuItem.getMenuItemId() +
                 ", quantity=" + quantity +
                 ", addedDate=" + addedDate +
                 ", notes='" + notes + '\'' +
                 ", orderId=" + orderId +
                 '}';
     }
+
 }
