@@ -1,7 +1,6 @@
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,7 +22,40 @@ public class WishlistItem {
     @Column(name = "added_date", nullable = false)
     private LocalDateTime addedDate;
 
+    // Constructor
+    public WishlistItem() {
+    }
 
+    // Getters and setters
+    public Long getWishlistItemId() {
+        return wishlistItemId;
+    }
 
+    public void setWishlistItemId(Long wishlistItemId) {
+        this.wishlistItemId = wishlistItemId;
+    }
 
+    public Wishlist getWishlist() {
+        return wishlist;
+    }
+
+    public void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
+    }
+
+    public MenuItem getMenuItem() {
+        return menuItem;
+    }
+
+    public void setMenuItem(MenuItem menuItem) {
+        this.menuItem = menuItem;
+    }
+
+    public LocalDateTime getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(LocalDateTime addedDate) {
+        this.addedDate = addedDate;
+    }
 }
