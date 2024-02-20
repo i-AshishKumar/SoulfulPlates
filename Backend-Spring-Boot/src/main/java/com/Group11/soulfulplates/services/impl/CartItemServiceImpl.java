@@ -53,5 +53,14 @@ public class CartItemServiceImpl implements CartItemService {
     public Optional<CartItem> findById(Long cartItemId) {
         return cartItemRepository.findById(cartItemId);
     }
+
+    @Override
+    public CartItem updateCartItem(Long cartItemId, Integer quantity, String notes) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new RuntimeException("Cart item not found")); // Or handle this scenario appropriately
+        cartItem.setQuantity(quantity);
+        cartItem.setNotes(notes);
+        return cartItemRepository.save(cartItem);
+    }
     }
 }
