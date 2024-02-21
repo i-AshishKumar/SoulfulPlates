@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "menu_items")
 public class MenuItem {
+    public MenuItem() { }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,4 +49,75 @@ public class MenuItem {
         return menuItemId;
     }
 
+    public Long getMenuItemId() {
+        return menuItemId;
+    }
+
+    public void setMenuItemId(Long menuItemId) {
+        this.menuItemId = menuItemId;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public EMenuItem getType() {
+        return type;
+    }
+
+    public void setType(EMenuItem type) {
+        this.type = type;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean active) {
+        isActive = active;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
