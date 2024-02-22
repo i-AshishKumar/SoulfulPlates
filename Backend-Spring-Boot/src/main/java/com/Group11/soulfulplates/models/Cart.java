@@ -31,7 +31,12 @@ public class Cart {
     private List<CartItem> cartItems = new ArrayList<>();
 
     // Default constructor
-    public Cart() {
+//    public Cart() {
+//    }
+
+    public Cart () {
+        seller = new Seller();
+        user=new User();
     }
 
     // Getters and Setters
