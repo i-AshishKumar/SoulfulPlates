@@ -45,7 +45,7 @@ publish:
   services:
     - docker:dind
   script:
-    - 'cd Backend-Spring-Boot'
+    # - cd Backend-Spring-Boot
     - pwd
     - echo $SERVER_IP
     - docker --version
