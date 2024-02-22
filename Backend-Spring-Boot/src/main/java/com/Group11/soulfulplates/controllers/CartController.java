@@ -32,6 +32,7 @@ public class CartController {
     }
 
     @GetMapping("/getCartsByUserId")
+    @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<?> getCartsByUserId(@RequestParam Long userId) {
         // Validate userId parameter
         if (userId == null || !userRepository.existsById(userId)) {
@@ -45,7 +46,7 @@ public class CartController {
     }
 
     @PostMapping("/createOrUpdate")
-    @PreAuthorize("hasRole('ROLE_SELLER')")
+    @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<?> createOrUpdateCart(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long sellerId) {
         // Check if userId is provided and valid
         if (userId == null || !userRepository.existsById(userId)) {
@@ -63,6 +64,7 @@ public class CartController {
     }
 
     @DeleteMapping("/{cartId}")
+    @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<?> deleteCart(@PathVariable Long cartId) {
         if (!cartService.existsByCartId(cartId)) {
             return ResponseEntity.badRequest().body(new ResponseObject(1, "Cart Not Available.", null));
