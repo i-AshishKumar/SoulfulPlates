@@ -1,12 +1,12 @@
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
 @Table(name = "cart")
-
 public class Cart {
 
     @Id
@@ -53,7 +53,9 @@ public class Cart {
     }
 
     public void setUserId(Long userId) {
-        this.user.setId(userId);
+        if(this.user!=null) {
+            this.user.setId(userId);
+        }
     }
 
     public Long getSellerId() {
