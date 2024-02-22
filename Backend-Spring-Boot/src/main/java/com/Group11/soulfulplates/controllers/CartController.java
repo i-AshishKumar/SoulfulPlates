@@ -1,8 +1,12 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Cart;
+import com.Group11.soulfulplates.models.CartItem;
+import com.Group11.soulfulplates.payload.request.CartItemDto;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
+import com.Group11.soulfulplates.repository.CartRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
+import com.Group11.soulfulplates.services.CartItemService;
 import com.Group11.soulfulplates.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,23 +16,29 @@ import com.Group11.soulfulplates.services.SellerService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
 
     private final CartService cartService;
+    private final CartItemService cartItemService;
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
+    CartRepository cartRepository;
+
+    @Autowired
     private final SellerService sellerService;
 
     @Autowired
-    public CartController(CartService cartService, SellerService sellerService) {
+    public CartController(CartService cartService, SellerService sellerService, CartItemService cartItemService) {
         this.cartService = cartService;
         this.sellerService = sellerService; // Initialize via constructor
+        this.cartItemService = cartItemService;
     }
 
     @GetMapping("/getCartsByUserId")
@@ -41,8 +51,31 @@ public class CartController {
 
         // Attempt to fetch the cart for the given userId
         return cartService.getCartsByUserId(userId)
-                .map(cart -> ResponseEntity.ok().body(cart)) // If cart is found, return the cart
-                .orElseGet(() -> ResponseEntity.ok().body(null)); // No cart found case
+                .map(cart -> ResponseEntity.ok(new MessageResponse(1, "Carts found", cart))) // If cart is found, return the cart
+                .orElseGet(() -> ResponseEntity.ok(new MessageResponse(1, "No carts found", null))); // No cart found case
+    }
+
+    @PostMapping("/createCart")
+    @PreAuthorize("hasRole('ROLE_BUYER')")
+    public ResponseEntity<?> create(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long sellerId) {
+        // Check if userId is provided and valid
+        if (userId == null || !userRepository.existsById(userId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid userId.", null));
+        }
+
+        // Check if sellerId is provided and valid
+        if (sellerId == null || !sellerService.existsById(sellerId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid sellerId.", null));
+        }
+
+        // Check if cart is present
+        if (cartRepository.findByUserIdAndSellerId(userId, sellerId).isPresent()) {
+            return ResponseEntity.badRequest().body(new ResponseObject(1, "Cart is already present", cartRepository.findByUserIdAndSellerId(userId, sellerId)));
+        }
+
+        Cart cart = cartService.createCart(userId, sellerId);
+
+        return ResponseEntity.ok(new MessageResponse(1, "Cart Created successfully!", cart));
     }
 
     @PostMapping("/createOrUpdate")
@@ -58,9 +91,14 @@ public class CartController {
             return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid sellerId.", null));
         }
 
-        Cart cart = cartService.createOrUpdateCart(userId, sellerId);
-//        return ResponseEntity.ok(cart);
-        return ResponseEntity.ok(new MessageResponse(1, "Cart Updated successfully!", cart));
+        // Check if cart is present
+        if (cartRepository.findByUserIdAndSellerId(userId, sellerId).isPresent()) {
+            cartService.updateCart(userId, sellerId);
+            return ResponseEntity.badRequest().body(new ResponseObject(1, "Cart Updated Successfully", userId));
+        }
+        Cart cart = cartService.createCart(userId, sellerId);
+
+        return ResponseEntity.ok(new MessageResponse(1, "Cart Created successfully!", cart));
     }
 
     @DeleteMapping("/{cartId}")
