@@ -45,6 +45,7 @@ public class CartItemServiceImpl implements CartItemService {
             newCartItem.setMenuItemId(menuItemId);
             newCartItem.setQuantity(quantity);
             newCartItem.setNotes(notes);
+            newCartItem.setAddedDate(LocalDateTime.now());
             return cartItemRepository.save(newCartItem); // Save new cart item
         }
     }

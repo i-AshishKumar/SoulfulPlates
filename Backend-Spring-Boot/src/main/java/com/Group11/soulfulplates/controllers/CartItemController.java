@@ -1,6 +1,7 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.CartItem;
+import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.services.CartItemService;
 import com.Group11.soulfulplates.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class CartItemController {
 
     private final CartItemService cartItemService;
     private final CartService cartService;
+//    private final MenuItemService menuItemService;;
 
 // MenuItemService menuItemService
     @Autowired
@@ -44,7 +46,7 @@ public class CartItemController {
 
         // Proceed to add the cart item if all checks pass
         CartItem newCartItem = cartItemService.addOrUpdateCartItem(cartItem.getCartId(), cartItem.getMenuItemId(), cartItem.getQuantity(), cartItem.getNotes());
-        return ResponseEntity.ok(newCartItem);
+        return ResponseEntity.ok(new ResponseObject(-1, "Cart Item added successfully.", newCartItem));
     }
 
     @PreAuthorize("hasRole('ROLE_BUYER')")
@@ -61,7 +63,7 @@ public class CartItemController {
 //            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Menu Item not present in cart.", null));
 //        }
         CartItem updatedCartItem = cartItemService.updateCartItem(cartItemId, cartItem.getQuantity(), cartItem.getNotes());
-        return ResponseEntity.ok(updatedCartItem);
+        return ResponseEntity.ok(new ResponseObject(1, "Cart Item updated successfully.", updatedCartItem));
     }
 
     @PreAuthorize("hasRole('ROLE_BUYER')")
@@ -83,9 +85,9 @@ public class CartItemController {
 
         List<CartItem> cartItems = cartItemService.getCartItemsByCartId(cartId);
         if (cartItems.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new ResponseObject(1, "Cart Items Not Found.", null));
         }
-        return ResponseEntity.ok(cartItems);
+        return ResponseEntity.ok(new ResponseObject(1, "Cart Items Found.", cartItems));
     }
 
     static class ResponseObject {

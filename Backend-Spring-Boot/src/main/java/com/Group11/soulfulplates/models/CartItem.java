@@ -33,6 +33,9 @@ public class CartItem {
 
     // Default constructor
     public CartItem() {
+        this.cart = new Cart();
+        this.menuItem = new MenuItem();
+
     }
 
     // Getters and setters

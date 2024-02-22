@@ -18,7 +18,7 @@ public class CartItemRepository {
 
     // Find cart items by cart ID
     public List<CartItem> findByCartId(Long cartId) {
-        return entityManager.createQuery("SELECT ci FROM CartItem ci WHERE ci.cartId = :cartId", CartItem.class)
+        return entityManager.createQuery("SELECT ci FROM CartItem ci WHERE ci.cart.cartId = :cartId", CartItem.class)
                 .setParameter("cartId", cartId)
                 .getResultList();
     }
@@ -26,10 +26,12 @@ public class CartItemRepository {
     // Find cart items by cart and menu item ID
     public Optional<CartItem> findByCartIdAndMenuItemId(Long cartId, Long menuItemId) {
         try {
-            CartItem cartItem = entityManager.createQuery("SELECT ci FROM CartItem ci WHERE ci.cartId = :cartId AND ci.menuItemId = :menuItemId", CartItem.class)
+            System.out.println(21);
+            CartItem cartItem = entityManager.createQuery("SELECT ci FROM CartItem ci WHERE ci.cart.cartId = :cartId AND ci.menuItem.menuItemId = :menuItemId", CartItem.class)
                     .setParameter("cartId", cartId)
                     .setParameter("menuItemId", menuItemId)
                     .getSingleResult();
+            System.out.println(22);
             return Optional.of(cartItem);
         } catch (NoResultException e) {
             return Optional.empty();
@@ -55,7 +57,7 @@ public class CartItemRepository {
     // Method to delete cart items by cart id
     @Transactional
     public void deleteByCartId(Long cartId) {
-        entityManager.createQuery("DELETE FROM CartItem ci WHERE ci.cartId = :cartId")
+        entityManager.createQuery("DELETE FROM CartItem ci WHERE ci.cart.cartId = :cartId")
                 .setParameter("cartId", cartId)
                 .executeUpdate();
     }
