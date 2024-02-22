@@ -71,6 +71,24 @@ public class CartController {
         return ResponseEntity.ok(new MessageResponse(1, "Cart Deleted successfully!", cartId));
     }
 
+    @PutMapping("/updateCartItem")
+    @PreAuthorize("hasRole('ROLE_BUYER')")
+    public ResponseEntity<?> updateCartItem(@RequestParam Long userId, @RequestParam Long sellerId, @RequestBody CartItemDto cartItemDto) {
+        // Check if userId is provided and valid
+        if (userId == null || !userRepository.existsById(userId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid userId.", null));
+        }
+
+        // Check if sellerId is provided and valid
+        if (sellerId == null || !sellerService.existsById(sellerId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid sellerId.", null));
+        }
+
+        Cart cart = cartService.getOrCreateCart(userId, sellerId);
+        CartItem updatedCartItem = cartItemService.addOrUpdateCartItem(cart.getCartId(), cartItemDto.getMenuItemId(), cartItemDto.getQuantity(), cartItemDto.getNotes());
+        return ResponseEntity.ok(new MessageResponse(1, "Cart Updated successfully!", updatedCartItem));
+    }
+
     static class ResponseObject {
         private int code;
         private String description;
