@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,8 +25,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Optional<Cart> getCartsByUserId(Long userId) {
-        return cartRepository.findByUserId(userId);
+    public Optional<List<Cart>> getCartsByUserId(Long userId) {
+        return cartRepository.findAllCartsOfUserId(userId);
     }
 
 //    @Override
@@ -47,21 +48,27 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart createOrUpdateCart(Long userId, Long sellerId) {
-        // Check if a cart exists for the given userId and sellerId
-        Optional<Cart> existingCart = cartRepository.findByUserIdAndServiceProviderId(userId, sellerId);
-        if (existingCart.isPresent()) {
-            // If cart exists, return the existing one
-            return existingCart.get();
-        } else {
-            // If not, create a new cart
+    public Cart createCart(Long userId, Long sellerId) {
+        System.out.println(5);
+        // If not, create a new cart
             Cart newCart = new Cart();
             newCart.setUserId(userId);
-            newCart.setServiceProviderId(sellerId);
+            newCart.setSellerId(sellerId);
             newCart.setCreatedDate(LocalDateTime.now());
             newCart.setLastUpdatedDate(LocalDateTime.now());
             return cartRepository.save(newCart);
-        }
+    }
+
+    @Override
+    public void updateCart(Long userId, Long sellerId) {
+        System.out.println(5);
+        // If not, create a new cart
+        Cart newCart = new Cart();
+        newCart.setUserId(userId);
+        newCart.setSellerId(sellerId);
+        newCart.setCreatedDate(LocalDateTime.now());
+        newCart.setLastUpdatedDate(LocalDateTime.now());
+        cartRepository.updateCart(userId, sellerId, LocalDateTime.now());
     }
 
     @Override
@@ -69,6 +76,21 @@ public class CartServiceImpl implements CartService {
     public void deleteCartAndItems(Long cartId) {
         cartItemService.deleteByCartId(cartId); // Delete cart items first
         cartRepository.deleteById(cartId); // Then delete the cart
+    }
+
+    @Override
+    public Cart getOrCreateCart(Long userId, Long sellerId) {
+        // Try to find an existing cart
+        Optional<Cart> existingCart = cartRepository.findByUserIdAndSellerId(userId, sellerId);
+        if (existingCart.isPresent()) {
+            return existingCart.get();
+        } else {
+            // Create a new cart if not found
+            Cart newCart = new Cart();
+            newCart.setUserId(userId);
+            newCart.setSellerId(sellerId);
+            return cartRepository.save(newCart);
+        }
     }
 
 }
