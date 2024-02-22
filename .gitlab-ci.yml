@@ -40,7 +40,7 @@ publish:
   variables:
     # these values may need to be different if using TLS, k8s, etc.
     # You can alternatively set defaults in your runner config
-    DOCKER TLS CERTDIR: ''
+    DOCKER_TLS_CERTDIR: ''
     DOCKER_HOST: 'tcp://docker:2375'
   services:
     - docker:dind
