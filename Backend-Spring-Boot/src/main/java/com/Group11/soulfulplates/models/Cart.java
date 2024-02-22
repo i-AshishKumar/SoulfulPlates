@@ -48,6 +48,18 @@ public class Cart {
         this.cartId = cartId;
     }
 
+    public void getSellerId(Long sellerId) {
+        if(this.seller!=null) {
+            this.seller.getSellerId();
+        }
+    }
+
+    public void setSellerId(Long sellerId) {
+        if(this.seller!=null) {
+            this.seller.setSellerId(sellerId);
+        }
+    }
+
     public Long getUserId() {
         return user.getId();
     }
@@ -60,10 +72,6 @@ public class Cart {
 
     public Long getSellerId() {
         return seller.getSellerId();
-    }
-
-    public void setServiceProviderId(Long serviceProviderId) {
-        this.seller.setSellerId(serviceProviderId);
     }
 
     public LocalDateTime getLastUpdatedDate() {
