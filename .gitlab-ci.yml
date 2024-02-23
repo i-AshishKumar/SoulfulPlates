@@ -13,11 +13,10 @@ build-job: # This job runs in the build stage, which runs first.
     - mvn clean
     - echo "Compiling the code."
     - mvn compile
-    - mvn package
-    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
-    - docker build --no-cache --progress=plain -t docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA .
-    - docker push docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA
     - echo "Compile complete."
+  artifacts:
+    untracked: true
+    expire_in: 30 days
 
 # test-job: # This job runs in the test stage.
 #   image: maven:latest
@@ -28,17 +27,23 @@ build-job: # This job runs in the build stage, which runs first.
 #     - mvn test
 #     - echo "Code coverage is 90%"
 
-# package-job: # This job runs in the package stage.
-#   image: maven:latest
-#   stage: package # It only runs when *both* jobs in the test stage complete successfully.
-#   # environment: production
-#   script:
-#     - 'cd Backend-Spring-Boot'
-#     - echo "Packaging application..."
-#     - mvn package
-#     - echo "Application successfully packaged."
+package-job: # This job runs in the package stage.
+  image: maven:latest
+  stage: package # It only runs when *both* jobs in the test stage complete successfully.
+  # environment: production
+  script:
+    - 'cd Backend-Spring-Boot'
+    - echo "Packaging application..."
+    - mvn package
+    - echo "Application successfully packaged."
+  artifacts:
+    untracked: true
+    expire_in: 30 days
+  dependencies:
+    - build-job
 
-publish:
+
+publish-job:
   image: docker:latest
   stage: publish
   tags:
@@ -63,8 +68,14 @@ publish:
     - docker push docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA
   only:
     - feat-backend-hosting-ci-cd
+  artifacts:
+    untracked: true
+    expire_in: 30 days
+  dependencies:
+    - build-job
+    - package-job
 
-deploy:
+deploy-job:
   image: alpine:latest
   stage: deploy
   tags:
