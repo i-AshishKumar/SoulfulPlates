@@ -1,6 +1,7 @@
 stages: # List of stages for jobs, and their order of execution
   - build
   # - test
+  - package
   - publish
   - deploy
 
@@ -23,14 +24,15 @@ build-job: # This job runs in the build stage, which runs first.
 #     - mvn test
 #     - echo "Code coverage is 90%"
 
-# package-job: # This job runs in the package stage.
-#   stage: package # It only runs when *both* jobs in the test stage complete successfully.
-#   environment: production
-#   script:
-#     - 'cd Backend-Spring-Boot'
-#     - echo "Packaging application..."
-#     - mvn package
-#     - echo "Application successfully packaged."
+package-job: # This job runs in the package stage.
+  image: maven:latest
+  stage: package # It only runs when *both* jobs in the test stage complete successfully.
+  # environment: production
+  script:
+    - 'cd Backend-Spring-Boot'
+    - echo "Packaging application..."
+    - mvn package
+    - echo "Application successfully packaged."
 
 publish:
   image: docker:latest
