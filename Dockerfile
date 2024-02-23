@@ -4,6 +4,8 @@ FROM maven:latest
 # Set the working directory inside the container
 WORKDIR /app
 
+CMD  ["pwd"]
+
 # Copy the compiled JAR file from your target directory into the container
 COPY Backend-Spring-Boot/target/soulfulplates-0.0.1-SNAPSHOT.jar app/app.jar
 
