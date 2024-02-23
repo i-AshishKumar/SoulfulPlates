@@ -5,7 +5,7 @@ FROM maven:latest
 WORKDIR /app
 
 # Copy the compiled JAR file from your target directory into the container
-COPY Backend-Spring-Boot/target/soulfulplates-0.0.1-SNAPSHOT.jar app/app.jar
+COPY ./Backend-Spring-Boot/target/soulfulplates-0.0.1-SNAPSHOT.jar /app/app.jar
 
 # Expose the port on which your Spring Boot application will run (adjust as needed)
 EXPOSE 8080
