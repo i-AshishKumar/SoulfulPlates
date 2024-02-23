@@ -4,6 +4,8 @@ FROM maven:latest
 # Set the working directory inside the container
 WORKDIR /app
 
+RUN pwd
+
 CMD  ["pwd"]
 
 # Copy the compiled JAR file from your target directory into the container
