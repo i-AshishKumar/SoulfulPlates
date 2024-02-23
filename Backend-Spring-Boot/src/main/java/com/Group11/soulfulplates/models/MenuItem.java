@@ -15,7 +15,7 @@ public class MenuItem {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id", nullable = false)
-    private Seller seller;
+    private Long seller;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -49,20 +49,14 @@ public class MenuItem {
         return menuItemId;
     }
 
-    public Long getMenuItemId() {
-        return menuItemId;
+    public Long getSellerId() {
+        return this.seller;
     }
 
-    public void setMenuItemId(Long menuItemId) {
-        this.menuItemId = menuItemId;
-    }
-
-    public Seller getSeller() {
-        return seller;
-    }
-
-    public void setSeller(Seller seller) {
-        this.seller = seller;
+    public void setSellerId(Long sellerId) {
+        if(this.seller != null) {
+            this.seller = sellerId;
+        }
     }
 
     public String getName() {

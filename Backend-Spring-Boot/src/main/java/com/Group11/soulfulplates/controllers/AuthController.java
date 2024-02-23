@@ -11,6 +11,7 @@ import com.Group11.soulfulplates.payload.response.JwtResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.payload.response.OtpResponse;
 import com.Group11.soulfulplates.repository.RoleRepository;
+import com.Group11.soulfulplates.repository.SellerRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.security.jwt.JwtUtils;
 import com.Group11.soulfulplates.security.services.UserDetailsImpl;
@@ -38,6 +39,9 @@ public class AuthController {
 
   @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  SellerRepository sellerRepository;
 
   @Autowired
   RoleRepository roleRepository;
@@ -69,28 +73,35 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity.badRequest()
               .body(new MessageResponse(-1, "Error: Username is already taken!", null));
     }
+
 
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       return ResponseEntity.badRequest()
               .body(new MessageResponse(-1, "Error: Email is already in use!", null));
     }
 
+
     User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
             encoder.encode(signUpRequest.getPassword()));
+
 
     Set<Role> roles = new HashSet<>();
 
     if (signUpRequest.getRole() == null) {
+
       Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(buyerRole);
     } else {
+
       signUpRequest.getRole().forEach(role -> {
         switch (role) {
+
           case "admin":
             Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -100,6 +111,7 @@ public class AuthController {
             Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(sellerRole);
+
             break;
           default:
             Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
@@ -111,6 +123,8 @@ public class AuthController {
 
     user.setRoles(roles);
     userRepository.save(user);
+
+
 
     return ResponseEntity.ok(new MessageResponse(1, "User registered successfully!", null));
   }

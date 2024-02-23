@@ -20,9 +20,9 @@ public class Seller {
     @Column(name = "contact_number")
     private String contactNumber;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id", nullable = false)
-    private Address address;
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "address_id", nullable = false)
+//    private Address address;
 
     public Seller() {
     }
@@ -60,11 +60,11 @@ public class Seller {
         this.contactNumber = contactNumber;
     }
 
-    public Long getAddressId() {
-        return address.getAddressId();
-    }
-
-    public void setAddressId(Long addressId) {
-        this.address.setAddressId(addressId);
-    }
+//    public Long getAddressId() {
+//        return address.getAddressId();
+//    }
+//
+//    public void setAddressId(Long addressId) {
+//        this.address.setAddressId(addressId);
+//    }
 }
