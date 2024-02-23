@@ -49,7 +49,7 @@ publish:
     - pwd
     - echo $SERVER_IP
     - docker --version
-    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
+    - sudo docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
     - docker build -t docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA .
     - docker push docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA
   only:
