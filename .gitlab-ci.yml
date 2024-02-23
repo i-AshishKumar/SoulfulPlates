@@ -47,6 +47,7 @@ publish:
   script:
     # - cd Backend-Spring-Boot
     - pwd
+    - whoami
     - echo $SERVER_IP
     - docker --version
     - echo $DOCKER_HUB_USER
