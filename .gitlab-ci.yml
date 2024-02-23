@@ -32,31 +32,31 @@ build-job: # This job runs in the build stage, which runs first.
 #     - mvn package
 #     - echo "Application successfully packaged."
 
-publish:
-  image: docker:latest
-  stage: publish
-  tags:
-    - test-runner
-  variables:
-    # these values may need to be different if using TLS, k8s, etc.
-    # You can alternatively set defaults in your runner config
-    DOCKER_TLS_CERTDIR: ''
-    DOCKER_HOST: 'tcp://docker:2375'
-  services:
-    - docker:dind
-  script:
-    # - cd Backend-Spring-Boot
-    - pwd
-    - whoami
-    - echo $SERVER_IP
-    - docker --version
-    - echo $DOCKER_HUB_USER
-    - echo $DOCKER_HUB_PWD
-    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
-    - docker build -t docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA .
-    - docker push docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA
-  only:
-    - feat-backend-hosting-ci-cd
+# publish:
+#   image: docker:latest
+#   stage: publish
+#   tags:
+#     - test-runner
+#   variables:
+#     # these values may need to be different if using TLS, k8s, etc.
+#     # You can alternatively set defaults in your runner config
+#     DOCKER_TLS_CERTDIR: ''
+#     DOCKER_HOST: 'tcp://docker:2375'
+#   services:
+#     - docker:dind
+#   script:
+#     # - cd Backend-Spring-Boot
+#     - pwd
+#     - whoami
+#     - echo $SERVER_IP
+#     - docker --version
+#     - echo $DOCKER_HUB_USER
+#     - echo $DOCKER_HUB_PWD
+#     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
+#     - docker build -t docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA .
+#     - docker push docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA
+#   only:
+#     - feat-backend-hosting-ci-cd
 
 deploy:
   image: alpine:latest
