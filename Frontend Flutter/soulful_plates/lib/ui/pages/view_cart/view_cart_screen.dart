@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/size_config.dart';
+import 'package:soulful_plates/ui/pages/view_cart/view_cart_controller.dart';
+
 import '../../../constants/app_colors.dart';
-import '../../../constants/app_sized_box.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../constants/enums/view_state.dart';
-import '../../../utils/extensions.dart';
+import '../../../constants/size_config.dart';
 import '../../widgets/base_common_widget.dart';
-import 'view_cart_controller.dart';
 
 class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
   ViewCartScreen({Key? key}) : super(key: key);
@@ -24,9 +21,7 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
           init: controller,
           initState: (state) async {},
           builder: (ViewCartController model) {
-            return model.viewState == ViewStateEnum.busy
-                ? const Center(child: CircularProgressIndicator())
-                : getBody(context);
+            return getBody(context);
           },
         ),
       ),
@@ -40,16 +35,19 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
         itemCount: 3,
         totalPrice: 39.54,
         deliveryAddress: 'Deliver to 1333 South Park Street',
+        quantity: 0,
       ),
       CartItem(
         storeName: 'Non Veg Burger',
         itemCount: 2,
         totalPrice: 25.78,
         deliveryAddress: 'Deliver to 1333 South Park Street',
+        quantity: 0,
       ),
     ];
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         12.rVerticalSizedBox(),
         Expanded(
@@ -65,19 +63,19 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
   }
 }
 
-class CartItem {
-  String storeName;
-  int itemCount;
-  double totalPrice;
-  String deliveryAddress;
-
-  CartItem({
-    required this.storeName,
-    required this.itemCount,
-    required this.totalPrice,
-    required this.deliveryAddress,
-  });
-}
+// class CartItem {
+//   String storeName;
+//   int itemCount;
+//   double totalPrice;
+//   String deliveryAddress;
+//
+//   CartItem({
+//     required this.storeName,
+//     required this.itemCount,
+//     required this.totalPrice,
+//     required this.deliveryAddress,
+//   });
+// }
 
 class CartItemWidget extends StatelessWidget {
   final CartItem cartItem;
@@ -90,39 +88,76 @@ class CartItemWidget extends StatelessWidget {
       margin: EdgeInsets.all(8.0),
       child: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(cartItem.storeName, style: AppTextStyles.titleStyle),
-            SizedBox(
-                height: SizeConfig
-                    .heightMultiplier), // Adjust the height using SizeConfig
-            Text(
-                '${cartItem.itemCount} items • CA\$${cartItem.totalPrice.toStringAsFixed(2)}'),
-            SizedBox(height: SizeConfig.heightMultiplier),
-            Text(cartItem.deliveryAddress),
-            SizedBox(height: SizeConfig.heightMultiplier),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(cartItem.storeName),
+                  SizedBox(height: 8),
+                  Text(
+                    '${cartItem.quantity} items • CA\$${cartItem.totalPrice.toStringAsFixed(2)}',
+                  ),
+                  SizedBox(height: 8),
+                  Text(cartItem.deliveryAddress),
+                ],
+              ),
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
+                IconButton(
+                  icon: Icon(Icons.remove_circle),
                   onPressed: () {
-                    // TODO: Navigate to cart detail
+                    // Remove item logic
+                    cartItem.decreaseQuantity();
                   },
-                  child: Text('View cart'),
                 ),
-                TextButton(
+                Text(
+                  cartItem.quantity.toString(),
+                  style: TextStyle(fontSize: 16),
+                ),
+                IconButton(
+                  icon: Icon(Icons.add_circle),
                   onPressed: () {
-                    // TODO: Navigate to store
+                    // Add item logic
+                    cartItem.increaseQuantity();
                   },
-                  child: Text('View store'),
-                  // style: TextButton.styleFrom(primary: AppColor.primaryColor),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
     );
+  }
+}
+
+// CartItem class
+class CartItem {
+  final String storeName;
+  final double totalPrice;
+  final String deliveryAddress;
+  int quantity;
+
+  CartItem({
+    required this.storeName,
+    required this.totalPrice,
+    required this.deliveryAddress,
+    required this.quantity,
+    required int itemCount,
+  });
+
+  // Method to decrease the quantity of the item
+  void decreaseQuantity() {
+    if (quantity > 0) {
+      quantity--;
+    }
+  }
+
+  // Method to increase the quantity of the item
+  void increaseQuantity() {
+    quantity++;
   }
 }

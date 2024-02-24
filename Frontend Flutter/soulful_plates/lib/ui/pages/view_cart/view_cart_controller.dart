@@ -1,12 +1,11 @@
 import 'package:get/get.dart';
-import 'package:soulful_plates/model/cart/cart_item_model.dart';
-import 'package:soulful_plates/network/network_interfaces/i_dio_singleton.dart';
-import 'package:soulful_plates/network/network_utils/api_call.dart';
 import 'package:soulful_plates/constants/enums/view_state.dart';
+import 'package:soulful_plates/ui/pages/view_cart/view_cart_screen.dart';
+
 import '../../../controller/base_controller.dart';
 
 class ViewCartController extends BaseController {
-  RxList<CartItemModel> cartItems = <CartItemModel>[].obs;
+  RxList<CartItem> cartItems = <CartItem>[].obs;
 
   ViewStateEnum _viewState = ViewStateEnum.idle;
 
@@ -22,71 +21,65 @@ class ViewCartController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    // Fetch cart items when the controller is initialized
     fetchCartItems();
   }
 
   void fetchCartItems() async {
-    setLoaderState(ViewStateEnum.busy);
+    setViewState(ViewStateEnum.busy);
     try {
-      final response = await ApiCall().call<List<dynamic>>(
-        method: RequestMethod.get,
-        endPoint: '/api/cart',
-        obj: CartItemModel.empty(),
-      );
-
-      // Parse the response
-      cartItems.value = List<CartItemModel>.from(response.map((itemData) =>
-          CartItemModel.fromJson(itemData as Map<String, dynamic>)));
-      setLoaderState(ViewStateEnum.idle);
+      // Replace this with your actual API call to fetch cart items
+      // For now, we'll use dummy data
+      List<CartItem> dummyCartItems = [];
+      //   CartItem(
+      //     name: 'Gujarati Tiffin Service',
+      //     details: 'Deliver to 1333 South Park Street',
+      //     price: 39.54,
+      //     quantity: 3,
+      //   ),
+      //   CartItem(
+      //     name: 'Non Veg Burger',
+      //     details: 'Deliver to 1333 South Park Street',
+      //     price: 25.78,
+      //     quantity: 2,
+      //   ),
+      // ];
+      // Set the fetched cart items
+      cartItems.value = dummyCartItems;
+      setViewState(ViewStateEnum.idle);
     } catch (e) {
-      setLoaderState(ViewStateEnum.error);
+      setViewState(ViewStateEnum.error);
       handleError(e);
     }
   }
 
-  void removeItemFromCart(CartItemModel item) async {
-    setLoaderState(ViewStateEnum.busy);
-    try {
-      await ApiCall().call(
-        method: RequestMethod.delete,
-        endPoint: '/api/cart/${item.id}',
-      );
+  void removeItem(CartItem item) {
+    cartItems.remove(item);
+  }
 
-      cartItems.remove(item);
-      setLoaderState(ViewStateEnum.idle);
-    } catch (e) {
-      setLoaderState(ViewStateEnum.error);
-      handleError(e);
+  // Method to decrease quantity for a cart item
+  void decreaseQuantity(CartItem item) {
+    if (item.quantity > 0) {
+      item.quantity--;
+      update(); // Notify listeners that the state has changed
     }
   }
 
-  // void updateItemQuantity(CartItemModel item, int quantity) async {
-  //   if (quantity < 0) {
-  //     return; // Optionally handle this case with an error message to the user
-  //   }
+  // Method to increase quantity for a cart item
+  void increaseQuantity(CartItem item) {
+    item.quantity++;
+    update(); // Notify listeners that the state has changed
+  }
 
-  //   setLoaderState(ViewStateEnum.busy);
-  //   try {
-  //     final updatedItem = await ApiCall().call<CartItemModel>(
-  //       method: RequestMethod.patch,
-  //       endPoint: '/api/cart/${item.id}',
-  //       parameters: {'quantity': quantity},
-  //       obj: CartItemModel
-  //           .fromJson, // Assuming CartItemModel has a fromJson constructor
-  //     );
-
-  //     // Find the item in the list and replace it with the updated item
-  //     final index = cartItems.indexWhere((element) => element.id == item.id);
-  //     if (index != -1) {
-  //       cartItems[index] = updatedItem;
-  //       cartItems.refresh(); // This updates the observable list
-  //     }
-  //     setLoaderState(ViewStateEnum.idle);
-  //   } catch (e) {
-  //     setLoaderState(ViewStateEnum.error);
-  //     handleError(e); // Implement this method to handle errors as needed.
-  //   }
-  // }
+  // Method to calculate the subtotal of all items in the cart
+  double calculateSubtotal() {
+    double subtotal = 0;
+    for (var item in cartItems) {
+      // Add the price of each item multiplied by its quantity to the subtotal
+      // subtotal += item.price * item.quantity;
+    }
+    return subtotal;
+  }
 
   void handleError(dynamic error) {
     print('Error occurred: $error');
