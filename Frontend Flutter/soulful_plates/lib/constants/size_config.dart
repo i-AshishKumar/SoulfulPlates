@@ -15,6 +15,10 @@ class SizeConfig {
   static double? safeBlockHorizontal;
   static double? safeBlockVertical;
 
+  // Define the height and width multipliers
+  static double? heightMultiplier;
+  static double? widthMultiplier;
+
   void init(BuildContext context, BoxConstraints safeAreaBox) {
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData?.size.width;
@@ -22,6 +26,10 @@ class SizeConfig {
 
     // _blockSizeHorizontal = screenWidth! / 100;
     // _blockSizeVertical = screenHeight! / 100;
+
+    // Calculate the multipliers
+    heightMultiplier = screenHeight! / 100;
+    widthMultiplier = screenWidth! / 100;
 
     _safeAreaWidth = safeAreaBox.maxWidth;
     _safeAreaHeight = safeAreaBox.maxHeight;
