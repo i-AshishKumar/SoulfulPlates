@@ -40,6 +40,19 @@ public class SellerController {
         List<Seller> sellers = sellerService.getAllSellers();
         return ResponseEntity.ok(sellers);
     }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateSeller(@PathVariable Long id, @RequestBody Seller seller) {
+        seller.setSellerId(id); // Ensure the seller ID is set to the path variable ID
+//        seller.setAddress(addressService.getAddressById(seller.getAddressId()));
+        if (!sellerService.existsById(id)){
+            return ResponseEntity.ok(new MessageResponse(-1, "Seller Not Found!", null));
+        };
+        Seller updatedSeller = sellerService.updateSeller(seller);
+        return ResponseEntity.ok(new MessageResponse(1, "Seller Details Updated Successfully!", updatedSeller));
+    }
+
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSeller(@PathVariable Long id) {
