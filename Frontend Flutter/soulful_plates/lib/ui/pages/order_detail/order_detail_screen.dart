@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/size_config.dart';
+import 'package:soulful_plates/Utils/Extensions.dart';
+import 'package:soulful_plates/routing/route_names.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sized_box.dart';
-import '../../../constants/app_text_styles.dart';
 import '../../../constants/enums/view_state.dart';
-import '../../../utils/extensions.dart';
+import '../../../constants/size_config.dart';
 import '../../widgets/base_common_widget.dart';
 import 'order_detail_controller.dart';
 
@@ -18,9 +18,19 @@ class OrderDetailScreen extends GetView<OrderDetailController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("OrderDetail"),
+          title: const Text("Order Detail"),
         ),
         backgroundColor: AppColor.whiteColor,
+        floatingActionButton: FloatingActionButton(
+            tooltip: "Go to rating review",
+            child: const Icon(
+              Icons.more_horiz,
+              size: 24,
+              color: AppColor.whiteColor,
+            ),
+            onPressed: () {
+              Get.toNamed(ratingReviewViewRoute);
+            }),
         body: SafeArea(
           child: GetBuilder(
             init: controller,

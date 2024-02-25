@@ -62,7 +62,7 @@ class LoginController extends BaseController {
 
   signIn() async {
     setLoaderState(ViewStateEnum.busy);
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 1));
     setLoaderState(ViewStateEnum.idle);
     if (passwordEditingController.text.trim() == 'Test@12345' ||
         passwordEditingController.text.trim() == 'Nikul@1234') {

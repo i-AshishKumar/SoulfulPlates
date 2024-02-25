@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/routing/route_names.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/size_config.dart';
@@ -13,9 +14,19 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("ViewCart"),
+          title: const Text("View Cart"),
         ),
         backgroundColor: AppColor.whiteColor,
+        floatingActionButton: FloatingActionButton(
+            tooltip: "Go to Payment",
+            onPressed: () {
+              Get.toNamed(cartPaymentViewRoute);
+            },
+            child: const Icon(
+              Icons.payments_outlined,
+              size: 24,
+              color: AppColor.whiteColor,
+            )),
         body: SafeArea(
           child: GetBuilder(
             init: controller,

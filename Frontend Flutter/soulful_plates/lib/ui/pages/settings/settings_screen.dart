@@ -53,28 +53,9 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
                   height: (SizeConfig.safeBlockVertical ?? 0) *
                       (0.5 * 100 / SizeConfig.uiHeightPx),
                 ),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(storeDetailsViewRoute);
-                  },
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Store Details',
-                          style: AppTextStyles.textStyleBlack16With400,
-                        ),
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_right,
-                        color: AppColor.primaryColor,
-                      )
-                    ],
-                  ).paddingSymmetricSide(vertical: 16, horizontal: 12),
-                ).visibleWhen(isVisible: !AppSingleton.isBuyer()),
-                1
-                    .rVerticalGreySizedBox()
-                    .visibleWhen(isVisible: !AppSingleton.isBuyer()),
+                ...(AppSingleton.isBuyer()
+                    ? buyersMenuItems()
+                    : sellersMenuItems()),
                 InkWell(
                   onTap: () {
                     controller.isNotificationEnabled =
@@ -246,5 +227,55 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
             )),
       ],
     ).paddingAll16();
+  }
+
+  List<Widget> buyersMenuItems() {
+    return [
+      InkWell(
+        onTap: () {
+          Get.toNamed(locationListViewRoute);
+        },
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Saved Locations',
+                style: AppTextStyles.textStyleBlack16With400,
+              ),
+            ),
+            const Icon(
+              Icons.keyboard_arrow_right,
+              color: AppColor.primaryColor,
+            )
+          ],
+        ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+      ),
+      1.rVerticalGreySizedBox(),
+    ];
+  }
+
+  List<Widget> sellersMenuItems() {
+    return [
+      InkWell(
+        onTap: () {
+          Get.toNamed(storeDetailsViewRoute);
+        },
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Store Details',
+                style: AppTextStyles.textStyleBlack16With400,
+              ),
+            ),
+            const Icon(
+              Icons.keyboard_arrow_right,
+              color: AppColor.primaryColor,
+            )
+          ],
+        ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+      ),
+      1.rVerticalGreySizedBox(),
+    ];
   }
 }

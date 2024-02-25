@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/size_config.dart';
+import 'package:soulful_plates/routing/route_names.dart';
+import 'package:soulful_plates/ui/widgets/base_button.dart';
 
 import '../../../constants/app_colors.dart';
-import '../../../constants/app_sized_box.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../constants/enums/view_state.dart';
-import '../../../utils/extensions.dart';
+import '../../../constants/size_config.dart';
 import '../../widgets/base_common_widget.dart';
 import 'cart_order_success_controller.dart';
 
@@ -18,7 +16,7 @@ class CartOrderSuccessScreen extends GetView<CartOrderSuccessController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("CartOrderSuccess"),
+          title: const Text("Cart Order Success"),
         ),
         backgroundColor: AppColor.whiteColor,
         body: SafeArea(
@@ -36,9 +34,13 @@ class CartOrderSuccessScreen extends GetView<CartOrderSuccessController>
     return Column(
       children: [
         12.rVerticalSizedBox(),
-        const Text("CartOrderSuccess Screen"),
+        const Text("Cart Order Success Screen"),
         12.rVerticalSizedBox(),
-
+        BaseButton(
+            text: "Go to Home",
+            onSubmit: () {
+              Get.offAllNamed(dashboardViewRoute);
+            })
       ],
     );
   }

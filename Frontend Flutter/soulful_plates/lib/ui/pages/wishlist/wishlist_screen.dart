@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/size_config.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sized_box.dart';
 import '../../../constants/app_text_styles.dart';
 import '../../../constants/enums/view_state.dart';
+import '../../../constants/size_config.dart';
 import '../../../utils/extensions.dart';
 import '../../widgets/base_common_widget.dart';
 import 'wishlist_controller.dart';
 
-class WishlistScreen extends GetView<WishlistController>
-    with BaseCommonWidget {
-  WishlistScreen({Key? key}) : super(key: key);
+class WishlistScreen extends GetView<WishlistController> with BaseCommonWidget {
+  const WishlistScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Wishlist"),
+          title: const Text("Wish list"),
         ),
         backgroundColor: AppColor.whiteColor,
         body: SafeArea(

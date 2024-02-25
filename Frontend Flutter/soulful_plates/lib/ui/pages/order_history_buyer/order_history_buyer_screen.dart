@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/size_config.dart';
+import 'package:soulful_plates/routing/route_names.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sized_box.dart';
 import '../../../constants/app_text_styles.dart';
 import '../../../constants/enums/view_state.dart';
+import '../../../constants/size_config.dart';
 import '../../../utils/extensions.dart';
 import '../../widgets/base_common_widget.dart';
 import 'order_history_buyer_controller.dart';
 
 class OrderHistoryBuyerScreen extends GetView<OrderHistoryBuyerController>
     with BaseCommonWidget {
-  OrderHistoryBuyerScreen({Key? key}) : super(key: key);
+  const OrderHistoryBuyerScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("OrderHistoryBuyer"),
+          title: const Text("Order History Buyer"),
         ),
         backgroundColor: AppColor.whiteColor,
+        floatingActionButton: FloatingActionButton(
+            tooltip: "Go to order detail",
+            child: const Icon(
+              Icons.more_horiz,
+              size: 24,
+              color: AppColor.whiteColor,
+            ),
+            onPressed: () {
+              Get.toNamed(orderDetailViewRoute);
+            }),
         body: SafeArea(
           child: GetBuilder(
             init: controller,

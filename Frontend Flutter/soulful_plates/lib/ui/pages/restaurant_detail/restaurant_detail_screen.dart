@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/routing/route_names.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/size_config.dart';
@@ -14,9 +15,19 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("RestaurantDetail"),
+          title: const Text("Restaurant Detail"),
         ),
         backgroundColor: AppColor.whiteColor,
+        floatingActionButton: FloatingActionButton(
+            tooltip: "Go to cart",
+            onPressed: () {
+              Get.toNamed(viewCartViewRoute);
+            },
+            child: const Icon(
+              Icons.shopping_cart,
+              size: 24,
+              color: AppColor.whiteColor,
+            )),
         body: SafeArea(
           child: GetBuilder(
             init: controller,

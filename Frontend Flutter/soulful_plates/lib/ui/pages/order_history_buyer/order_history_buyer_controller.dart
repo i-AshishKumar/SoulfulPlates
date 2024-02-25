@@ -20,9 +20,8 @@ class OrderHistoryBuyerController extends BaseController
   }
 
   void getDataFromAPI() async {
-    updateLoader(ViewStateEnum.busy);
+/*    updateLoader(ViewStateEnum.busy);
 
-    /*
     var result = ; //male api call here
 
     if (result.hasException) {

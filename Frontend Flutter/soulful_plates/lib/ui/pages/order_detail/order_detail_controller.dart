@@ -1,4 +1,3 @@
-import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
 import '../../../model/data_model.dart';
 
@@ -12,9 +11,8 @@ class OrderDetailController extends BaseController {
   }
 
   void getDataFromAPI() async {
-    setLoaderState(ViewStateEnum.busy);
+    /* setLoaderState(ViewStateEnum.busy);
 
-    /*
     var result = ; //male api call here
 
 
