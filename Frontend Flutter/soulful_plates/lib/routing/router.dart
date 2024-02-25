@@ -15,7 +15,21 @@ import 'package:soulful_plates/ui/pages/splash_screen.dart';
 import 'package:soulful_plates/ui/pages/view_cart/view_cart_binding.dart';
 import 'package:soulful_plates/ui/pages/view_cart/view_cart_screen.dart';
 
+import '../ui/pages/create_menu/create_menu_binding.dart';
+import '../ui/pages/create_menu/create_menu_screen.dart';
+import '../ui/pages/home_seller/home_seller_binding.dart';
+import '../ui/pages/home_seller/home_seller_screen.dart';
 import '../ui/pages/internet_page/internet_page_view.dart';
+import '../ui/pages/live_orders/live_orders_binding.dart';
+import '../ui/pages/live_orders/live_orders_screen.dart';
+import '../ui/pages/menu_list/menu_list_binding.dart';
+import '../ui/pages/menu_list/menu_list_screen.dart';
+import '../ui/pages/order_history_seller/order_history_seller_binding.dart';
+import '../ui/pages/order_history_seller/order_history_seller_screen.dart';
+import '../ui/pages/payout_seller/payout_seller_binding.dart';
+import '../ui/pages/payout_seller/payout_seller_screen.dart';
+import '../ui/pages/transaction_seller/transaction_seller_binding.dart';
+import '../ui/pages/transaction_seller/transaction_seller_screen.dart';
 import 'route_names.dart';
 
 Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -85,6 +99,70 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
         settings: settings,
         bindings: [ViewCartBinding()],
         page: () => ViewCartScreen(),
+      );
+
+    // case storeDetailsViewRoute:
+    //   return getPageRoutes(
+    //     routeName: storeDetailsViewRoute,
+    //     settings: settings,
+    //     bindings: [StoreDetailsBinding()],
+    //     page: () => StoreDetailsScreen(),
+    //   );
+
+    case homeSellerViewRoute:
+      return getPageRoutes(
+        routeName: homeSellerViewRoute,
+        settings: settings,
+        bindings: [HomeSellerBinding()],
+        page: () => HomeSellerScreen(),
+      );
+
+    case liveOrdersViewRoute:
+      return getPageRoutes(
+        routeName: liveOrdersViewRoute,
+        settings: settings,
+        bindings: [LiveOrdersBinding()],
+        page: () => const LiveOrdersScreen(),
+      );
+
+    case menuViewRoute:
+      return getPageRoutes(
+        routeName: menuViewRoute,
+        settings: settings,
+        bindings: [MenuListBinding()],
+        page: () => MenuListScreen(),
+      );
+
+    case createMenuViewRoute:
+      return getPageRoutes(
+        routeName: createMenuViewRoute,
+        settings: settings,
+        bindings: [CreateMenuBinding()],
+        page: () => CreateMenuScreen(),
+      );
+
+    case orderHistorySellerViewRoute:
+      return getPageRoutes(
+        routeName: orderHistorySellerViewRoute,
+        settings: settings,
+        bindings: [OrderHistorySellerBinding()],
+        page: () => OrderHistorySellerScreen(),
+      );
+
+    case transactionHistorySellerViewRoute:
+      return getPageRoutes(
+        routeName: transactionHistorySellerViewRoute,
+        settings: settings,
+        bindings: [TransactionSellerBinding()],
+        page: () => TransactionSellerScreen(),
+      );
+
+    case payoutHistoryViewRoute:
+      return getPageRoutes(
+        routeName: payoutHistoryViewRoute,
+        settings: settings,
+        bindings: [PayoutSellerBinding()],
+        page: () => PayoutSellerScreen(),
       );
   }
   return null;

@@ -11,3 +11,13 @@ const String dashboardViewRoute = 'dashboardViewRoute';
 
 const String restaurantDetailViewRoute = 'restaurantDetailViewRoute';
 const String viewCartViewRoute = 'viewCartViewRoute';
+
+const String storeDetailsViewRoute = 'storeDetailsViewRoute';
+const String homeSellerViewRoute = 'homeSellerViewRoute';
+const String liveOrdersViewRoute = 'liveOrdersViewRoute';
+const String menuViewRoute = 'menuViewRoute';
+const String createMenuViewRoute = 'createMenuViewRoute';
+const String orderHistorySellerViewRoute = 'orderHistorySellerViewRoute';
+const String transactionHistorySellerViewRoute =
+    'transactionHistorySellerViewRoute';
+const String payoutHistoryViewRoute = 'payoutHistoryViewRoute';
