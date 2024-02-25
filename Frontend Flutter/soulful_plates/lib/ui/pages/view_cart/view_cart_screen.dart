@@ -29,22 +29,10 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
   }
 
   Widget getBody(BuildContext context) {
-    List<CartItem> cartItems = [
-      CartItem(
-        storeName: 'Gujarati Tiffin Service',
-        itemCount: 3,
-        totalPrice: 39.54,
-        deliveryAddress: 'Deliver to 1333 South Park Street',
-        quantity: 0,
-      ),
-      CartItem(
-        storeName: 'Non Veg Burger',
-        itemCount: 2,
-        totalPrice: 25.78,
-        deliveryAddress: 'Deliver to 1333 South Park Street',
-        quantity: 0,
-      ),
-    ];
+    List<CartItem> cartItems = controller.cartItems;
+
+    // Calculate subtotal
+    double subtotal = controller.calculateSubtotal();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,24 +46,39 @@ class ViewCartScreen extends GetView<ViewCartController> with BaseCommonWidget {
             },
           ),
         ),
+        SizedBox(height: 16),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // Logic for adding items
+                },
+                child: Text('Add Items'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Logic for checkout
+                },
+                child: Text('Checkout'),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 16),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            'Subtotal: CA\$${subtotal.toStringAsFixed(2)}',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
       ],
     );
   }
 }
-
-// class CartItem {
-//   String storeName;
-//   int itemCount;
-//   double totalPrice;
-//   String deliveryAddress;
-//
-//   CartItem({
-//     required this.storeName,
-//     required this.itemCount,
-//     required this.totalPrice,
-//     required this.deliveryAddress,
-//   });
-// }
 
 class CartItemWidget extends StatelessWidget {
   final CartItem cartItem;
