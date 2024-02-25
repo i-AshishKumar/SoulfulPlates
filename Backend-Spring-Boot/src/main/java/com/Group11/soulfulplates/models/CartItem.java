@@ -1,6 +1,6 @@
 package com.Group11.soulfulplates.models;
-import jakarta.persistence.*;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,8 +28,95 @@ public class CartItem {
     @Column(name = "notes")
     private String notes;
 
-    @Column(name = "order_id") // Consider renaming to avoid naming conflict
+    @Column(name = "order_id")
     private Long orderId;
 
+    // Default constructor
+    public CartItem() {
+        this.cart = new Cart();
+        this.menuItem = new MenuItem();
+
+    }
+
+    // Getters and setters
+
+    public Long getCartItemId() {
+        return cartItemId;
+    }
+
+    public void setCartItemId(Long cartItemId) {
+        this.cartItemId = cartItemId;
+    }
+
+    public Long getCartId() {
+        if(this.cart != null) {
+            return cart.getCartId();
+        }
+        return null;
+    }
+
+    public void setCartId(Long cartId) {
+        if(this.cart != null) {
+            this.cart.setCartId(cartId);
+        }
+    }
+
+    public Long getMenuItemId() {
+        if(this.menuItem != null) {
+            return menuItem.getMenuItemId();
+        }
+        return null;
+    }
+
+    public void setMenuItemId(Long menuItemId) {
+        if(this.menuItem != null) {
+            this.menuItem.setMenuItemId(menuItemId);
+        }
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public LocalDateTime getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(LocalDateTime addedDate) {
+        this.addedDate = addedDate;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "cartItemId=" + cartItemId +
+                ", cartId=" + cart.getCartId() +
+                ", menuItemId=" + menuItem.getMenuItemId() +
+                ", quantity=" + quantity +
+                ", addedDate=" + addedDate +
+                ", notes='" + notes + '\'' +
+                ", orderId=" + orderId +
+                '}';
+    }
 
 }

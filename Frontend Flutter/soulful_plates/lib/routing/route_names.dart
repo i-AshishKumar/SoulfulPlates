@@ -23,3 +23,13 @@ const String locationListViewRoute = 'locationListViewRoute';
 const String editLocationViewRoute = 'editLocationViewRoute';
 
 const String storeDetailsViewRoute = 'storeDetailsViewRoute';
+
+const String storeDetailsViewRoute = 'storeDetailsViewRoute';
+const String homeSellerViewRoute = 'homeSellerViewRoute';
+const String liveOrdersViewRoute = 'liveOrdersViewRoute';
+const String menuViewRoute = 'menuViewRoute';
+const String createMenuViewRoute = 'createMenuViewRoute';
+const String orderHistorySellerViewRoute = 'orderHistorySellerViewRoute';
+const String transactionHistorySellerViewRoute =
+    'transactionHistorySellerViewRoute';
+const String payoutHistoryViewRoute = 'payoutHistoryViewRoute';

@@ -395,4 +395,10 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     color: AppColor.blackTextColor,
   );
+
+  static final TextStyle titleStyle = TextStyle(
+    fontSize: SizeConfig.font20, // Choose an appropriate size for titles
+    fontWeight: FontWeight.bold, // Common for titles
+    color: AppColor.primaryColor, // Assuming you have a primary color defined
+  );
 }
