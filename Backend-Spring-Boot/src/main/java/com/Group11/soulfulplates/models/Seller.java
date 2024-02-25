@@ -20,12 +20,17 @@ public class Seller {
     @Column(name = "contact_number")
     private String contactNumber;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id", nullable = false)
-    private Address address;
+//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "address_id", nullable = false)
+//    private Address address;
 
-    public Seller() {
-    }
+//    public Seller() {
+//        address = new Address();
+//    }
+//
+//    public Seller(Address address) {
+//        this.address = address;
+//    }
 
     // Getters and setters
     public Long getSellerId() {
@@ -60,11 +65,19 @@ public class Seller {
         this.contactNumber = contactNumber;
     }
 
-    public Long getAddressId() {
-        return address.getAddressId();
-    }
+//    public Address getAddress() {
+//        return address;
+//    }
+//
+//    public void setAddress(Address address) {
+//        this.address = address;
+//    }
 
-    public void setAddressId(Long addressId) {
-        this.address.setAddressId(addressId);
-    }
+//    public Long getAddressId() {
+//        return address.getAddressId();
+//    }
+//
+//    public void setAddressId(Long addressId) {
+//        this.address.setAddressId(addressId);
+//    }
 }
