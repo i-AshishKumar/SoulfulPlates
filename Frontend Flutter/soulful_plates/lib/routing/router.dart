@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/ui/pages/cart_order_success/cart_order_success_binding.dart';
+import 'package:soulful_plates/ui/pages/cart_order_success/cart_order_success_screen.dart';
+import 'package:soulful_plates/ui/pages/cart_payment/cart_payment_binding.dart';
+import 'package:soulful_plates/ui/pages/cart_payment/cart_payment_screen.dart';
 import 'package:soulful_plates/ui/pages/dashboard/dashboard_binding.dart';
 import 'package:soulful_plates/ui/pages/dashboard/dashboard_screen.dart';
+import 'package:soulful_plates/ui/pages/edit_location/edit_location_binding.dart';
+import 'package:soulful_plates/ui/pages/edit_location/edit_location_screen.dart';
 import 'package:soulful_plates/ui/pages/forgot_password/forgot_password_binding.dart';
 import 'package:soulful_plates/ui/pages/forgot_password/forgot_password_screen.dart';
 import 'package:soulful_plates/ui/pages/introduction_screen.dart';
 import 'package:soulful_plates/ui/pages/login/login_binding.dart';
 import 'package:soulful_plates/ui/pages/login/login_screen.dart';
+import 'package:soulful_plates/ui/pages/order_detail/order_detail_binding.dart';
+import 'package:soulful_plates/ui/pages/order_detail/order_detail_screen.dart';
+import 'package:soulful_plates/ui/pages/order_history_buyer/order_history_buyer_binding.dart';
+import 'package:soulful_plates/ui/pages/order_history_buyer/order_history_buyer_screen.dart';
+import 'package:soulful_plates/ui/pages/rating_review/rating_review_binding.dart';
+import 'package:soulful_plates/ui/pages/rating_review/rating_review_screen.dart';
 import 'package:soulful_plates/ui/pages/restaurant_detail/restaurant_detail_binding.dart';
 import 'package:soulful_plates/ui/pages/restaurant_detail/restaurant_detail_screen.dart';
+import 'package:soulful_plates/ui/pages/saved_location/saved_location_binding.dart';
+import 'package:soulful_plates/ui/pages/saved_location/saved_location_screen.dart';
 import 'package:soulful_plates/ui/pages/sign_up/sign_up_binding.dart';
 import 'package:soulful_plates/ui/pages/sign_up/sign_up_screen.dart';
 import 'package:soulful_plates/ui/pages/splash_screen.dart';
 import 'package:soulful_plates/ui/pages/view_cart/view_cart_binding.dart';
 import 'package:soulful_plates/ui/pages/view_cart/view_cart_screen.dart';
+import 'package:soulful_plates/ui/pages/wishlist/wishlist_binding.dart';
+import 'package:soulful_plates/ui/pages/wishlist/wishlist_screen.dart';
 
 import '../ui/pages/create_menu/create_menu_binding.dart';
 import '../ui/pages/create_menu/create_menu_screen.dart';
@@ -30,6 +46,7 @@ import '../ui/pages/payout_seller/payout_seller_binding.dart';
 import '../ui/pages/payout_seller/payout_seller_screen.dart';
 import '../ui/pages/transaction_seller/transaction_seller_binding.dart';
 import '../ui/pages/transaction_seller/transaction_seller_screen.dart';
+import '../ui/pages/web_view/web_view_screen.dart';
 import 'route_names.dart';
 
 Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -101,6 +118,77 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
         page: () => ViewCartScreen(),
       );
 
+    //buyer - to do
+    case cartPaymentViewRoute:
+      return getPageRoutes(
+        routeName: cartPaymentViewRoute,
+        settings: settings,
+        bindings: [CartPaymentBinding()],
+        page: () => CartPaymentScreen(),
+      );
+
+    case orderSuccessViewRoute:
+      return getPageRoutes(
+        routeName: orderSuccessViewRoute,
+        settings: settings,
+        bindings: [CartOrderSuccessBinding()],
+        page: () => CartOrderSuccessScreen(),
+      );
+
+    case wishListViewRoute:
+      return getPageRoutes(
+        routeName: wishListViewRoute,
+        settings: settings,
+        bindings: [WishlistBinding()],
+        page: () => WishlistScreen(),
+      );
+    case orderHistoryViewRoute:
+      return getPageRoutes(
+        routeName: orderHistoryViewRoute,
+        settings: settings,
+        bindings: [OrderHistoryBuyerBinding()],
+        page: () => OrderHistoryBuyerScreen(),
+      );
+
+    case orderDetailViewRoute:
+      return getPageRoutes(
+        routeName: orderDetailViewRoute,
+        settings: settings,
+        bindings: [OrderDetailBinding()],
+        page: () => OrderDetailScreen(),
+      );
+
+    case ratingReviewViewRoute:
+      return getPageRoutes(
+        routeName: ratingReviewViewRoute,
+        settings: settings,
+        bindings: [RatingReviewBinding()],
+        page: () => RatingReviewScreen(),
+      );
+
+    case locationListViewRoute:
+      return getPageRoutes(
+        routeName: locationListViewRoute,
+        settings: settings,
+        bindings: [SavedLocationBinding()],
+        page: () => SavedLocationScreen(),
+      );
+
+    case editLocationViewRoute:
+      return getPageRoutes(
+        routeName: editLocationViewRoute,
+        settings: settings,
+        bindings: [EditLocationBinding()],
+        page: () => EditLocationScreen(),
+      );
+
+    case webViewRoute:
+      return getPageRoutes(
+        routeName: webViewRoute,
+        settings: settings,
+        page: () => const WebViewScreen(),
+      );
+    //
     // case storeDetailsViewRoute:
     //   return getPageRoutes(
     //     routeName: storeDetailsViewRoute,

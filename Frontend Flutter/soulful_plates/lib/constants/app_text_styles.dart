@@ -110,9 +110,9 @@ class AppTextStyles {
     color: AppColor.blackTextColor,
   );
 
-  static final textStyleWhite16With500 = TextStyle(
+  static final textStyleWhite16With700 = TextStyle(
     fontSize: SizeConfig.font16,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w700,
     color: AppColor.whiteTextColor,
   );
 
@@ -307,6 +307,11 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     color: AppColor.whiteTextColor,
   );
+  static final textStyleWhite14With400 = TextStyle(
+    fontSize: SizeConfig.font14,
+    fontWeight: FontWeight.w400,
+    color: AppColor.whiteTextColor,
+  );
   static final textStyleWhite14With700 = TextStyle(
     fontSize: SizeConfig.font14,
     fontWeight: FontWeight.w700,
@@ -333,6 +338,12 @@ class AppTextStyles {
   static final textStyleWhite12With400 = TextStyle(
     fontSize: SizeConfig.font12,
     fontWeight: FontWeight.w400,
+    color: AppColor.whiteTextColor,
+  );
+
+  static final textStyleWhite12With700 = TextStyle(
+    fontSize: SizeConfig.font12,
+    fontWeight: FontWeight.w700,
     color: AppColor.whiteTextColor,
   );
 

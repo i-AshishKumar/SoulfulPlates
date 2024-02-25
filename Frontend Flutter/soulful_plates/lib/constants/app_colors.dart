@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppColor {
   ///basic theme colors
   static const Color primaryColor = c.primaryColor;
+  static const Color profileBackground = Color(0xFFC4C201);
   // Seller color = #242F34
   // buyer color = #02690B
   static const Color gradientSecondColor = Color(0xffE47E07);
@@ -11,7 +12,6 @@ class AppColor {
   static const Color backgroundColor = Color(0xFFFFFFFF);
   static const Color linksColor = Color(0xff3F69FF);
   static const Color redColor = Color(0xffcf0f22);
-  static const Color profileBackground = Color(0xFFC4C201);
 
   /// Only below text colors and combinations used for icons and most of the ui screens
   /// took nearly equal color rather than adding other colors

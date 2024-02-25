@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:soulful_plates/constants/size_config.dart';
+import 'package:soulful_plates/routing/route_names.dart';
 import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../Utils/Validator.dart';
@@ -22,7 +23,7 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Store Details"),
+          title: const Text("Restaurant Detail"),
           actions: [
             InkWell(
               onTap: () {
@@ -38,6 +39,16 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
           ],
         ),
         backgroundColor: AppColor.whiteColor,
+        floatingActionButton: FloatingActionButton(
+            tooltip: "Go to cart",
+            onPressed: () {
+              Get.toNamed(viewCartViewRoute);
+            },
+            child: const Icon(
+              Icons.shopping_cart,
+              size: 24,
+              color: AppColor.whiteColor,
+            )),
         body: SafeArea(
           child: GetBuilder(
             init: controller,
