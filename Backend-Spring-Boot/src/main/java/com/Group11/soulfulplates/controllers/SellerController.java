@@ -33,6 +33,13 @@ public class SellerController {
                 .map(seller -> ResponseEntity.ok(new MessageResponse(1, "Seller Found", seller))) // If cart is found, return the cart
                 .orElseGet(() -> ResponseEntity.ok(new MessageResponse(1, "No Seller Found", null))); // No cart found case
     }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Seller>> getAllSellers() {
+        List<Seller> sellers = sellerService.getAllSellers();
+        return ResponseEntity.ok(sellers);
+    }
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSeller(@PathVariable Long id) {
