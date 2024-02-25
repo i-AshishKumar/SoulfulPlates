@@ -16,6 +16,15 @@ import java.util.Optional;
 @RequestMapping("/api/sellers")
 public class SellerController {
 
+    private final SellerService sellerService;
+    private final AddressService addressService;
+
+    @Autowired
+    public SellerController(SellerService sellerService, AddressService addressService) {
+        this.sellerService = sellerService;
+        this.addressService = addressService;
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createSeller(@RequestBody Seller seller) {
