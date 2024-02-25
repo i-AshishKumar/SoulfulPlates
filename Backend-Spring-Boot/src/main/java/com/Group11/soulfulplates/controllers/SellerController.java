@@ -25,6 +25,14 @@ public class SellerController {
         };
         return ResponseEntity.ok(new MessageResponse(1, "Seller Created Successfully!",newSeller));
     }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getSellerById(@PathVariable Long id) {
+        return sellerService.getSellerById(id)
+                .map(seller -> ResponseEntity.ok(new MessageResponse(1, "Seller Found", seller))) // If cart is found, return the cart
+                .orElseGet(() -> ResponseEntity.ok(new MessageResponse(1, "No Seller Found", null))); // No cart found case
+    }
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSeller(@PathVariable Long id) {
