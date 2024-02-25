@@ -15,6 +15,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/sellers")
 public class SellerController {
+
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> createSeller(@RequestBody Seller seller) {
+        Seller newSeller = sellerService.createSeller(seller);
+        if (!sellerService.existsById(seller.getSellerId())){
+            return ResponseEntity.ok(new MessageResponse(-1, "Seller Not Found!", null));
+        };
+        return ResponseEntity.ok(new MessageResponse(1, "Seller Created Successfully!",newSeller));
+    }
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSeller(@PathVariable Long id) {
