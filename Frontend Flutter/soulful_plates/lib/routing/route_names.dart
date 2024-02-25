@@ -13,3 +13,14 @@ const String dashboardViewRoute = 'dashboardViewRoute';
 const String restaurantDetailViewRoute = 'restaurantDetailViewRoute';
 const String viewCartViewRoute = 'viewCartViewRoute';
 const String storeDetailsViewRoute = 'storeDetailsViewRoute';
+//buyer - to do
+const String cartPaymentViewRoute = 'cartPaymentViewRoute';
+const String orderSuccessViewRoute = 'orderSuccessViewRoute';
+const String wishListViewRoute = 'wishListViewRoute';
+const String orderHistoryViewRoute = 'orderHistoryViewRoute';
+const String orderDetailViewRoute = 'orderDetailViewRoute';
+const String ratingReviewViewRoute = 'ratingReviewViewRoute';
+const String locationListViewRoute = 'locationListViewRoute';
+const String editLocationViewRoute = 'editLocationViewRoute';
+
+const String ViewRoute = 'ViewRoute';
