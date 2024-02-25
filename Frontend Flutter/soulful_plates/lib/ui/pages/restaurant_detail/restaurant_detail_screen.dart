@@ -2,13 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:soulful_plates/routing/route_names.dart';
 import 'package:soulful_plates/constants/size_config.dart';
+import 'package:soulful_plates/routing/route_names.dart';
 import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../Utils/Validator.dart';
 import '../../../constants/app_colors.dart';
-import '../../../constants/size_config.dart';
 import '../../../constants/app_icons.dart';
 import '../../../constants/app_text_styles.dart';
 import '../../widgets/app_text_field.dart';
@@ -37,7 +36,8 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
                 size: 24,
               ).paddingHorizontal16(),
             ).visibleWhen(isVisible: !controller.isEditable)
-          ], ),
+          ],
+        ),
         backgroundColor: AppColor.whiteColor,
         floatingActionButton: FloatingActionButton(
             tooltip: "Go to cart",

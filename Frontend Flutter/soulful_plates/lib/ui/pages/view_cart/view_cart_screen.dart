@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:soulful_plates/ui/pages/view_cart/view_cart_controller.dart';
 import 'package:soulful_plates/routing/route_names.dart';
+import 'package:soulful_plates/ui/pages/view_cart/view_cart_controller.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/size_config.dart';

@@ -188,14 +188,14 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
         settings: settings,
         page: () => const WebViewScreen(),
       );
-
-    case storeDetailsViewRoute:
-      return getPageRoutes(
-        routeName: storeDetailsViewRoute,
-        settings: settings,
-        bindings: [StoreDetailsBinding()],
-        page: () => StoreDetailsScreen(),
-      );
+    //
+    // case storeDetailsViewRoute:
+    //   return getPageRoutes(
+    //     routeName: storeDetailsViewRoute,
+    //     settings: settings,
+    //     bindings: [StoreDetailsBinding()],
+    //     page: () => StoreDetailsScreen(),
+    //   );
 
     case homeSellerViewRoute:
       return getPageRoutes(

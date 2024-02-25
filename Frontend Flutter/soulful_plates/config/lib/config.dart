@@ -1,20 +1,20 @@
 import 'dart:ui';
 
 const applicationName = "Soulful Plates Base";
-const role = 'buyer'; //possible values seller / buyer
+const role = 'seller'; //possible values seller / buyer
 
-const Color primaryColor = Color(0xff242F34); //seller
+// const Color primaryColor = Color(0xff242F34); //seller
 
-// const Color primaryColor = Color(0xff02690B);//buyer
+const Color primaryColor = Color(0xff02690B); //buyer
 // do means ui is pending
 /*
 Buyer
   Login - Done
   Register - Done
   ResetPassword - Done
-  Dashboard -
-    HomeScreen(Restaurant listing) - Done
-      Restaurant Details(Item listing) - Done
+  Dashboard - do
+    HomeScreen(Restaurant listing) - Do
+      Restaurant Details(Item listing) - Do
       CartDetails - Done
       Cart Payment Screen - Do
       OrderSuccess - Do
@@ -23,8 +23,8 @@ Buyer
       OrderDetail - Do
         RatingReview - Do
     UserProfile - Done
-      Settings(Buyer) - Done
-      Transaction(Buyer) - Done
+      Settings(Buyer) - Do
+      Transaction(Buyer) - Do
       LocationList - do
       edit location - do
 
@@ -33,15 +33,15 @@ Seller
   Login - Done
   Register - Done
   ResetPassword - Done
-  Dashboard -
-    HomeScreen(Statistics and Live Orders)
-    LiveOrders(Live Orders)
-    Menu Screen
-      CreateMenu
+  Dashboard - do
+    HomeScreen(Statistics and Live Orders) - do
+    LiveOrders(Live Orders) - do
+    Menu Screen - do
+      CreateMenu - do
     UserProfile - Done
-      OrderHistory(Seller)
-      TransactionHistory(Seller)
-      PayoutHistory
+      OrderHistory(Seller) - do
+      TransactionHistory(Seller) - do
+      PayoutHistory - do
       Setting - Done
       StoreDetails - Done
 
