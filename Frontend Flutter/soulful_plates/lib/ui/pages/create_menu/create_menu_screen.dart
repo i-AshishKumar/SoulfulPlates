@@ -9,6 +9,7 @@ import 'package:soulful_plates/ui/widgets/base_button.dart';
 import '../../../Utils/Validator.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_text_styles.dart';
+import '../../../routing/route_names.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/base_common_widget.dart';
 import 'create_menu_controller.dart';
@@ -22,6 +23,17 @@ class CreateMenuScreen extends GetView<CreateMenuController>
     return Scaffold(
         appBar: AppBar(
           title: const Text("CreateMenu"),
+          actions: [
+            InkWell(
+                onTap: () {
+                  Get.toNamed(menuCategoryViewRoute);
+                },
+                child: const Icon(
+                  Icons.add_circle_outline,
+                  size: 24,
+                  color: AppColor.blackColor,
+                )).paddingHorizontal8()
+          ],
         ),
         backgroundColor: AppColor.whiteColor,
         body: SafeArea(
@@ -81,6 +93,66 @@ class CreateMenuScreen extends GetView<CreateMenuController>
               controller.serviceTypeFocus.requestFocus();
             },
             hintText: 'Description',
+          ),
+          DropdownSearch<String>(
+            popupProps: const PopupProps.bottomSheet(),
+            items: controller.category,
+            dropdownBuilder: (context, dataModel) {
+              return Text(
+                dataModel ?? '',
+                style: AppTextStyles.textStyleBlack14With400,
+              );
+            },
+            dropdownDecoratorProps: const DropDownDecoratorProps(
+                dropdownSearchDecoration: InputDecoration(
+              hintText: 'Select Category',
+              labelText: 'Select Category',
+            )),
+            itemAsString: (String u) => u,
+            onChanged: (String? data) {
+              controller.selectCategory = data ?? '';
+              controller.update();
+            },
+          ),
+          DropdownSearch<String>(
+            popupProps: const PopupProps.bottomSheet(),
+            items: controller.subCategory,
+            dropdownBuilder: (context, dataModel) {
+              return Text(
+                dataModel ?? '',
+                style: AppTextStyles.textStyleBlack14With400,
+              );
+            },
+            dropdownDecoratorProps: const DropDownDecoratorProps(
+                dropdownSearchDecoration: InputDecoration(
+              hintText: 'Select Sub Category',
+              labelText: 'Select Sub Category',
+            )),
+            itemAsString: (String u) => u,
+            onChanged: (String? data) {
+              controller.selectSubCategory = data ?? '';
+              controller.update();
+            },
+          ),
+          DropdownSearch<String>(
+            popupProps: const PopupProps.bottomSheet(),
+            items: controller.type,
+            dropdownBuilder: (context, dataModel) {
+              return Text(
+                dataModel ?? '',
+                style: AppTextStyles.textStyleBlack14With400,
+              );
+            },
+            dropdownDecoratorProps: const DropDownDecoratorProps(
+                dropdownSearchDecoration: InputDecoration(
+              hintText: 'Select Food Type',
+              labelText: 'Select Food Type',
+            )),
+            itemAsString: (String u) => u,
+            onChanged: (String? data) {
+              controller.selectType = data ?? '';
+              controller.update();
+            },
           ),
           Text(
             'Serving type',
@@ -142,7 +214,7 @@ class CreateMenuScreen extends GetView<CreateMenuController>
                 )
               ],
             ),
-          ),
+          ).paddingVertical8(),
           InkWell(
             onTap: () {
               controller.isRecommended = !controller.isRecommended;
@@ -167,69 +239,10 @@ class CreateMenuScreen extends GetView<CreateMenuController>
               ],
             ),
           ).paddingVertical16(),
-          DropdownSearch<String>(
-            popupProps: const PopupProps.bottomSheet(),
-            items: controller.type,
-            dropdownBuilder: (context, dataModel) {
-              return Text(
-                dataModel ?? '',
-                style: AppTextStyles.textStyleBlack14With400,
-              );
-            },
-            dropdownDecoratorProps: const DropDownDecoratorProps(
-                dropdownSearchDecoration: InputDecoration(
-              hintText: 'Select Food Type',
-              labelText: 'Select Food Type',
-            )),
-            itemAsString: (String u) => u,
-            onChanged: (String? data) {
-              controller.selectType = data ?? '';
-              controller.update();
-            },
-          ),
-          DropdownSearch<String>(
-            popupProps: const PopupProps.bottomSheet(),
-            items: controller.category,
-            dropdownBuilder: (context, dataModel) {
-              return Text(
-                dataModel ?? '',
-                style: AppTextStyles.textStyleBlack14With400,
-              );
-            },
-            dropdownDecoratorProps: const DropDownDecoratorProps(
-                dropdownSearchDecoration: InputDecoration(
-              hintText: 'Select Category',
-              labelText: 'Select Category',
-            )),
-            itemAsString: (String u) => u,
-            onChanged: (String? data) {
-              controller.selectCategory = data ?? '';
-              controller.update();
-            },
-          ),
-          DropdownSearch<String>(
-            popupProps: const PopupProps.bottomSheet(),
-            items: controller.subCategory,
-            dropdownBuilder: (context, dataModel) {
-              return Text(
-                dataModel ?? '',
-                style: AppTextStyles.textStyleBlack14With400,
-              );
-            },
-            dropdownDecoratorProps: const DropDownDecoratorProps(
-                dropdownSearchDecoration: InputDecoration(
-              hintText: 'Select Sub Category',
-              labelText: 'Select Sub Category',
-            )),
-            itemAsString: (String u) => u,
-            onChanged: (String? data) {
-              controller.selectSubCategory = data ?? '';
-              controller.update();
-            },
-          ),
+          8.rVerticalSizedBox(),
           saveButton()
         ],
-      ).paddingAll16(),
+      ).paddingUpSide1216().paddingHorizontal8(),
     );
   }
 

@@ -16,9 +16,9 @@ class LoginController extends BaseController {
   bool obscureText = true;
 
   TextEditingController emailEditingController =
-      TextEditingController(text: '');
+      TextEditingController(text: 'nikul@dal.ca');
   TextEditingController passwordEditingController =
-      TextEditingController(text: '');
+      TextEditingController(text: 'Nikul@1234');
 
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
