@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/constants/app_paddings.dart';
 import 'package:soulful_plates/routing/route_names.dart';
 
 import '../../../constants/app_colors.dart';
@@ -7,7 +8,9 @@ import '../../../constants/app_sized_box.dart';
 import '../../../constants/app_text_styles.dart';
 import '../../../constants/enums/view_state.dart';
 import '../../../constants/size_config.dart';
+import '../../../model/location/location_model.dart';
 import '../../../utils/extensions.dart';
+import '../../../utils/utils.dart';
 import '../../widgets/base_common_widget.dart';
 import 'saved_location_controller.dart';
 
@@ -29,8 +32,12 @@ class SavedLocationScreen extends GetView<SavedLocationController>
               size: 24,
               color: AppColor.whiteColor,
             ),
-            onPressed: () {
-              Get.toNamed(editLocationViewRoute);
+            onPressed: () async {
+              var response = await Get.toNamed(editLocationViewRoute);
+              if (response == null) {
+                print("This is respose");
+              }
+              controller.update();
             }),
         body: SafeArea(
           child: GetBuilder(
@@ -49,7 +56,7 @@ class SavedLocationScreen extends GetView<SavedLocationController>
         12.rVerticalSizedBox(),
         Expanded(
           child: Stack(children: [
-            controller.dataList.isNotEmpty
+            Utils.locationList.isNotEmpty
                 ? RefreshIndicator(
                     onRefresh: () async {
                       controller.resetPagination();
@@ -69,19 +76,21 @@ class SavedLocationScreen extends GetView<SavedLocationController>
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: controller.dataList.length + 1,
+                          itemCount: Utils.locationList.length + 1,
                           separatorBuilder: (context, index) {
                             return 2.rVerticalGreySizedBox();
                           },
                           itemBuilder: (context, index) {
-                            if (index < controller.dataList.length) {
-                              return InkWell(
-                                onTap: () async {
-                                  //todo tap on the item
+                            if (index < Utils.locationList.length) {
+                              return ListTile(
+                                title: Text(
+                                    Utils.locationList[index].locationName),
+                                subtitle: Text(
+                                    'Latitude: ${Utils.locationList[index].latitude}, Longitude: ${Utils.locationList[index].longitude}'),
+                                onTap: () {
+                                  _editLocation(context, index);
+                                  controller.update();
                                 },
-                                child: //todo change widget with item widget
-                                    Text("Item number $index")
-                                        .paddingAllDefault(),
                               );
                             } else if (controller.moreLoading ==
                                 ViewStateEnum.busy) {
@@ -122,6 +131,85 @@ class SavedLocationScreen extends GetView<SavedLocationController>
           ]).paddingSymmetricSide(vertical: 8, horizontal: 16),
         ),
       ],
+    );
+  }
+
+  Future<void> _editLocation(BuildContext context, int index) async {
+    LocationModel currentLocation = Utils.locationList[index];
+
+    // Controllers for text fields
+    TextEditingController nameController =
+        TextEditingController(text: currentLocation.locationName);
+    TextEditingController latitudeController =
+        TextEditingController(text: currentLocation.latitude.toString());
+    TextEditingController longitudeController =
+        TextEditingController(text: currentLocation.longitude.toString());
+    TextEditingController addressController =
+        TextEditingController(text: currentLocation.address);
+
+    // Show dialog
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: AppPaddings.defaultPadding16,
+          backgroundColor: AppColor.whiteColor,
+          title: const Text('Edit Location'),
+          content: SizedBox(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: 'Location Name'),
+                ),
+                TextField(
+                  controller: latitudeController,
+                  decoration: const InputDecoration(labelText: 'Latitude'),
+                  keyboardType: TextInputType.number,
+                ),
+                TextField(
+                  controller: longitudeController,
+                  decoration: InputDecoration(labelText: 'Longitude'),
+                  keyboardType: TextInputType.number,
+                ),
+                TextField(
+                  controller: addressController,
+                  decoration: InputDecoration(labelText: 'Address'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Update the location with the new values
+                Utils.locationList[index].locationName = nameController.text;
+                Utils.locationList[index].latitude =
+                    double.tryParse(latitudeController.text) ??
+                        currentLocation.latitude;
+                Utils.locationList[index].longitude =
+                    double.tryParse(longitudeController.text) ??
+                        currentLocation.longitude;
+                Utils.locationList[index].address = addressController.text;
+
+                controller.update();
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
