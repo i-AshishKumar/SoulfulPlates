@@ -67,7 +67,7 @@ publish-job:
     - docker build --no-cache --progress=plain -t docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA .
     - docker push docker.io/group11csci5308/test:$CI_COMMIT_SHORT_SHA
   only:
-    - feat-backend-hosting-ci-cd
+    - development
   artifacts:
     untracked: true
     expire_in: 30 days
@@ -92,4 +92,4 @@ deploy-job:
     name: production
     url: http://172.17.1.211:8073
   only:
-    - feat-backend-hosting-ci-cd
+    - development
