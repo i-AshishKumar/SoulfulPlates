@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/size_config.dart';
+import 'package:soulful_plates/constants/size_config.dart';
+import 'package:soulful_plates/ui/widgets/app_text_field.dart';
+import 'package:soulful_plates/ui/widgets/base_button.dart';
 
 import '../../../constants/app_colors.dart';
-import '../../../constants/app_sized_box.dart';
 import '../../../constants/app_text_styles.dart';
-import '../../../constants/enums/view_state.dart';
 import '../../../utils/extensions.dart';
+import '../../../utils/utils.dart';
 import '../../widgets/base_common_widget.dart';
 import 'edit_location_controller.dart';
 
@@ -18,7 +19,7 @@ class EditLocationScreen extends GetView<EditLocationController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("EditLocation"),
+          title: const Text("Add Location"),
         ),
         backgroundColor: AppColor.whiteColor,
         body: SafeArea(
@@ -35,17 +36,69 @@ class EditLocationScreen extends GetView<EditLocationController>
   Widget getBody(BuildContext context) {
     return Column(
       children: [
-        12.rVerticalSizedBox(),
-        Expanded(
-          child: Stack(children: [
-            Text("Response data ${controller.dataModel?.toString() ?? ''}"),
-            controller.state == ViewStateEnum.busy
-                ? const Center(child: CircularProgressIndicator())
-                : AppSizedBox.sizedBox0
-          ]).paddingSymmetricSide(vertical: 8, horizontal: 16),
-        ),
-        12.rVerticalSizedBox(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            16.rVerticalSizedBox(),
+            Text(
+              'Location Name',
+              style: AppTextStyles.textStyleBlackTwo12With400,
+            ),
+            8.rVerticalSizedBox(),
+            AppTextField(
+              controller: controller.nameController,
+              hintText: 'Location Name',
+              // decoration: const InputDecoration(labelText: 'Location Name'),
+            ),
+            16.rVerticalSizedBox(),
+            Text(
+              'Latitude',
+              style: AppTextStyles.textStyleBlackTwo12With400,
+            ),
+            8.rVerticalSizedBox(),
+            AppTextField(
+              controller: controller.latitudeController,
+              hintText: 'Latitude',
+              keyboardType: TextInputType.number,
+            ),
+            16.rVerticalSizedBox(),
+            Text(
+              'Longitude',
+              style: AppTextStyles.textStyleBlackTwo12With400,
+            ),
+            8.rVerticalSizedBox(),
+            AppTextField(
+              controller: controller.longitudeController,
+              hintText: 'Longitude',
+              keyboardType: TextInputType.number,
+            ),
+            16.rVerticalSizedBox(),
+            Text(
+              'Address',
+              style: AppTextStyles.textStyleBlackTwo12With400,
+            ),
+            8.rVerticalSizedBox(),
+            AppTextField(
+              controller: controller.addressController,
+              hintText: 'Address',
+            ),
+            16.rVerticalSizedBox(),
+            BaseButton(
+              onSubmit: () {
+                if (controller.nameController.text.isNotEmpty &&
+                    controller.latitudeController.text.isNotEmpty &&
+                    controller.longitudeController.text.isNotEmpty) {
+                  controller.getDataFromAPI();
+                } else {
+                  Utils.showSuccessToast(
+                      'Please fill in all required fields.', true);
+                }
+              },
+              text: "Add location",
+            )
+          ],
+        )
       ],
-    );
+    ).paddingAll16();
   }
 }

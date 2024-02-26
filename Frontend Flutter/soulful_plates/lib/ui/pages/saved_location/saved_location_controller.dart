@@ -1,10 +1,11 @@
+import 'package:soulful_plates/controller/base_controller.dart';
+import 'package:soulful_plates/model/location/location_model.dart';
+
 import '../../../constants/enums/view_state.dart';
-import '../../../controller/base_controller.dart';
-import '../../../model/data_model.dart';
 import '../../../utils/pagination_utils.dart';
 
 class SavedLocationController extends BaseController
-    with PaginationUtils<DataModel> {
+    with PaginationUtils<LocationModel> {
   @override
   void onInit() {
     super.onInit();
@@ -20,6 +21,7 @@ class SavedLocationController extends BaseController
   }
 
   void getDataFromAPI() async {
+    dataList = LocationModel.getAllLocations();
     /*updateLoader(ViewStateEnum.busy);
     var result = ; //male api call here
 
