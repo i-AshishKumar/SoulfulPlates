@@ -28,6 +28,9 @@ class MenuListScreen extends GetView<MenuListController> with BaseCommonWidget {
             tooltip: "Add Item",
             onPressed: () async {
               var response = await Get.toNamed(createMenuViewRoute);
+              if (response == null) {
+                print("This is response");
+              }
               controller.resetPagination();
             },
             child: const Icon(
