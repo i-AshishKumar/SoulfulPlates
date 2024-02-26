@@ -1,5 +1,6 @@
 package com.Group11.soulfulplates.controllers;
 
+import com.Group11.soulfulplates.models.Cart;
 import com.Group11.soulfulplates.models.CartItem;
 import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.services.CartItemService;
@@ -30,13 +31,28 @@ public class CartItemController {
 
     @PreAuthorize("hasRole('ROLE_BUYER')")
     @PostMapping("/add")
-    public ResponseEntity<?> addCartItem(@RequestBody(required = false) CartItem cartItem) {
-        if (cartItem == null || cartItem.getCartId() == null || cartItem.getMenuItemId() == null || cartItem.getQuantity() == null) {
+    public ResponseEntity<?> addCartItem(@RequestBody(required = false) CartItem cartItem, @RequestParam(required = false) Long userId, @RequestParam(required = false) Long sellerId) {
+        if (cartItem == null || cartItem.getQuantity() == null || cartItem.getMenuItemId() == null) {
             return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid Request Body.", null));
         }
 
-        if (!cartService.existsByCartId(cartItem.getCartId())) {
-            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid Cart.", null));
+        if (cartItem.getCartId() != null){
+            if (!cartService.existsByCartId(cartItem.getCartId())) {
+                return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid Cart.", null));
+            } else {
+                CartItem newCartItem = cartItemService.addOrUpdateCartItem(cartItem.getCartId(), cartItem.getMenuItemId(), cartItem.getQuantity(), cartItem.getNotes());
+                return ResponseEntity.ok(new ResponseObject(1, "Cart Item added successfully.", newCartItem));
+            }
+        } else {
+//            Cart cart = cartService.getCart(cartItem.getCartId());
+//            MenuItem menuItem  = menuItemService.getMenuItem(cartItem.getMenuItemId());
+
+            Cart cart = cartService.getCart(userId, sellerId);
+            if(cart == null){
+                cart = cartService.createCart(userId, sellerId);
+            }
+            CartItem newCartItem = cartItemService.addOrUpdateCartItem(cart.getCartId(), cartItem.getMenuItemId(), cartItem.getQuantity(), cartItem.getNotes());
+            return ResponseEntity.ok(new ResponseObject(1, "Cart Item added successfully.", newCartItem));
         }
 
         // Menu Item Service needs to be implemented
@@ -44,9 +60,6 @@ public class CartItemController {
 //            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid Menu Item.", null));
 //        }
 
-        // Proceed to add the cart item if all checks pass
-        CartItem newCartItem = cartItemService.addOrUpdateCartItem(cartItem.getCartId(), cartItem.getMenuItemId(), cartItem.getQuantity(), cartItem.getNotes());
-        return ResponseEntity.ok(new ResponseObject(-1, "Cart Item added successfully.", newCartItem));
     }
 
     @PreAuthorize("hasRole('ROLE_BUYER')")

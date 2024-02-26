@@ -93,4 +93,22 @@ public class CartServiceImpl implements CartService {
         }
     }
 
+    @Override
+    public Cart getCart(Long cartId){
+        Optional<Cart> existingCart = cartRepository.findByCartId(cartId);
+        if (existingCart.isPresent()) {
+            return existingCart.get();
+        }
+        return null;
+    };
+
+    @Override
+    public Cart getCart(Long userId, Long sellerId){
+        Optional<Cart> existingCart = cartRepository.findByUserIdAndSellerId(userId, sellerId);
+        if (existingCart.isPresent()) {
+            return existingCart.get();
+        }
+        return null;
+    };
+
 }
