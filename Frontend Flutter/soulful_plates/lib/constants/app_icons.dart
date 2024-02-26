@@ -11,6 +11,7 @@ class AppIcons {
 
   static String placeHolder = "${_drawables}placeHolder.png";
   static String iconClose = "${_drawables}close.png";
+  static String appIcon = "${_drawables}app_icon.png";
 
   ///Mention all SVG file paths here
   // static String iconPasswordHide = "${_svg}eyeSlash.svg";
