@@ -42,7 +42,6 @@ package-job: # This job runs in the package stage.
   dependencies:
     - build-job
 
-
 publish-job:
   image: docker:latest
   stage: publish
