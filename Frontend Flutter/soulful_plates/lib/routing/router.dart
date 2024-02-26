@@ -19,6 +19,8 @@ import 'package:soulful_plates/ui/pages/order_detail/order_detail_binding.dart';
 import 'package:soulful_plates/ui/pages/order_detail/order_detail_screen.dart';
 import 'package:soulful_plates/ui/pages/order_history_buyer/order_history_buyer_binding.dart';
 import 'package:soulful_plates/ui/pages/order_history_buyer/order_history_buyer_screen.dart';
+import 'package:soulful_plates/ui/pages/profile/profile_binding.dart';
+import 'package:soulful_plates/ui/pages/profile/profile_screen.dart';
 import 'package:soulful_plates/ui/pages/rating_review/rating_review_binding.dart';
 import 'package:soulful_plates/ui/pages/rating_review/rating_review_screen.dart';
 import 'package:soulful_plates/ui/pages/restaurant_detail/restaurant_detail_binding.dart';
@@ -46,6 +48,8 @@ import '../ui/pages/order_history_seller/order_history_seller_binding.dart';
 import '../ui/pages/order_history_seller/order_history_seller_screen.dart';
 import '../ui/pages/payout_seller/payout_seller_binding.dart';
 import '../ui/pages/payout_seller/payout_seller_screen.dart';
+import '../ui/pages/store_details/store_details_binding.dart';
+import '../ui/pages/store_details/store_details_screen.dart';
 import '../ui/pages/transaction_seller/transaction_seller_binding.dart';
 import '../ui/pages/transaction_seller/transaction_seller_screen.dart';
 import '../ui/pages/web_view/web_view_screen.dart';
@@ -129,6 +133,14 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
         page: () => CartPaymentScreen(),
       );
 
+    case profileViewRoute:
+      return getPageRoutes(
+        routeName: profileViewRoute,
+        settings: settings,
+        bindings: [ProfileBinding()],
+        page: () => const ProfileScreen(),
+      );
+
     case orderSuccessViewRoute:
       return getPageRoutes(
         routeName: orderSuccessViewRoute,
@@ -190,14 +202,14 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
         settings: settings,
         page: () => const WebViewScreen(),
       );
-    //
-    // case storeDetailsViewRoute:
-    //   return getPageRoutes(
-    //     routeName: storeDetailsViewRoute,
-    //     settings: settings,
-    //     bindings: [StoreDetailsBinding()],
-    //     page: () => StoreDetailsScreen(),
-    //   );
+
+    case storeDetailsViewRoute:
+      return getPageRoutes(
+        routeName: storeDetailsViewRoute,
+        settings: settings,
+        bindings: [StoreDetailsBinding()],
+        page: () => StoreDetailsScreen(),
+      );
 
     case homeSellerViewRoute:
       return getPageRoutes(

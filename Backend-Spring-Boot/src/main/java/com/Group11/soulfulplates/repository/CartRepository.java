@@ -56,6 +56,17 @@ public class CartRepository {
         }
     }
 
+    public Optional<Cart> findByCartId(Long cartId) {
+        try {
+            Cart cart = entityManager.createQuery("SELECT c FROM Cart c WHERE c.cartId = :cartId", Cart.class)
+                    .setParameter("cartId", cartId)
+                    .getSingleResult();
+            return Optional.of(cart);
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
+    }
+
     @Transactional
     public void updateCart(Long userId, Long sellerId, LocalDateTime lastUpdatedDate) {
         entityManager.createQuery("UPDATE Cart c SET c.lastUpdatedDate = :lastUpdatedDate WHERE c.user.id = :userId AND c.seller.sellerId = :sellerId")

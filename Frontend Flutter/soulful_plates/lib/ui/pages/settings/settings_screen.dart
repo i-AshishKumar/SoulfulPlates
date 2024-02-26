@@ -251,6 +251,26 @@ class SettingsScreen extends GetView<SettingsController> with BaseCommonWidget {
         ).paddingSymmetricSide(vertical: 16, horizontal: 12),
       ),
       1.rVerticalGreySizedBox(),
+      InkWell(
+        onTap: () {
+          Get.toNamed(profileViewRoute);
+        },
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                'User Profile',
+                style: AppTextStyles.textStyleBlack16With400,
+              ),
+            ),
+            const Icon(
+              Icons.keyboard_arrow_right,
+              color: AppColor.primaryColor,
+            )
+          ],
+        ).paddingSymmetricSide(vertical: 16, horizontal: 12),
+      ),
+      1.rVerticalGreySizedBox(),
     ];
   }
 
