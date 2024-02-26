@@ -135,7 +135,13 @@ class MenuCategory {
   final String name;
   final List<SubCategory> subcategories;
 
-  MenuCategory(this.name, this.subcategories);
+  MenuCategory(this.name,
+      this.subcategories); // Method to add a new subcategory to the current category
+  void addSubCategory(SubCategory newSubCategory) {
+    if (!subcategories.contains(newSubCategory)) {
+      subcategories.add(newSubCategory);
+    }
+  }
 }
 
 class SubCategory {
@@ -143,4 +149,10 @@ class SubCategory {
   final List<MenuItemModel> items;
 
   SubCategory(this.name, this.items);
+  // Method to add a new menu item to the current subcategory
+  void addMenuItem(MenuItemModel newItem) {
+    if (!items.contains(newItem)) {
+      items.add(newItem);
+    }
+  }
 }

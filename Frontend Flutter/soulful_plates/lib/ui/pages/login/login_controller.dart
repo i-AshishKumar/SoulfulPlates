@@ -16,9 +16,9 @@ class LoginController extends BaseController {
   bool obscureText = true;
 
   TextEditingController emailEditingController =
-      TextEditingController(text: 'nikul@raftlabs.co');
+      TextEditingController(text: '');
   TextEditingController passwordEditingController =
-      TextEditingController(text: 'Nikul@1234');
+      TextEditingController(text: '');
 
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
@@ -62,10 +62,21 @@ class LoginController extends BaseController {
 
   signIn() async {
     setLoaderState(ViewStateEnum.busy);
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
     setLoaderState(ViewStateEnum.idle);
     if (passwordEditingController.text.trim() == 'Test@12345' ||
         passwordEditingController.text.trim() == 'Nikul@1234') {
+      UserProfile userModel = UserProfile(
+          username: "NikulKukadiya",
+          email: emailEditingController.text,
+          phoneNumber: '8866534671');
+      Utils.addMenuItems();
+
+      await UserPreference.setValue(
+          key: SharedPrefKey.userProfileData.name, value: userModel.toJson());
+      // await UserPreference.setValue(
+      //     key: SharedPrefKey.token.name, value: userModel.token);
+      AppSingleton.loggedInUserProfile = userModel;
       Utils.showSuccessToast("Logged in successfully.", false);
       Get.offAllNamed(dashboardViewRoute);
     } else {
