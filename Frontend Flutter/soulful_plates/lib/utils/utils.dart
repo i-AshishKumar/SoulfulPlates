@@ -11,8 +11,8 @@ import '../constants/app_colors.dart';
 import '../constants/language/language_constants.dart';
 import '../constants/size_config.dart';
 import '../model/location/location_model.dart';
-import '../model/store_details/store_detail_model.dart';
 import '../model/menu/menu_item_model.dart';
+import '../model/store_details/store_detail_model.dart';
 import '../ui/widgets/base_loading_widget.dart';
 import 'extensions.dart';
 
