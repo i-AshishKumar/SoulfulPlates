@@ -20,5 +20,9 @@ public interface CartService {
     void deleteCartAndItems(Long cartId);
 
     Cart getOrCreateCart(Long userId, Long sellerId);
+
+    Cart getCart(Long cartId);
+
+    Cart getCart(Long userId, Long sellerId);
 }
 

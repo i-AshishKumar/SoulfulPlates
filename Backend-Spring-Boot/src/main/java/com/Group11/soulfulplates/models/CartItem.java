@@ -35,11 +35,25 @@ public class CartItem {
     public CartItem() {
         this.cart = new Cart();
         this.menuItem = new MenuItem();
-
     }
 
-    // Getters and setters
+    public CartItem(Cart cart) {
+        this.cart = cart;
+        this.menuItem = new MenuItem();
+    }
 
+    public CartItem(MenuItem menuItem) {
+        this.cart = new Cart();
+        this.menuItem = menuItem;
+    }
+
+    public CartItem(Cart cart, MenuItem menuItem) {
+        this.cart = cart;
+        this.menuItem = menuItem;
+    }
+
+
+    // Getters and setters
     public Long getCartItemId() {
         return cartItemId;
     }
