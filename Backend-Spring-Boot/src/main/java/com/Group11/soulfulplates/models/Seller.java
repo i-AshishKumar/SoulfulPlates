@@ -1,8 +1,10 @@
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "sellers")
 public class Seller {
 
@@ -11,19 +13,20 @@ public class Seller {
     @Column(name = "seller_id")
     private Long sellerId;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "sellerName", nullable = false)
+    private String sellerName;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "sellerEmail", nullable = false, unique = true)
+    private String sellerEmail;
 
     @Column(name = "contact_number")
     private String contactNumber;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id", nullable = false)
-    private Address address;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user; // This establishes the relationship with the User entity
 
-    // Getters and setters omitted for brevity
-
+    public String getName() {
+        return sellerName;
+    }
 }

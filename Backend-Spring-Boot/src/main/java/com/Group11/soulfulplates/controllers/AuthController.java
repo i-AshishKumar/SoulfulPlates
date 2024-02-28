@@ -2,6 +2,7 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.ERole;
 import com.Group11.soulfulplates.models.Role;
+import com.Group11.soulfulplates.models.Seller;
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.request.ForgetPasswordRequest;
 import com.Group11.soulfulplates.payload.request.LoginRequest;
@@ -11,6 +12,7 @@ import com.Group11.soulfulplates.payload.response.JwtResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.payload.response.OtpResponse;
 import com.Group11.soulfulplates.repository.RoleRepository;
+import com.Group11.soulfulplates.repository.SellerRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.security.jwt.JwtUtils;
 import com.Group11.soulfulplates.security.services.UserDetailsImpl;
@@ -31,42 +33,8 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
+
 public class AuthController {
-
-  @Autowired
-  AuthenticationManager authenticationManager;
-
-  @Autowired
-  UserRepository userRepository;
-
-  @Autowired
-  RoleRepository roleRepository;
-
-  @Autowired
-  PasswordEncoder encoder;
-
-  @Autowired
-  JwtUtils jwtUtils;
-
-  @PostMapping("/signin")
-  public ResponseEntity<MessageResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-    Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtUtils.generateJwtToken(authentication);
-
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-    List<String> roles = userDetails.getAuthorities().stream()
-            .map(Object::toString)
-            .collect(Collectors.toList());
-
-    JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
-            userDetails.getEmail(), roles);
-
-    return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
-  }
-
   @PostMapping("/signup")
   public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -79,8 +47,9 @@ public class AuthController {
               .body(new MessageResponse(-1, "Error: Email is already in use!", null));
     }
 
+    // Create a new user
     User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-            encoder.encode(signUpRequest.getPassword()));
+            encoder.encode(signUpRequest.getPassword()), signUpRequest.getContactNumber(), signUpRequest.getFirstname());
 
     Set<Role> roles = new HashSet<>();
 
@@ -110,10 +79,58 @@ public class AuthController {
     }
 
     user.setRoles(roles);
+
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse(1, "User registered successfully!", null));
   }
+
+  @Autowired
+  AuthenticationManager authenticationManager;
+
+  @Autowired
+  UserRepository userRepository;
+
+  @Autowired
+  SellerRepository sellerRepository;
+
+  @Autowired
+  RoleRepository roleRepository;
+
+  @Autowired
+  PasswordEncoder encoder;
+
+  @Autowired
+  JwtUtils jwtUtils;
+
+  @PostMapping("/signin")
+  public ResponseEntity<MessageResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = jwtUtils.generateJwtToken(authentication);
+
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    List<String> roles = userDetails.getAuthorities().stream()
+            .map(Object::toString)
+            .collect(Collectors.toList());
+
+
+    // Fetch seller information if exists
+    Optional<Seller> sellerOptional = sellerRepository.findByUser_Id(userDetails.getId());
+    JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
+            userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag());
+
+    if (sellerOptional.isPresent()) {
+      Seller seller = sellerOptional.get();
+      jwtResponse.setSeller(seller); // Append Seller to JwtResponse
+    }
+    return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
+
+
+  }
+
 
   @PostMapping("/forget-password")
   @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")

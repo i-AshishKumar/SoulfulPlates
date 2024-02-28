@@ -6,6 +6,7 @@ import com.Group11.soulfulplates.service.WishlistServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,22 +19,21 @@ public class WishlistController {
     @Autowired
     private WishlistServiceImpl wishlistService;
 
+    @PreAuthorize("hasRole('ROLE_BUYER')")
     @GetMapping("/getAll")
     public List<Wishlist> getAllWishlists() {
         return wishlistService.getAllWishlists();
     }
 
+    @PreAuthorize("hasRole('ROLE_BUYER')")
     @GetMapping( "/{id}")
     public ResponseEntity<MessageResponse> getWishlistById(@PathVariable Long id) {
         Optional<Wishlist> wishlist = wishlistService.getWishlistById(id);
-        if (wishlist.isPresent()) {
-            return ResponseEntity.ok(new MessageResponse(1, "Wishlist found", wishlist.get()));
-        } else {
-            return ResponseEntity.ok(new MessageResponse(-1, "Wishlist not found", null));
-        }
+        return wishlist.map(value -> ResponseEntity.ok(new MessageResponse(1, "Wishlist found", value))).orElseGet(() -> ResponseEntity.ok(new MessageResponse(-1, "Wishlist not found", null)));
     }
 
 //    Needs Improvement
+    @PreAuthorize("hasRole('ROLE_BUYER')")
     @PostMapping("/add")
     public ResponseEntity<MessageResponse> createWishlist(@RequestBody WishlistRequest wishlistRequest) {
         System.out.println(wishlistRequest);
@@ -57,6 +57,7 @@ public class WishlistController {
 //        }
 //    }
 
+    @PreAuthorize("hasRole('ROLE_BUYER')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<MessageResponse> deleteWishlist(@PathVariable Long id) {
         boolean deleted = wishlistService.deleteWishlist(id);
