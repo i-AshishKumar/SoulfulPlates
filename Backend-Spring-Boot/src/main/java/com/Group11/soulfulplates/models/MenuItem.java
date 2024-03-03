@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "menu_items")
 public class MenuItem {
-    public MenuItem() { }
 
 
     @Id
@@ -15,7 +14,7 @@ public class MenuItem {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id", nullable = false)
-    private Long seller;
+    private Seller seller;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -39,6 +38,12 @@ public class MenuItem {
     @Column(name = "category")
     private String category;
 
+    // Constructor
+    public MenuItem(){
+        this.seller = new Seller();
+
+    }
+
     // Getters and setters
     public Long getMenuItemId() {
         return menuItemId;
@@ -49,14 +54,12 @@ public class MenuItem {
         return menuItemId;
     }
 
-    public Long getSellerId() {
-        return this.seller;
+    public Seller getSeller() {
+        return seller;
     }
 
-    public void setSellerId(Long sellerId) {
-        if(this.seller != null) {
-            this.seller = sellerId;
-        }
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
     public String getName() {
@@ -115,3 +118,18 @@ public class MenuItem {
         this.category = category;
     }
 }
+
+/*
+* {
+    "menuItemId": 1,
+    "seller": 1,
+    "name": "sambar idli",
+    "description": "spicy tangy side with steamed rice cakes",
+    "image": "idlisambar.png",
+    "price": 50,
+    "type": "ONCE",
+    "isActive": true,
+    "category": "breakfast"
+}
+*
+* */
