@@ -22,6 +22,8 @@ public class AuthControllerTest {
     @Mock
     UserRepository userRepository;
 
+
+
     @InjectMocks
     AuthController auth;
 
@@ -57,6 +59,11 @@ public class AuthControllerTest {
 
         when(userRepository.existsByEmail(anyString())).thenReturn(true);
         assertEquals(ResponseEntity.badRequest().body(m),auth.registerUser(signupRequest));
+    }
+
+    @Test
+    void testRegisterSuccessful(){
+
     }
 
 
