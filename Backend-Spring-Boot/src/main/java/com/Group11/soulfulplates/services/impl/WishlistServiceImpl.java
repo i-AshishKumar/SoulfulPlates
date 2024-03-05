@@ -1,4 +1,4 @@
-package com.Group11.soulfulplates.service;
+package com.Group11.soulfulplates.services.impl;
 
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.models.Wishlist;
