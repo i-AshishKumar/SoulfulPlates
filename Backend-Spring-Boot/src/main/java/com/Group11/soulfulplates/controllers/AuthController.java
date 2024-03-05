@@ -35,55 +35,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/auth")
 
 public class AuthController {
-  @PostMapping("/signup")
-  public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-      return ResponseEntity.badRequest()
-              .body(new MessageResponse(-1, "Error: Username is already taken!", null));
-    }
-
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-      return ResponseEntity.badRequest()
-              .body(new MessageResponse(-1, "Error: Email is already in use!", null));
-    }
-
-    // Create a new user
-    User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-            encoder.encode(signUpRequest.getPassword()), signUpRequest.getContactNumber(), signUpRequest.getFirstname());
-
-    Set<Role> roles = new HashSet<>();
-
-    if (signUpRequest.getRole() == null) {
-      Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(buyerRole);
-    } else {
-      signUpRequest.getRole().forEach(role -> {
-        switch (role) {
-          case "admin":
-            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(adminRole);
-            break;
-          case "seller":
-            Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(sellerRole);
-            break;
-          default:
-            Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(buyerRole);
-        }
-      });
-    }
-
-    user.setRoles(roles);
-
-    userRepository.save(user);
-
-    return ResponseEntity.ok(new MessageResponse(1, "User registered successfully!", null));
-  }
 
   @Autowired
   AuthenticationManager authenticationManager;
@@ -103,6 +54,61 @@ public class AuthController {
   @Autowired
   JwtUtils jwtUtils;
 
+  @PostMapping("/signup")
+  public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+      return ResponseEntity.badRequest()
+              .body(new MessageResponse(-1, "Error: Username is already taken!", null));
+    }
+
+    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+      return ResponseEntity.badRequest()
+              .body(new MessageResponse(-1, "Error: Email is already in use!", null));
+    }
+
+    // Create a new user entity
+    User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
+            encoder.encode(signUpRequest.getPassword()), signUpRequest.getContactNumber(), signUpRequest.getFirstname());
+
+    // Set user's roles
+    Set<Role> roles = new HashSet<>();
+    if (signUpRequest.getRole() == null) {
+      Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+      roles.add(buyerRole);
+    } else {
+      signUpRequest.getRole().forEach(role -> {
+        switch (role) {
+          case "admin":
+            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(adminRole);
+            break;
+          case "seller":
+            Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(sellerRole);
+
+            // Create a new seller entity and associate it with the user
+            Seller seller = new Seller();
+            seller.setUser(user);
+            user.setSeller(seller); // Set the seller in the user entity
+            break;
+          default:
+            Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(buyerRole);
+        }
+      });
+    }
+    user.setRoles(roles);
+
+    // Save the user entity
+    userRepository.save(user);
+
+    return ResponseEntity.ok(new MessageResponse(1, "User registered successfully!", null));
+  }
+
   @PostMapping("/signin")
   public ResponseEntity<MessageResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
     Authentication authentication = authenticationManager.authenticate(
@@ -116,19 +122,23 @@ public class AuthController {
             .map(Object::toString)
             .collect(Collectors.toList());
 
-
     // Fetch seller information if exists
     Optional<Seller> sellerOptional = sellerRepository.findByUser_Id(userDetails.getId());
-    JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
-            userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag());
 
+    // If seller details exist, append them to JwtResponse
     if (sellerOptional.isPresent()) {
       Seller seller = sellerOptional.get();
-      jwtResponse.setSeller(seller); // Append Seller to JwtResponse
+      JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
+              userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag(),
+      seller.getSellerId(), seller.getSellerName(), seller.getSellerEmail(), seller.getContactNumber() );
+      return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
+    }else{
+      // Create JwtResponse without seller details
+      JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
+              userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag());
+      return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
+
     }
-    return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
-
-
   }
 
 

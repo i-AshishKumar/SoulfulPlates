@@ -16,7 +16,11 @@ public class JwtResponse {
   private String firstname;
   private String contactNumber;
   private boolean notificationFlag;
-  private Seller seller; // Add Seller field
+  private Long sellerId;
+  private String sellerName;
+  private String sellerEmail;
+  private String sellerContactNumber;
+
 
   // Constructor without Seller
   public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, String contactNumber, String firstname, boolean notificationFlag) {
@@ -30,11 +34,19 @@ public class JwtResponse {
     this.contactNumber = contactNumber;
   }
 
-  // Constructor with Seller
-  public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, String contactNumber, String firstname, boolean notificationFlag, Seller seller) {
-    this(accessToken, id, username, email, roles, contactNumber, firstname, notificationFlag); // Call the constructor without Seller
-      this.seller = seller; // Set Seller
+
+  public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, String contactNumber, String firstname, boolean notificationFlag, Long sellerId, String sellerName, String sellerEmail, String sellerContactNumber) {
+    this.token = accessToken;
+    this.id = id;
+    this.username = username;
+    this.email = email;
+    this.roles = roles;
+    this.firstname = firstname;
+    this.notificationFlag = notificationFlag;
+    this.contactNumber = contactNumber;
+    this.sellerId = sellerId;
+    this.sellerName = sellerName;
+    this.sellerEmail = sellerEmail;
+    this.sellerContactNumber = sellerContactNumber;
   }
-
-
 }

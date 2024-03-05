@@ -54,7 +54,7 @@ public class User {
   private Set<Role> roles = new HashSet<>();
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private Seller seller; // This establishes the relationship with the Seller entity
+  private Seller seller;
 
   public User() {
   }

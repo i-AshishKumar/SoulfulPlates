@@ -13,10 +13,10 @@ public class Seller {
     @Column(name = "seller_id")
     private Long sellerId;
 
-    @Column(name = "sellerName", nullable = false)
+    @Column(name = "sellerName", unique = true)
     private String sellerName;
 
-    @Column(name = "sellerEmail", nullable = false, unique = true)
+    @Column(name = "sellerEmail", unique = true)
     private String sellerEmail;
 
     @Column(name = "contact_number")
@@ -24,7 +24,7 @@ public class Seller {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user; // This establishes the relationship with the User entity
+    private User user;
 
     public String getName() {
         return sellerName;
