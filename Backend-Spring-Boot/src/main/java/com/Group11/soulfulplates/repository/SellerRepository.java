@@ -1,7 +1,6 @@
 package com.Group11.soulfulplates.repository;
 
 import com.Group11.soulfulplates.models.Seller;
-import lombok.Data;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

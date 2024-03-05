@@ -2,7 +2,7 @@ package com.Group11.soulfulplates.controllers;
 import com.Group11.soulfulplates.models.Wishlist;
 import com.Group11.soulfulplates.payload.request.WishlistRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.service.WishlistServiceImpl;
+import com.Group11.soulfulplates.services.impl.WishlistServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
