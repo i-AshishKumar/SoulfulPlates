@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:soulful_plates/model/profile/user_profile.dart';
+import 'package:soulful_plates/network/network_interfaces/end_points.dart';
 import 'package:soulful_plates/utils/shared_prefs.dart';
 
 import '../../../app_singleton.dart';
@@ -29,12 +30,12 @@ class LoginController extends BaseController {
     try {
       setLoaderState(ViewStateEnum.busy);
       final UserProfile? userModel = await ApiCall().call<UserProfile>(
-          method: RequestMethod.get,
-          endPoint: "/api/login",
+          method: RequestMethod.post,
+          endPoint: EndPoints.login,
           obj: UserProfile(),
           apiCallType: ApiCallType.simple,
-          queryParameters: {
-            "email": emailEditingController.text.trim(),
+          parameters: {
+            "username": emailEditingController.text.trim(),
             "password": passwordEditingController.text.trim()
           });
       if (userModel != null) {
@@ -57,45 +58,6 @@ class LoginController extends BaseController {
       setLoaderState(ViewStateEnum.idle);
       debugPrint('This is error $e');
       Utils.showSuccessToast(e.toString(), true);
-    }
-  }
-
-  signIn() async {
-    setLoaderState(ViewStateEnum.busy);
-    await Future.delayed(const Duration(seconds: 2));
-    setLoaderState(ViewStateEnum.idle);
-    if (passwordEditingController.text.trim() == 'Test@12345' ||
-        passwordEditingController.text.trim() == 'Nikul@1234') {
-      if (AppSingleton.isBuyer()) {
-        UserProfile userModel = UserProfile(
-            username: "Nikul Buyer",
-            email: emailEditingController.text,
-            phoneNumber: '8866534671');
-        Utils.addMenuItems();
-
-        await UserPreference.setValue(
-            key: SharedPrefKey.userProfileData.name, value: userModel.toJson());
-        // await UserPreference.setValue(
-        //     key: SharedPrefKey.token.name, value: userModel.token);
-        AppSingleton.loggedInUserProfile = userModel;
-      } else {
-        UserProfile userModel = UserProfile(
-            username: "Nikul Seller",
-            email: emailEditingController.text,
-            phoneNumber: '9106889472');
-        Utils.addMenuItems();
-
-        await UserPreference.setValue(
-            key: SharedPrefKey.userProfileData.name, value: userModel.toJson());
-        // await UserPreference.setValue(
-        //     key: SharedPrefKey.token.name, value: userModel.token);
-        AppSingleton.loggedInUserProfile = userModel;
-      }
-
-      Utils.showSuccessToast("Logged in successfully.", false);
-      Get.offAllNamed(dashboardViewRoute);
-    } else {
-      Utils.showSuccessToast("Sign in failed. Please try again.", false);
     }
   }
 }
