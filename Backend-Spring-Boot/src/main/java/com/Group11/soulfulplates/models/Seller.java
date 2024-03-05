@@ -1,24 +1,30 @@
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
-@Table(name = "seller")
-
+@Data
+@Table(name = "sellers")
 public class Seller {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seller_id", unique = true)
     private Long sellerId;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "contact_number")
     private String contactNumber;
+
+    @Column(name = "seller_email", unique = true)
+    private String sellerEmail;
+
+    @Column(name = "seller_name", unique = true)
+    private String sellerName;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
@@ -28,7 +34,7 @@ public class Seller {
         sellerAddress = new SellerAddress();
     }
 
-    public Seller(SellerAddress SellerAddress) {
+    public Seller(SellerAddress sellerAddress) {
         this.sellerAddress = sellerAddress;
     }
 
@@ -42,19 +48,19 @@ public class Seller {
     }
 
     public String getName() {
-        return name;
+        return sellerName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String sellerName) {
+        this.sellerName = sellerName;
     }
 
     public String getEmail() {
-        return email;
+        return sellerEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String sellerEmail) {
+        this.sellerEmail = sellerEmail;
     }
 
     public String getContactNumber() {
