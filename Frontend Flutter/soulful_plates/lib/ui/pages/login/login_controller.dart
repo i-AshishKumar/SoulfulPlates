@@ -16,9 +16,9 @@ class LoginController extends BaseController {
   bool obscureText = true;
 
   TextEditingController emailEditingController =
-      TextEditingController(text: 'nikul@dal.ca');
+      TextEditingController(text: '');
   TextEditingController passwordEditingController =
-      TextEditingController(text: 'Nikul@1234');
+      TextEditingController(text: '');
 
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
@@ -66,17 +66,32 @@ class LoginController extends BaseController {
     setLoaderState(ViewStateEnum.idle);
     if (passwordEditingController.text.trim() == 'Test@12345' ||
         passwordEditingController.text.trim() == 'Nikul@1234') {
-      UserProfile userModel = UserProfile(
-          username: "NikulKukadiya",
-          email: emailEditingController.text,
-          phoneNumber: '8866534671');
-      Utils.addMenuItems();
+      if (AppSingleton.isBuyer()) {
+        UserProfile userModel = UserProfile(
+            username: "Nikul Buyer",
+            email: emailEditingController.text,
+            phoneNumber: '8866534671');
+        Utils.addMenuItems();
 
-      await UserPreference.setValue(
-          key: SharedPrefKey.userProfileData.name, value: userModel.toJson());
-      // await UserPreference.setValue(
-      //     key: SharedPrefKey.token.name, value: userModel.token);
-      AppSingleton.loggedInUserProfile = userModel;
+        await UserPreference.setValue(
+            key: SharedPrefKey.userProfileData.name, value: userModel.toJson());
+        // await UserPreference.setValue(
+        //     key: SharedPrefKey.token.name, value: userModel.token);
+        AppSingleton.loggedInUserProfile = userModel;
+      } else {
+        UserProfile userModel = UserProfile(
+            username: "Nikul Seller",
+            email: emailEditingController.text,
+            phoneNumber: '9106889472');
+        Utils.addMenuItems();
+
+        await UserPreference.setValue(
+            key: SharedPrefKey.userProfileData.name, value: userModel.toJson());
+        // await UserPreference.setValue(
+        //     key: SharedPrefKey.token.name, value: userModel.token);
+        AppSingleton.loggedInUserProfile = userModel;
+      }
+
       Utils.showSuccessToast("Logged in successfully.", false);
       Get.offAllNamed(dashboardViewRoute);
     } else {

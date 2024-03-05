@@ -47,7 +47,7 @@ class CreateMenuController extends BaseController {
   List<String> type = ["Veg", "NonVeg", "Eggs"];
   String selectType = "Veg";
 
-  List<String> category = ["Starter", "Main Course", "Salads"];
+  List<String> category = ["Fast Food", "Main Course", "Starter"];
   String selectCategory = "Starter";
 
   List<String> subCategory = ["Veg Starter", "Non-Veg Starter"];

@@ -36,53 +36,55 @@ class MenuCategoryScreen extends GetView<MenuCategoryController>
   }
 
   Widget getBody(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          "Category List",
-          style: AppTextStyles.textStyleBlack16With700,
-        ),
-        ListView.separated(
-          itemCount: controller.menuCategories.length,
-          shrinkWrap: true,
-          itemBuilder: (context, categoryIndex) {
-            MenuCategory category = controller.menuCategories[categoryIndex];
-            return ListTile(
-              title: Text(category.name),
-              onTap: () {
-                controller.selectedCategory = category;
-                // controller.categoryController.text = category.name;
-                controller.update();
-              },
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return 1.rVerticalGreySizedBox();
-          },
-        ),
-        AppTextField(
-          controller: controller.categoryController,
-          hintText: 'Add New Category Name',
-        ).visibleWhen(isVisible: controller.selectedCategory == null),
-        16
-            .rVerticalSizedBox()
-            .visibleWhen(isVisible: controller.selectedCategory == null),
-        (controller.state == ViewStateEnum.busy
-                ? Center(
-                    child: const CircularProgressIndicator(),
-                  )
-                : BaseButton(
-                    onSubmit: () {
-                      controller.addCategory();
-                    },
-                    text: 'Add Category',
-                  ))
-            .visibleWhen(isVisible: controller.selectedCategory == null),
-        16.rVerticalSizedBox(),
-        ...getSubcategoryWidget(),
-      ],
-    ).paddingAll16();
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            "Category List",
+            style: AppTextStyles.textStyleBlack16With700,
+          ),
+          ListView.separated(
+            itemCount: controller.menuCategories.length,
+            shrinkWrap: true,
+            itemBuilder: (context, categoryIndex) {
+              MenuCategory category = controller.menuCategories[categoryIndex];
+              return ListTile(
+                title: Text(category.name),
+                onTap: () {
+                  controller.selectedCategory = category;
+                  // controller.categoryController.text = category.name;
+                  controller.update();
+                },
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return 1.rVerticalGreySizedBox();
+            },
+          ),
+          AppTextField(
+            controller: controller.categoryController,
+            hintText: 'Add New Category Name',
+          ).visibleWhen(isVisible: controller.selectedCategory == null),
+          16
+              .rVerticalSizedBox()
+              .visibleWhen(isVisible: controller.selectedCategory == null),
+          (controller.state == ViewStateEnum.busy
+                  ? Center(
+                      child: const CircularProgressIndicator(),
+                    )
+                  : BaseButton(
+                      onSubmit: () {
+                        controller.addCategory();
+                      },
+                      text: 'Add Category',
+                    ))
+              .visibleWhen(isVisible: controller.selectedCategory == null),
+          16.rVerticalSizedBox(),
+          ...getSubcategoryWidget(),
+        ],
+      ).paddingAll16(),
+    );
   }
 
   List<Widget> getSubcategoryWidget() {

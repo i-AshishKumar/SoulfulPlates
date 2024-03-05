@@ -36,6 +36,12 @@ class SignUpController extends BaseController {
   Future<void> signUpUser({data}) async {
     try {
       setLoaderState(ViewStateEnum.busy);
+      Utils.showSuccessToast("Account created successfully.", true);
+      onWidgetDidBuild(callback: () {
+        Get.offAllNamed(loginViewRoute);
+      });
+      setLoaderState(ViewStateEnum.idle);
+      return;
 
       var response = await ApiCall().call<UserProfile>(
           method: RequestMethod.post,

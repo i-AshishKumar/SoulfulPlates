@@ -207,12 +207,12 @@ class Utils {
     );
 
     MenuItemModel burgerItem = MenuItemModel(
-      itemName: "Burger",
+      itemName: "Chicken Burger",
       itemImage: "",
       itemPrice: "8",
       type: "Eggs",
       category: "Fast Food",
-      subCategory: "Quick Bites",
+      subCategory: "Burgers",
       servingType: 1,
       portion: "Regular",
       inStock: true,
@@ -226,7 +226,7 @@ class Utils {
       itemPrice: "4",
       type: "Non-Veg",
       category: "Starter",
-      subCategory: "Fried",
+      subCategory: "Veg Starter",
       servingType: 1,
       portion: "Regular",
       inStock: true,
@@ -235,13 +235,14 @@ class Utils {
     );
 
     // Creating subcategories with menu items
-    SubCategory quickBites =
-        SubCategory("Quick Bites", [pizzaItem, burgerItem]);
-    SubCategory friedItems = SubCategory("Fried", [friesItem]);
+    SubCategory quickBites = SubCategory("Quick Bites", [pizzaItem]);
+    SubCategory burgers = SubCategory("Quick Bites", [burgerItem]);
+    SubCategory friedItems = SubCategory("Veg Starter", [friesItem]);
 
     // Adding subcategories with items to categories
     addCategoryAndSubCategoryWithItems("Fast Food", "Quick Bites", quickBites);
-    addCategoryAndSubCategoryWithItems("Starter", "Fried", friedItems);
+    addCategoryAndSubCategoryWithItems("Fast Food", "Burgers", burgers);
+    addCategoryAndSubCategoryWithItems("Starter", "Veg Starter", friedItems);
     print("This is the respon se ${menuCategory}");
   }
 }
