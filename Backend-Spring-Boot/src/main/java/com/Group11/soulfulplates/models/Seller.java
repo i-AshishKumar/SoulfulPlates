@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "seller_id")
+    @Column(name = "seller_id", unique = true)
     private Long sellerId;
 
     @Column(name = "name", nullable = false)
@@ -20,17 +20,17 @@ public class Seller {
     @Column(name = "contact_number")
     private String contactNumber;
 
-//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "address_id", nullable = false)
-//    private Address address;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", nullable = false)
+    private SellerAddress sellerAddress;
 
-//    public Seller() {
-//        address = new Address();
-//    }
-//
-//    public Seller(Address address) {
-//        this.address = address;
-//    }
+    public Seller() {
+        sellerAddress = new SellerAddress();
+    }
+
+    public Seller(SellerAddress SellerAddress) {
+        this.sellerAddress = sellerAddress;
+    }
 
     // Getters and setters
     public Long getSellerId() {
@@ -65,19 +65,19 @@ public class Seller {
         this.contactNumber = contactNumber;
     }
 
-//    public Address getAddress() {
-//        return address;
-//    }
-//
-//    public void setAddress(Address address) {
-//        this.address = address;
-//    }
+    public SellerAddress getSellerAddress() {
+        return sellerAddress;
+    }
 
-//    public Long getAddressId() {
-//        return address.getAddressId();
-//    }
-//
-//    public void setAddressId(Long addressId) {
-//        this.address.setAddressId(addressId);
-//    }
+    public void setSellerAddress(SellerAddress sellerAddress) {
+        this.sellerAddress = sellerAddress;
+    }
+
+    public Long getSellerAddressId() {
+        return sellerAddress.getLocationId();
+    }
+
+    public void setSellerAddressId(Long sellerAddressId) {
+        this.sellerAddress.setLocationId(sellerAddressId);
+    }
 }
