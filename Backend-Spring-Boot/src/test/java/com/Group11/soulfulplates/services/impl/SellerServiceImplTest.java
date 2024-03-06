@@ -78,4 +78,19 @@ public class SellerServiceImplTest {
         assertEquals(sellers, result);
         verify(sellerRepository, times(1)).findAll();
     }
+
+    @Test
+    void testUpdateSeller_SuccessfullyUpdated() {
+        // Given
+        Seller seller = new Seller();
+
+        when(sellerRepository.save(seller)).thenReturn(seller);
+
+        // When
+        Seller updatedSeller = sellerService.updateSeller(seller);
+
+        // Then
+        assertEquals(seller, updatedSeller);
+        verify(sellerRepository, times(1)).save(seller);
+    }
 }
