@@ -30,7 +30,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void testgetCartsByUserId_ReturnsCarts() {
+    void testGetCartsByUserId_ReturnsCarts() {
         // Given
         Long userId = 1L;
         List<Cart> expectedCarts = new ArrayList<>();
@@ -46,4 +46,21 @@ class CartServiceImplTest {
         assertEquals(Optional.of(expectedCarts), result);
         verify(cartRepository, times(1)).findAllCartsOfUserId(userId);
     }
+
+    @Test
+    void testExistsByCartId_ReturnsTrue() {
+        // Given
+        Long cartId = 1L;
+
+        when(cartRepository.existsByCartId(cartId)).thenReturn(true);
+
+        // When
+        boolean result = cartService.existsByCartId(cartId);
+
+        // Then
+        assertEquals(true, result);
+        verify(cartRepository, times(1)).existsByCartId(cartId);
+    }
+
+
 }
