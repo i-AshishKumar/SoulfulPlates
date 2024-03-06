@@ -4,6 +4,9 @@ import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.AddressRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,10 +64,23 @@ public class UserController {
         addresses.forEach(address -> address.setUser(null));
 
         // Create a response message with the addresses list directly under the 'data' field
-        MessageResponse response = new MessageResponse(1, "Addresses fetched successfully!", addresses);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode responseData = objectMapper.createArrayNode();
+        for (Address address : addresses) {
+            // Convert the address to a JSON node
+            ObjectNode addressNode = objectMapper.convertValue(address, ObjectNode.class);
+            // Remove the "user" field from the address node
+            addressNode.remove("user");
+            // Add the address node to the response data
+            responseData.add(addressNode);
+        }
+
+        // Create a response message with the modified addresses list
+        MessageResponse response = new MessageResponse(1, "Addresses fetched successfully!", responseData);
 
         return ResponseEntity.ok(response);
     }
+
 
 
     // Update an existing address for a user
