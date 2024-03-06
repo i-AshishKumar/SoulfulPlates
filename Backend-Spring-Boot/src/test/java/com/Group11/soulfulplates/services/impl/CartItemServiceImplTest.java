@@ -199,6 +199,25 @@ public class CartItemServiceImplTest {
         verify(cartItemRepository, times(1)).save(any());
     }
 
+    @Test
+    void updateCartItem_CartItemNotFound() {
+        // Given
+        Long cartItemId = 1L;
+        Integer newQuantity = 5;
+        String newNotes = "Updated notes";
+
+        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.empty());
+
+        // When
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> cartItemService.updateCartItem(cartItemId, newQuantity, newNotes));
+
+        // Then
+        assertEquals("Cart item not found", exception.getMessage());
+        verify(cartItemRepository, times(1)).findById(cartItemId);
+        verify(cartItemRepository, never()).save(any());
+    }
+
 
 
 
