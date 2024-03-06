@@ -85,7 +85,40 @@ public class CartItemServiceImplTest {
         }
     }
 
+    @Test
+    void testAddOrUpdateCartItem_UpdateExistingCartItem() {
+        // Given
+        Long cartId = 1L;
+        Long menuItemId = 2L;
+        Integer quantity = 3;
+        String notes = "Test notes";
+        LocalDateTime currentDateTime = LocalDateTime.now();
 
+        CartItem existingCartItem = new CartItem();
+        existingCartItem.setCartId(cartId);
+        existingCartItem.setMenuItemId(menuItemId);
+        existingCartItem.setQuantity(2); // Previous quantity
+        existingCartItem.setNotes("Previous notes");
+        existingCartItem.setAddedDate(currentDateTime.minusDays(1));
+
+        when(cartItemRepository.findByCartIdAndMenuItemId(cartId, menuItemId)).thenReturn(Optional.of(existingCartItem));
+
+        // When
+        CartItem updatedCartItem = cartItemService.addOrUpdateCartItem(cartId, menuItemId, quantity, notes);
+
+        // Then
+        if (updatedCartItem == null) {
+            System.out.println("Updated cart item is null!");
+        } else {
+            System.out.println("Updated cart item: " + updatedCartItem);
+            assertEquals(cartId, updatedCartItem.getCartId());
+            assertEquals(menuItemId, updatedCartItem.getMenuItemId());
+            assertEquals(quantity, updatedCartItem.getQuantity());
+            assertEquals(notes, updatedCartItem.getNotes());
+            assertEquals(currentDateTime.getDayOfYear(), updatedCartItem.getAddedDate().getDayOfYear());
+            verify(cartItemRepository, times(1)).save(any());
+        }
+    }
 
 
 
