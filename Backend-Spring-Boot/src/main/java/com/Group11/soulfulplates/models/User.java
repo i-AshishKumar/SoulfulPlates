@@ -20,11 +20,16 @@ public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "user_id")
   private Long id;
 
   @NotBlank
   @Size(max = 20)
   private String username;
+
+  @NotBlank
+  @Size(max = 20)
+  private String firstname;
 
   @NotBlank
   @Size(max = 50)
@@ -35,18 +40,33 @@ public class User {
   @Size(max = 120)
   private String password;
 
+  boolean notificationFlag = true;
+
+  @NotBlank
+  @Size(max = 15)
+  @Column(name = "contact_number")
+  private String contactNumber;
+
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "user_roles",
           joinColumns = @JoinColumn(name = "user_id"),
           inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private Seller seller;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private Set<Address> addresses = new HashSet<>();
+
   public User() {
   }
 
-  public User(String username, String email, String password) {
+  public User(String username, String email, String password, String contactNumber, String firstname) {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.contactNumber = contactNumber;
+    this.firstname = firstname;
   }
 }
