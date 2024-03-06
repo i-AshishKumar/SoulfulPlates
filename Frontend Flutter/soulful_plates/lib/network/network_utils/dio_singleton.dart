@@ -24,7 +24,8 @@ class DioSing implements IDioSing {
   //todo set local environment
   @override
   // String url = 'http://192.168.1.9:8080';
-  String url = 'http://192.168.2.143:8080/api';
+  // String url = 'http://192.168.2.143:8080/api/';
+  String url = 'http://134.190.134.158:8080/api/';
   // String url = 'http://localhost:8080/api';
 
   /// Use dio as below
@@ -47,7 +48,7 @@ class DioSing implements IDioSing {
         String token =
             await UserPreference.getValue(key: SharedPrefKey.token.name) ?? '';
         UserProfile? userModel = AppSingleton.loggedInUserProfile;
-        debugPrint('This is called usermodel $userModel ${userModel?.id}');
+        debugPrint('This is called user model $userModel ${userModel?.id}');
         headers = <String, dynamic>{
           'Content-Type': 'application/json',
           'token': token,

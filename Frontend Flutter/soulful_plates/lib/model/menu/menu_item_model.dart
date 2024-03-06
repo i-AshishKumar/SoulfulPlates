@@ -132,8 +132,8 @@ class MenuItemModel implements GenericModel {
 }
 
 class MenuCategory {
-  final String name;
-  final List<SubCategory> subcategories;
+  String name;
+  List<SubCategory> subcategories = [];
 
   MenuCategory(this.name,
       this.subcategories); // Method to add a new subcategory to the current category
@@ -145,8 +145,8 @@ class MenuCategory {
 }
 
 class SubCategory {
-  final String name;
-  final List<MenuItemModel> items;
+  String name;
+  List<MenuItemModel> items = [];
 
   SubCategory(this.name, this.items);
   // Method to add a new menu item to the current subcategory
