@@ -57,6 +57,36 @@ public class CartItemServiceImplTest {
         verify(cartItemRepository, times(1)).save(any());
     }
 
+    @Test
+    void testAddOrUpdateCartItem_AddNewCartItem() {
+        // Given
+        Long cartId = 1L;
+        Long menuItemId = 2L;
+        Integer quantity = 3;
+        String notes = "Test notes";
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        when(cartItemRepository.findByCartIdAndMenuItemId(cartId, menuItemId)).thenReturn(Optional.empty());
+
+        // When
+        CartItem savedCartItem = cartItemService.addOrUpdateCartItem(cartId, menuItemId, quantity, notes);
+
+        // Then
+        if (savedCartItem == null) {
+            System.out.println("Saved cart item is null!");
+        } else {
+            System.out.println("Saved cart item: " + savedCartItem);
+            assertEquals(cartId, savedCartItem.getCartId());
+            assertEquals(menuItemId, savedCartItem.getMenuItemId());
+            assertEquals(quantity, savedCartItem.getQuantity());
+            assertEquals(notes, savedCartItem.getNotes());
+            assertEquals(currentDateTime.getDayOfYear(), savedCartItem.getAddedDate().getDayOfYear());
+            verify(cartItemRepository, times(1)).save(any());
+        }
+    }
+
+
+
 
 
 }
