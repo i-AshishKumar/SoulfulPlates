@@ -95,7 +95,7 @@ public class SellerServiceImplTest {
     }
 
     @Test
-    void deleteSeller_SuccessfullyDeleted() {
+    void testDeleteSeller_SuccessfullyDeleted() {
         // Given
         Long id = 1L;
 
