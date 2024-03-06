@@ -5,19 +5,19 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "sellers")
-public class Seller {
+@Table(name = "stores")
+public class Store {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "seller_id")
-    private Long sellerId;
+    @Column(name = "store_id")
+    private Long storeId;
 
-    @Column(name = "sellerName", unique = true)
-    private String sellerName;
+    @Column(name = "storeName", unique = true)
+    private String storeName;
 
-    @Column(name = "sellerEmail", unique = true)
-    private String sellerEmail;
+    @Column(name = "storeEmail", unique = true)
+    private String storeEmail;
 
     @Column(name = "contact_number")
     private String contactNumber;
@@ -27,6 +27,6 @@ public class Seller {
     private User user;
 
     public String getName() {
-        return sellerName;
+        return storeName;
     }
 }

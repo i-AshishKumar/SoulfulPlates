@@ -53,7 +53,7 @@ public class CartServiceImpl implements CartService {
         // If not, create a new cart
             Cart newCart = new Cart();
             newCart.setUserId(userId);
-            newCart.setSellerId(sellerId);
+            newCart.setStoreId(sellerId);
             newCart.setCreatedDate(LocalDateTime.now());
             newCart.setLastUpdatedDate(LocalDateTime.now());
             return cartRepository.save(newCart);
@@ -65,7 +65,7 @@ public class CartServiceImpl implements CartService {
         // If not, create a new cart
         Cart newCart = new Cart();
         newCart.setUserId(userId);
-        newCart.setSellerId(sellerId);
+        newCart.setStoreId(sellerId);
         newCart.setCreatedDate(LocalDateTime.now());
         newCart.setLastUpdatedDate(LocalDateTime.now());
         cartRepository.updateCart(userId, sellerId, LocalDateTime.now());
@@ -81,14 +81,14 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart getOrCreateCart(Long userId, Long sellerId) {
         // Try to find an existing cart
-        Optional<Cart> existingCart = cartRepository.findByUserIdAndSellerId(userId, sellerId);
+        Optional<Cart> existingCart = cartRepository.findByUserIdAndStoreId(userId, sellerId);
         if (existingCart.isPresent()) {
             return existingCart.get();
         } else {
             // Create a new cart if not found
             Cart newCart = new Cart();
             newCart.setUserId(userId);
-            newCart.setSellerId(sellerId);
+            newCart.setStoreId(sellerId);
             return cartRepository.save(newCart);
         }
     }
@@ -104,7 +104,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getCart(Long userId, Long sellerId){
-        Optional<Cart> existingCart = cartRepository.findByUserIdAndSellerId(userId, sellerId);
+        Optional<Cart> existingCart = cartRepository.findByUserIdAndStoreId(userId, sellerId);
         if (existingCart.isPresent()) {
             return existingCart.get();
         }
