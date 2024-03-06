@@ -62,5 +62,20 @@ class CartServiceImplTest {
         verify(cartRepository, times(1)).existsByCartId(cartId);
     }
 
+    @Test
+    void testExistsByCartId_ReturnsFalse() {
+        // Given
+        Long cartId = 1L;
+
+        when(cartRepository.existsByCartId(cartId)).thenReturn(false);
+
+        // When
+        boolean result = cartService.existsByCartId(cartId);
+
+        // Then
+        assertEquals(false, result);
+        verify(cartRepository, times(1)).existsByCartId(cartId);
+    }
+
 
 }
