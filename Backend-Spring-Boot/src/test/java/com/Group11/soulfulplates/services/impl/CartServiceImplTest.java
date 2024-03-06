@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -75,6 +76,31 @@ class CartServiceImplTest {
         // Then
         assertEquals(false, result);
         verify(cartRepository, times(1)).existsByCartId(cartId);
+    }
+
+    @Test
+    void testCreateCart_SuccessfullyCreated() {
+        // Given
+        Long userId = 1L;
+        Long sellerId = 2L;
+        LocalDateTime now = LocalDateTime.now();
+
+        Cart mockedCart = new Cart();
+        mockedCart.setUserId(userId);
+        mockedCart.setSellerId(sellerId);
+        mockedCart.setCreatedDate(now);
+        mockedCart.setLastUpdatedDate(now);
+
+        // When
+        when(cartRepository.save(any())).thenReturn(mockedCart);
+        Cart createdCart = cartService.createCart(userId, sellerId);
+
+        // Then
+        assertEquals(userId, createdCart.getUserId());
+        assertEquals(sellerId, createdCart.getSellerId());
+        assertEquals(now.getDayOfYear(), createdCart.getCreatedDate().getDayOfYear());
+        assertEquals(now.getDayOfYear(), createdCart.getLastUpdatedDate().getDayOfYear());
+        verify(cartRepository, times(1)).save(any());
     }
 
 
