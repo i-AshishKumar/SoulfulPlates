@@ -30,7 +30,7 @@ public class SellerServiceImplTest {
     }
 
     @Test
-    void createSeller_SuccessfullyCreated() {
+    void testCreateSeller_SuccessfullyCreated() {
         // Given
         Seller seller = new Seller();
 
@@ -45,7 +45,7 @@ public class SellerServiceImplTest {
     }
 
     @Test
-    void getSellerById_ReturnsSeller() {
+    void testGetSellerById_ReturnsSeller() {
         // Given
         Long id = 1L;
         Seller seller = new Seller();
@@ -60,5 +60,22 @@ public class SellerServiceImplTest {
         assertTrue(result.isPresent());
         assertEquals(seller, result.get());
         verify(sellerRepository, times(1)).findById(id);
+    }
+
+    @Test
+    void testGetAllSellers_ReturnsAllSellers() {
+        // Given
+        List<Seller> sellers = new ArrayList<>();
+        sellers.add(new Seller());
+        sellers.add(new Seller());
+
+        when(sellerRepository.findAll()).thenReturn(sellers);
+
+        // When
+        List<Seller> result = sellerService.getAllSellers();
+
+        // Then
+        assertEquals(sellers, result);
+        verify(sellerRepository, times(1)).findAll();
     }
 }
