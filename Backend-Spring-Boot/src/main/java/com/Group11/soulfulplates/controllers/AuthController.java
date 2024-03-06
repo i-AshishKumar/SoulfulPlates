@@ -2,7 +2,7 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.ERole;
 import com.Group11.soulfulplates.models.Role;
-import com.Group11.soulfulplates.models.Seller;
+import com.Group11.soulfulplates.models.Store;
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.request.ForgetPasswordRequest;
 import com.Group11.soulfulplates.payload.request.LoginRequest;
@@ -12,7 +12,7 @@ import com.Group11.soulfulplates.payload.response.JwtResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.payload.response.OtpResponse;
 import com.Group11.soulfulplates.repository.RoleRepository;
-import com.Group11.soulfulplates.repository.SellerRepository;
+import com.Group11.soulfulplates.repository.StoreRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.security.jwt.JwtUtils;
 import com.Group11.soulfulplates.security.services.UserDetailsImpl;
@@ -43,7 +43,7 @@ public class AuthController {
   UserRepository userRepository;
 
   @Autowired
-  SellerRepository sellerRepository;
+  StoreRepository storeRepository;
 
   @Autowired
   RoleRepository roleRepository;
@@ -84,15 +84,15 @@ public class AuthController {
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(adminRole);
             break;
-          case "seller":
+          case "store":
             Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(sellerRole);
 
-            // Create a new seller entity and associate it with the user
-            Seller seller = new Seller();
-            seller.setUser(user);
-            user.setSeller(seller); // Set the seller in the user entity
+            // Create a new store entity and associate it with the user
+            Store store = new Store();
+            store.setUser(user);
+            user.setStore(store); // Set the store in the user entity
             break;
           default:
             Role buyerRole = roleRepository.findByName(ERole.ROLE_BUYER)
@@ -122,18 +122,18 @@ public class AuthController {
             .map(Object::toString)
             .collect(Collectors.toList());
 
-    // Fetch seller information if exists
-    Optional<Seller> sellerOptional = sellerRepository.findByUser_Id(userDetails.getId());
+    // Fetch store information if exists
+    Optional<Store> sellerOptional = storeRepository.findByUser_Id(userDetails.getId());
 
-    // If seller details exist, append them to JwtResponse
+    // If store details exist, append them to JwtResponse
     if (sellerOptional.isPresent()) {
-      Seller seller = sellerOptional.get();
+      Store store = sellerOptional.get();
       JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
               userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag(),
-      seller.getSellerId(), seller.getSellerName(), seller.getSellerEmail(), seller.getContactNumber() );
+      store.getStoreId(), store.getStoreName(), store.getStoreEmail(), store.getContactNumber() );
       return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
     }else{
-      // Create JwtResponse without seller details
+      // Create JwtResponse without store details
       JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
               userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag());
       return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
@@ -143,7 +143,7 @@ public class AuthController {
 
 
   @PostMapping("/forget-password")
-  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+//  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
   public ResponseEntity<MessageResponse> generateForgetPasswordCode(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
     if (userRepository.existsByEmail(forgetPasswordRequest.getEmail())) {
       try {
@@ -160,7 +160,7 @@ public class AuthController {
     }
   }
   @PostMapping("/reset-password")
-  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+//  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
   public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
     if (userRepository.existsByEmail(resetPasswordRequest.getEmail())) {
       try {

@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.Group11.soulfulplates.services.SellerService;
+import com.Group11.soulfulplates.services.StoreService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,12 +32,12 @@ public class CartController {
     CartRepository cartRepository;
 
     @Autowired
-    private final SellerService sellerService;
+    private final StoreService storeService;
 
     @Autowired
-    public CartController(CartService cartService, SellerService sellerService, CartItemService cartItemService) {
+    public CartController(CartService cartService, StoreService storeService, CartItemService cartItemService) {
         this.cartService = cartService;
-        this.sellerService = sellerService; // Initialize via constructor
+        this.storeService = storeService; // Initialize via constructor
         this.cartItemService = cartItemService;
     }
 
@@ -57,46 +57,46 @@ public class CartController {
 
     @PostMapping("/createCart")
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public ResponseEntity<?> create(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long sellerId) {
+    public ResponseEntity<?> create(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long storeId) {
         // Check if userId is provided and valid
         if (userId == null || !userRepository.existsById(userId)) {
             return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid userId.", null));
         }
 
-        // Check if sellerId is provided and valid
-        if (sellerId == null || !sellerService.existsById(sellerId)) {
-            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid sellerId.", null));
+        // Check if storeId is provided and valid
+        if (storeId == null || !storeService.existsById(storeId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid storeId.", null));
         }
 
         // Check if cart is present
-        if (cartRepository.findByUserIdAndSellerId(userId, sellerId).isPresent()) {
-            return ResponseEntity.badRequest().body(new ResponseObject(1, "Cart is already present", cartRepository.findByUserIdAndSellerId(userId, sellerId)));
+        if (cartRepository.findByUserIdAndStoreId(userId, storeId).isPresent()) {
+            return ResponseEntity.badRequest().body(new ResponseObject(1, "Cart is already present", cartRepository.findByUserIdAndStoreId(userId, storeId)));
         }
 
-        Cart cart = cartService.createCart(userId, sellerId);
+        Cart cart = cartService.createCart(userId, storeId);
 
         return ResponseEntity.ok(new MessageResponse(1, "Cart Created successfully!", cart));
     }
 
     @PostMapping("/createOrUpdate")
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public ResponseEntity<?> createOrUpdateCart(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long sellerId) {
+    public ResponseEntity<?> createOrUpdateCart(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long storeId) {
         // Check if userId is provided and valid
         if (userId == null || !userRepository.existsById(userId)) {
             return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid userId.", null));
         }
 
-        // Check if sellerId is provided and valid
-        if (sellerId == null || !sellerService.existsById(sellerId)) {
-            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid sellerId.", null));
+        // Check if storeId is provided and valid
+        if (storeId == null || !storeService.existsById(storeId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid storeId.", null));
         }
 
         // Check if cart is present
-        if (cartRepository.findByUserIdAndSellerId(userId, sellerId).isPresent()) {
-            cartService.updateCart(userId, sellerId);
+        if (cartRepository.findByUserIdAndStoreId(userId, storeId).isPresent()) {
+            cartService.updateCart(userId, storeId);
             return ResponseEntity.badRequest().body(new ResponseObject(1, "Cart Updated Successfully", userId));
         }
-        Cart cart = cartService.createCart(userId, sellerId);
+        Cart cart = cartService.createCart(userId, storeId);
 
         return ResponseEntity.ok(new MessageResponse(1, "Cart Created successfully!", cart));
     }
@@ -113,18 +113,18 @@ public class CartController {
 
     @PutMapping("/updateCartItem")
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public ResponseEntity<?> updateCartItem(@RequestParam Long userId, @RequestParam Long sellerId, @RequestBody CartItemDto cartItemDto) {
+    public ResponseEntity<?> updateCartItem(@RequestParam Long userId, @RequestParam Long storeId, @RequestBody CartItemDto cartItemDto) {
         // Check if userId is provided and valid
         if (userId == null || !userRepository.existsById(userId)) {
             return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid userId.", null));
         }
 
-        // Check if sellerId is provided and valid
-        if (sellerId == null || !sellerService.existsById(sellerId)) {
-            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid sellerId.", null));
+        // Check if storeId is provided and valid
+        if (storeId == null || !storeService.existsById(storeId)) {
+            return ResponseEntity.badRequest().body(new ResponseObject(-1, "Invalid storeId.", null));
         }
 
-        Cart cart = cartService.getOrCreateCart(userId, sellerId);
+        Cart cart = cartService.getOrCreateCart(userId, storeId);
         CartItem updatedCartItem = cartItemService.addOrUpdateCartItem(cart.getCartId(), cartItemDto.getMenuItemId(), cartItemDto.getQuantity(), cartItemDto.getNotes());
         return ResponseEntity.ok(new MessageResponse(1, "Cart Updated successfully!", updatedCartItem));
     }
