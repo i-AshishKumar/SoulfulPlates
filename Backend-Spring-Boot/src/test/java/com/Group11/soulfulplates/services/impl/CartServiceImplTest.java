@@ -4,6 +4,7 @@ import com.Group11.soulfulplates.models.Cart;
 import com.Group11.soulfulplates.repository.CartRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -17,12 +18,17 @@ import static org.mockito.Mockito.*;
 
 class CartServiceImplTest {
 
+
+    @InjectMocks
     private CartServiceImpl cartService;
 
+    @Mock
     private CartItemServiceImpl cartItemService;
 
     @Mock
     private CartRepository cartRepository;
+
+
 
     @BeforeEach
     void setUp() {
@@ -104,7 +110,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void updateCart_SuccessfullyUpdated() {
+    void testUpdateCart_SuccessfullyUpdated() {
         // Given
         Long userId = 1L;
         Long sellerId = 2L;
@@ -115,6 +121,19 @@ class CartServiceImplTest {
 
         // Then
         verify(cartRepository, times(1)).updateCart(eq(userId), eq(sellerId), any(LocalDateTime.class));
+    }
+
+    @Test
+    void testDeleteCartAndItems_SuccessfullyDeleted() {
+        // Given
+        Long cartId = 1L;
+
+        // When
+        cartService.deleteCartAndItems(cartId);
+
+        // Then
+        verify(cartItemService, times(1)).deleteByCartId(cartId);
+        verify(cartRepository, times(1)).deleteById(cartId);
     }
 
 
