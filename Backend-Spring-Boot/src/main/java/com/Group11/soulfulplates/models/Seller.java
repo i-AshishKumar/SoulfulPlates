@@ -1,83 +1,35 @@
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "seller")
-
+@Data
+@Table(name = "sellers")
 public class Seller {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seller_id")
     private Long sellerId;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "sellerName", unique = true)
+    private String sellerName;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "sellerEmail", unique = true)
+    private String sellerEmail;
 
     @Column(name = "contact_number")
     private String contactNumber;
 
-//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "address_id", nullable = false)
-//    private Address address;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-//    public Seller() {
-//        address = new Address();
-//    }
-//
-//    public Seller(Address address) {
-//        this.address = address;
-//    }
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    private Set<Category> categories = new HashSet<>();
 
-    // Getters and setters
-    public Long getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(Long sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
-//    public Address getAddress() {
-//        return address;
-//    }
-//
-//    public void setAddress(Address address) {
-//        this.address = address;
-//    }
-
-//    public Long getAddressId() {
-//        return address.getAddressId();
-//    }
-//
-//    public void setAddressId(Long addressId) {
-//        this.address.setAddressId(addressId);
-//    }
 }
