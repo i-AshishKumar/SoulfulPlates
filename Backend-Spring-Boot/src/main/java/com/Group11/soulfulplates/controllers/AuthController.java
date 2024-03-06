@@ -143,7 +143,7 @@ public class AuthController {
 
 
   @PostMapping("/forget-password")
-  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+//  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
   public ResponseEntity<MessageResponse> generateForgetPasswordCode(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
     if (userRepository.existsByEmail(forgetPasswordRequest.getEmail())) {
       try {
@@ -160,7 +160,7 @@ public class AuthController {
     }
   }
   @PostMapping("/reset-password")
-  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+//  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
   public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
     if (userRepository.existsByEmail(resetPasswordRequest.getEmail())) {
       try {
