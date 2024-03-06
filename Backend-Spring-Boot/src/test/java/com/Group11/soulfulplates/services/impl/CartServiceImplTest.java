@@ -136,5 +136,25 @@ class CartServiceImplTest {
         verify(cartRepository, times(1)).deleteById(cartId);
     }
 
+    @Test
+    void testGetOrCreateCart_ReturnsExistingCart() {
+        // Given
+        Long userId = 1L;
+        Long sellerId = 2L;
+        Cart existingCart = new Cart();
+        existingCart.setUserId(userId);
+        existingCart.setSellerId(sellerId);
+
+        when(cartRepository.findByUserIdAndSellerId(userId, sellerId)).thenReturn(Optional.of(existingCart));
+
+        // When
+        Cart result = cartService.getOrCreateCart(userId, sellerId);
+
+        // Then
+        assertEquals(existingCart, result);
+        verify(cartRepository, times(1)).findByUserIdAndSellerId(userId, sellerId);
+        verify(cartRepository, never()).save(any());
+    }
+
 
 }
