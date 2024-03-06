@@ -155,6 +155,21 @@ public class CartItemServiceImplTest {
         verify(cartItemRepository, times(1)).findById(cartItemId);
     }
 
+    @Test
+    void findById_NonExistingCartItem() {
+        // Given
+        Long cartItemId = 1L;
+
+        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.empty());
+
+        // When
+        Optional<CartItem> result = cartItemService.findById(cartItemId);
+
+        // Then
+        assertEquals(Optional.empty(), result);
+        verify(cartItemRepository, times(1)).findById(cartItemId);
+    }
+
 
 
 }
