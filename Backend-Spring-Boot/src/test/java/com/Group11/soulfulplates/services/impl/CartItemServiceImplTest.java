@@ -120,6 +120,41 @@ public class CartItemServiceImplTest {
         }
     }
 
+    @Test
+    void testFindById_NonExistingCartItem() {
+        // Given
+        Long cartItemId = 1L;
+
+        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.empty());
+
+        // When
+        Optional<CartItem> result = cartItemService.findById(cartItemId);
+
+        // Then
+        assertEquals(Optional.empty(), result);
+        verify(cartItemRepository, times(1)).findById(cartItemId);
+    }
+
+    @Test
+    void findById_ExistingCartItem() {
+        // Given
+        Long cartItemId = 1L;
+        CartItem expectedCartItem = new CartItem();
+        expectedCartItem.setCartId(1L);
+        expectedCartItem.setMenuItemId(2L);
+        expectedCartItem.setQuantity(3);
+        expectedCartItem.setNotes("Test notes");
+
+        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(expectedCartItem));
+
+        // When
+        Optional<CartItem> result = cartItemService.findById(cartItemId);
+
+        // Then
+        assertEquals(Optional.of(expectedCartItem), result);
+        verify(cartItemRepository, times(1)).findById(cartItemId);
+    }
+
 
 
 }
