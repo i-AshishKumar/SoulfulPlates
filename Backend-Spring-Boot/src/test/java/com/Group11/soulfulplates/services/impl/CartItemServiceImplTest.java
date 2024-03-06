@@ -218,7 +218,18 @@ public class CartItemServiceImplTest {
         verify(cartItemRepository, never()).save(any());
     }
 
+    @Test
+    void removeCartItem_SuccessfullyRemoved() {
+        // Given
+        Long cartItemId = 1L;
 
+        // When
+        cartItemService.removeCartItem(cartItemId);
+
+        // Then
+        verify(cartItemRepository, times(1)).deleteById(cartItemId);
+
+    }
 
 
 
