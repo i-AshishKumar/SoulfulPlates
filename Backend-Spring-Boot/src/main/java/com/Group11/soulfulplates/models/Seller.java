@@ -3,6 +3,9 @@ package com.Group11.soulfulplates.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @Table(name = "sellers")
@@ -26,7 +29,7 @@ public class Seller {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public String getName() {
-        return sellerName;
-    }
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    private Set<Category> categories = new HashSet<>();
+
 }
