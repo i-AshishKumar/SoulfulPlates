@@ -251,4 +251,16 @@ public class CartItemServiceImplTest {
         verify(cartItemRepository, times(1)).findByCartId(cartId);
     }
 
+    @Test
+    void deleteByCartId_SuccessfullyDeleted() {
+        // Given
+        Long cartId = 1L;
+
+        // When
+        cartItemService.deleteByCartId(cartId);
+
+        // Then
+        verify(cartItemRepository, times(1)).deleteByCartId(cartId);
+    }
+
 }
