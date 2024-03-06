@@ -103,5 +103,19 @@ class CartServiceImplTest {
         verify(cartRepository, times(1)).save(any());
     }
 
+    @Test
+    void updateCart_SuccessfullyUpdated() {
+        // Given
+        Long userId = 1L;
+        Long sellerId = 2L;
+        LocalDateTime now = LocalDateTime.now();
+
+        // When
+        cartService.updateCart(userId, sellerId);
+
+        // Then
+        verify(cartRepository, times(1)).updateCart(eq(userId), eq(sellerId), any(LocalDateTime.class));
+    }
+
 
 }

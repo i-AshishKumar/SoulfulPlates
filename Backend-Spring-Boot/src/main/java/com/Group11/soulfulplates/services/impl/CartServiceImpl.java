@@ -61,7 +61,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateCart(Long userId, Long sellerId) {
-        System.out.println(5);
+//        System.out.println(5);
         // If not, create a new cart
         Cart newCart = new Cart();
         newCart.setUserId(userId);
