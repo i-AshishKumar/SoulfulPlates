@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -231,6 +233,22 @@ public class CartItemServiceImplTest {
 
     }
 
+    @Test
+    void getCartItemsByCartId_ReturnsCartItems() {
+        // Given
+        Long cartId = 1L;
+        List<CartItem> expectedCartItems = new ArrayList<>();
+        expectedCartItems.add(new CartItem());
+        expectedCartItems.add(new CartItem());
 
+        when(cartItemRepository.findByCartId(cartId)).thenReturn(expectedCartItems);
+
+        // When
+        List<CartItem> result = cartItemService.getCartItemsByCartId(cartId);
+
+        // Then
+        assertEquals(expectedCartItems, result);
+        verify(cartItemRepository, times(1)).findByCartId(cartId);
+    }
 
 }
