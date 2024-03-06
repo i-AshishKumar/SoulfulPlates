@@ -93,4 +93,16 @@ public class SellerServiceImplTest {
         assertEquals(seller, updatedSeller);
         verify(sellerRepository, times(1)).save(seller);
     }
+
+    @Test
+    void deleteSeller_SuccessfullyDeleted() {
+        // Given
+        Long id = 1L;
+
+        // When
+        sellerService.deleteSeller(id);
+
+        // Then
+        verify(sellerRepository, times(1)).deleteById(id);
+    }
 }
