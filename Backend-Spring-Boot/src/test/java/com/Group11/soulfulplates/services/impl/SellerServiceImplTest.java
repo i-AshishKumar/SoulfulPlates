@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class SellerServiceImplTest {
@@ -43,4 +44,21 @@ public class SellerServiceImplTest {
         verify(sellerRepository, times(1)).save(seller);
     }
 
+    @Test
+    void getSellerById_ReturnsSeller() {
+        // Given
+        Long id = 1L;
+        Seller seller = new Seller();
+        seller.setSellerId(id);
+
+        when(sellerRepository.findById(id)).thenReturn(Optional.of(seller));
+
+        // When
+        Optional<Seller> result = sellerService.getSellerById(id);
+
+        // Then
+        assertTrue(result.isPresent());
+        assertEquals(seller, result.get());
+        verify(sellerRepository, times(1)).findById(id);
+    }
 }
