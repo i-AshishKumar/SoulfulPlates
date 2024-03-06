@@ -171,5 +171,36 @@ public class CartItemServiceImplTest {
     }
 
 
+    @Test
+    void updateCartItem_CartItemFound() {
+        // Given
+        Long cartItemId = 1L;
+        Integer newQuantity = 5;
+        String newNotes = "Updated notes";
+
+        CartItem existingCartItem = new CartItem();
+        existingCartItem.setCartItemId(cartItemId);
+        existingCartItem.setCartId(1L);
+        existingCartItem.setMenuItemId(2L);
+        existingCartItem.setQuantity(3);
+        existingCartItem.setNotes("Test notes");
+
+        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(existingCartItem));
+        when(cartItemRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // When
+        CartItem updatedCartItem = cartItemService.updateCartItem(cartItemId, newQuantity, newNotes);
+
+        // Then
+        assertEquals(cartItemId, updatedCartItem.getCartItemId());
+        assertEquals(newQuantity, updatedCartItem.getQuantity());
+        assertEquals(newNotes, updatedCartItem.getNotes());
+        verify(cartItemRepository, times(1)).findById(cartItemId);
+        verify(cartItemRepository, times(1)).save(any());
+    }
+
+
+
+
 
 }
