@@ -84,7 +84,7 @@ public class AuthController {
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(adminRole);
             break;
-          case "store":
+          case "seller":
             Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(sellerRole);
@@ -123,11 +123,11 @@ public class AuthController {
             .collect(Collectors.toList());
 
     // Fetch store information if exists
-    Optional<Store> sellerOptional = storeRepository.findByUser_Id(userDetails.getId());
+    Optional<Store> storeOptional = storeRepository.findByUser_Id(userDetails.getId());
 
     // If store details exist, append them to JwtResponse
-    if (sellerOptional.isPresent()) {
-      Store store = sellerOptional.get();
+    if (storeOptional.isPresent()) {
+      Store store = storeOptional.get();
       JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
               userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag(),
       store.getStoreId(), store.getStoreName(), store.getStoreEmail(), store.getContactNumber() );
