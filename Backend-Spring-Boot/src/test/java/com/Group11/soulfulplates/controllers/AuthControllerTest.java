@@ -2,40 +2,41 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.ERole;
 import com.Group11.soulfulplates.models.Role;
+import com.Group11.soulfulplates.models.Seller;
 import com.Group11.soulfulplates.models.User;
+import com.Group11.soulfulplates.payload.request.LoginRequest;
 import com.Group11.soulfulplates.payload.request.SignupRequest;
+import com.Group11.soulfulplates.payload.response.JwtResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.RoleRepository;
+import com.Group11.soulfulplates.repository.SellerRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
-import org.junit.jupiter.api.BeforeAll;
+import com.Group11.soulfulplates.security.jwt.JwtUtils;
+import com.Group11.soulfulplates.security.services.UserDetailsImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.mockito.stubbing.Answer;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 
 public class AuthControllerTest {
     @Mock
     UserRepository userRepository;
-
-
-    @Mock
-    User user;
 
     @Mock
     private PasswordEncoder encoder;
@@ -45,6 +46,18 @@ public class AuthControllerTest {
 
     @Mock
     private SignupRequest signupRequest;
+
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private SecurityContextHolder securityContextHolder;
+
+    @Mock
+    private SellerRepository sellerRepository;
+
+    @Mock
+    private LoginRequest loginRequest;
 
     @InjectMocks
     AuthController auth;
@@ -72,14 +85,13 @@ public class AuthControllerTest {
 
     @Test
     void testRegisterUserEmailTaken(){
-        MessageResponse m = new MessageResponse(-1,"Error: Email is already in use!",null);
+        MessageResponse m = new MessageResponse(-1, "Error: Email is already in use!", null);
 
-        SignupRequest signupRequest = new SignupRequest();
-
-        when(userRepository.existsByEmail(anyString())).thenReturn(true);
-        assertEquals(ResponseEntity.badRequest().body(m),auth.registerUser(signupRequest));
-        verify(userRepository).existsByEmail(any());
+        when(userRepository.existsByEmail(any())).thenReturn(true);
+        assertEquals(ResponseEntity.badRequest().body(m), auth.registerUser(signupRequest));
     }
+
+
 
     @Test
     void testRegisterSuccessful(){
@@ -95,4 +107,37 @@ public class AuthControllerTest {
     }
 
 
+    @Test
+    void testRegisterUser_Success() {
+        MessageResponse m = new MessageResponse(1,"User registered successfully!",null);
+
+        // Mocking the signUpRequest
+        SignupRequest signUpRequest = new SignupRequest();
+
+        // Mocking the userRepository behavior
+        when(userRepository.existsByUsername(signUpRequest.getUsername())).thenReturn(false);
+        when(userRepository.existsByEmail(signUpRequest.getEmail())).thenReturn(false);
+
+        // Mocking the roleRepository behavior
+        Role buyerRole = new Role(ERole.ROLE_BUYER);
+        when(roleRepository.findByName(ERole.ROLE_BUYER)).thenReturn(java.util.Optional.of(buyerRole));
+
+        // Mocking the passwordEncoder behavior
+        when(encoder.encode(signUpRequest.getPassword())).thenReturn("encodedPassword");
+
+        // Test the registerUser method
+        ResponseEntity<MessageResponse> responseEntity = auth.registerUser(signUpRequest);
+
+        // Verify userRepository.save is called once
+        verify(userRepository, times(1)).save(any());
+
+        // Verify the response
+        assertEquals(1, responseEntity.getBody().getCode());
+        assertEquals(ResponseEntity.ok(m), auth.registerUser(signUpRequest));
+    }
+
+    @Test
+    void testAuthenticateUser(){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+    }
 }
