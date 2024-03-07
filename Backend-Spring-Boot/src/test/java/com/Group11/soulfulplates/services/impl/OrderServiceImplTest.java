@@ -85,4 +85,23 @@ class OrderServiceImplTest {
         verify(cartItemRepository, times(1)).save(any(CartItem.class));
     }
 
+    @Test
+    void testUpdateOrderStatus_OrderNotFound_ReturnsNull() {
+        // Given
+        Long orderId = 1L;
+        String status = "Pending";
+
+        when(orderRepository.existsById(orderId)).thenReturn(false);
+
+        // When
+        Order result = orderService.updateOrderStatus(orderId, status);
+
+        // Then
+        assertNull(result);
+        verify(orderRepository, times(1)).existsById(orderId);
+        verify(orderRepository, never()).findById(orderId);
+        verify(orderRepository, never()).save(any(Order.class));
+    }
+
+
 }
