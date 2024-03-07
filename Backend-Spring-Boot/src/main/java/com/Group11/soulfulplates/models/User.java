@@ -54,7 +54,7 @@ public class User {
   private Set<Role> roles = new HashSet<>();
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private Seller seller;
+  private Store store;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Address> addresses = new HashSet<>();

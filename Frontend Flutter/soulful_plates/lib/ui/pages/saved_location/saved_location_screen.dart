@@ -76,7 +76,7 @@ class SavedLocationScreen extends GetView<SavedLocationController>
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: Utils.locationList.length + 1,
+                          itemCount: Utils.locationList.length,
                           separatorBuilder: (context, index) {
                             return 2.rVerticalGreySizedBox();
                           },

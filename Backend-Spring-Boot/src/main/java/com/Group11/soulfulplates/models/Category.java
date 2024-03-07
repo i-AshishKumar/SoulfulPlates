@@ -19,13 +19,13 @@ public class Category {
     @Column(name = "name", nullable = false)
     private CategoryEnum name;
 
-    // Define the many-to-one relationship with the Seller entity
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id", nullable = false)
-    private Seller seller;
-
-    // Define a set of subcategories for this category
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private Set<SubCategory> subCategories = new HashSet<>();
+//    // Define the many-to-one relationship with the Seller entity
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "store_id", nullable = false)
+//    private Store store;
+//
+//    // Define a set of subcategories for this category
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+//    private Set<SubCategory> subCategories = new HashSet<>();
 
 }

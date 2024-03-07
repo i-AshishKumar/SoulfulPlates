@@ -26,6 +26,11 @@ public class Group11SoulfulPlates implements ApplicationRunner {
 			jdbcTemplate.execute("INSERT INTO roles(name) VALUES('ROLE_SELLER')");
 			jdbcTemplate.execute("INSERT INTO roles(name) VALUES('ROLE_ADMIN')");
 		}
+		if (isTableEmpty("categories")) {
+			jdbcTemplate.execute("INSERT INTO categories(name) VALUES('BREAKFAST')");
+			jdbcTemplate.execute("INSERT INTO categories(name) VALUES('LUNCH')");
+			jdbcTemplate.execute("INSERT INTO categories(name) VALUES('DINNER')");
+		}
 	}
 
 	private boolean isTableEmpty(String tableName) {

@@ -44,7 +44,7 @@ public class CartRepository {
     }
 
     // Find a cart by user ID and serviceProviderId
-    public Optional<Cart> findByUserIdAndSellerId(Long userId, Long sellerId) {
+    public Optional<Cart> findByUserIdAndStoreId(Long userId, Long sellerId) {
         try {
             Cart cart = entityManager.createQuery("SELECT c FROM Cart c WHERE c.user.id = :userId AND c.seller.sellerId = :sellerId", Cart.class)
                     .setParameter("userId", userId)

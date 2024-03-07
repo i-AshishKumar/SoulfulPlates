@@ -21,7 +21,7 @@ public class Cart {
 
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
-    private Seller seller;
+    private Store store;
 
     @Column(name = "last_updated_date", nullable = false)
     private LocalDateTime lastUpdatedDate;
@@ -37,7 +37,7 @@ public class Cart {
 //    }
 
     public Cart () {
-        seller = new Seller();
+        store = new Store();
         user=new User();
     }
 
@@ -50,15 +50,15 @@ public class Cart {
         this.cartId = cartId;
     }
 
-    public void getSellerId(Long sellerId) {
-        if(this.seller!=null) {
-            this.seller.getSellerId();
+    public void getStoreId(Long sellerId) {
+        if(this.store!=null) {
+            this.store.getStoreId();
         }
     }
 
-    public void setSellerId(Long sellerId) {
-        if(this.seller!=null) {
-            this.seller.setSellerId(sellerId);
+    public void setStoreId(Long sellerId) {
+        if(this.store!=null) {
+            this.store.setStoreId(sellerId);
         }
     }
 
@@ -72,8 +72,8 @@ public class Cart {
         }
     }
 
-    public Long getSellerId() {
-        return seller.getSellerId();
+    public Long getStoreId() {
+        return store.getStoreId();
     }
 
     public LocalDateTime getLastUpdatedDate() {
@@ -97,7 +97,7 @@ public class Cart {
         return "Cart{" +
                 "cartId=" + cartId +
                 ", userId=" + user.getId() +
-                ", sellerId=" + seller.getSellerId() +
+                ", sellerId=" + store.getStoreId() +
                 ", lastUpdatedDate=" + lastUpdatedDate +
                 ", createdDate=" + createdDate +
                 '}';

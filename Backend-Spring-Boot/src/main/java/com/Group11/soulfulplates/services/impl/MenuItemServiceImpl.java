@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class MenuItemServiceImpl implements MenuItemService {
+
     private final MenuItemRepository menuItemRepository;
 
     public MenuItemServiceImpl(MenuItemRepository menuItemRepository) {
@@ -17,23 +18,8 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public MenuItem saveOrUpdate(MenuItem menuItem) {
+    public MenuItem addMenuItem(MenuItem menuItem) {
+        // Additional logic if needed
         return menuItemRepository.save(menuItem);
-    }
-
-    @Override
-    public MenuItem findById(Long id) {
-        return menuItemRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("MenuItem not found"));
-    }
-
-    @Override
-    public List<MenuItem> findAll() {
-        return menuItemRepository.findAll();
-    }
-
-    @Override
-    public void delete(Long id) {
-        menuItemRepository.deleteById(id);
     }
 }
