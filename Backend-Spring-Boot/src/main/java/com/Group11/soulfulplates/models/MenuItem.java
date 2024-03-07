@@ -14,7 +14,7 @@ public class MenuItem {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id", nullable = false)
-    private Seller seller;
+    private Store store;
 
     @Column(name = "name", nullable = false)
     private String name;
