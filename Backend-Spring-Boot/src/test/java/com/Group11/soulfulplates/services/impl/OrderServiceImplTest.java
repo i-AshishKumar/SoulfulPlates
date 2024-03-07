@@ -103,5 +103,28 @@ class OrderServiceImplTest {
         verify(orderRepository, never()).save(any(Order.class));
     }
 
+    @Test
+    void testUpdateOrderStatus_OrderFound_SuccessfullyUpdated() {
+        // Given
+        Long orderId = 1L;
+        String status = "Cancelled";
 
+        Order order = new Order();
+        order.setOrderId(orderId);
+
+        when(orderRepository.existsById(orderId)).thenReturn(true);
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        when(orderRepository.save(any(Order.class))).thenReturn(order);
+
+        // When
+        Order result = orderService.updateOrderStatus(orderId, status);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(orderId, result.getOrderId());
+        assertEquals(status, result.getStatus());
+        verify(orderRepository, times(1)).existsById(orderId);
+        verify(orderRepository, times(1)).findById(orderId);
+        verify(orderRepository, times(1)).save(order);
+    }
 }
