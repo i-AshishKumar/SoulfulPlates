@@ -64,6 +64,33 @@ class UserControllerTest {
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, times(1)).save(user);
     }
+    @Test
+    void testCreateAddressForUser_UserExists_AddressCreatedSuccessfully() {
+        // Given
+        Long userId = 1L;
+        Address address = new Address();
+        address.setAddressId(1L);
+
+        User user = new User();
+        user.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(addressRepository.save(address)).thenReturn(address);
+
+        // When
+        ResponseEntity<MessageResponse> responseEntity = userController.createAddressForUser(userId, address);
+
+        // Then
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        MessageResponse response = responseEntity.getBody();
+        assertEquals(1, response.getCode());
+        assertEquals("Address saved successfully!", response.getDescription());
+        verify(userRepository, times(1)).findById(userId);
+        verify(addressRepository, times(1)).save(address);
+        assertEquals(user, address.getUser());
+    }
+
+
 
 
 
