@@ -74,4 +74,15 @@ public class OrderServiceImpl implements OrderService {
         return new CreateOrderResponse(1, temp, "Order Created.");
     }
 
+    @Override
+    public Order updateOrderStatus(Long orderId, String status) {
+        if(!orderRepository.existsById(orderId)){
+            return null;
+        }
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+        order.setStatus(status);
+        return orderRepository.save(order);
+    }
+
 }
