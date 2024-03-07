@@ -90,8 +90,52 @@ class UserControllerTest {
         assertEquals(user, address.getUser());
     }
 
+    @Test
+    void testGetAllAddressesForUser_UserExists_AddressesFetchedSuccessfully() {
+        // Given
+        Long userId = 1L;
+        User user = new User();
+        user.setId(userId);
 
+        List<Address> addresses = new ArrayList<>();
+        Address address1 = new Address();
+        address1.setAddressId(1L);
+        address1.setStreet("123 Main St");
+        address1.setCity("City");
+        address1.setState("State");
+        address1.setPostalCode("12345");
+        address1.setCountry("Country");
+        address1.setUser(user);
+        addresses.add(address1);
 
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(addressRepository.findByUser(user)).thenReturn(addresses);
 
+        // When
+        ResponseEntity<MessageResponse> responseEntity = userController.getAllAddressesForUser(userId);
+
+        // Then
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        MessageResponse response = responseEntity.getBody();
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Addresses fetched successfully!", response.getDescription());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode responseData = (ArrayNode) response.getData();
+        assertEquals(1, responseData.size());
+
+        ObjectNode addressNode = (ObjectNode) responseData.get(0);
+        assertNull(addressNode.get("user"));
+        assertEquals("123 Main St", addressNode.get("street").asText());
+        assertEquals("City", addressNode.get("city").asText());
+        assertEquals("State", addressNode.get("state").asText());
+        assertEquals("12345", addressNode.get("postalCode").asText());
+        assertEquals("Country", addressNode.get("country").asText());
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(addressRepository, times(1)).findByUser(user);
+    }
 
 }
