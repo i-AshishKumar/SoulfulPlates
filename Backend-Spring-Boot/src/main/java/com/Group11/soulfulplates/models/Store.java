@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "store")
+@Table(name = "stores")
 public class Store {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
-    private Long storeId;
+    private long storeId;
 
     @Column(name = "storeName", unique = true)
     private String storeName;
@@ -19,8 +19,11 @@ public class Store {
     @Column(name = "storeEmail", unique = true)
     private String storeEmail;
 
-    @Column(name = "contact_number")
-    private String contactNumber;
+    @Column(name = "storeDescription", unique = true)
+    private String storeDescription;
+
+    @Column(name = "storeContactNumber")
+    private String storeContactNumber;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -51,11 +54,11 @@ public class Store {
     }
 
     public String getContactNumber() {
-        return contactNumber;
+        return storeContactNumber;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setContactNumber(String storeContactNumber) {
+        this.storeContactNumber = storeContactNumber;
     }
 
     public User getUser() {
@@ -64,5 +67,24 @@ public class Store {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getStoreDescription() {
+        return storeDescription;
+    }
+
+    public void setStoreDescription(String storeDescription) {
+        this.storeDescription = storeDescription;
+    }
+
+    @Override
+    public String toString() {
+        return "Store{" +
+                "id=" + storeId +
+                ", name='" + storeName + '\'' +
+                ", description='" + storeDescription + '\'' +
+                ", email='" + storeEmail + '\'' +
+                ", storeContactNumber='" + storeContactNumber + '\'' +
+                '}';
     }
 }
