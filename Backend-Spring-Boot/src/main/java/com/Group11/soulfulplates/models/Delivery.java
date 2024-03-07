@@ -12,8 +12,8 @@ public class Delivery {
 
     // Other fields and relationships
 
-    @OneToOne(mappedBy = "delivery")
-    private Order order;
+//    @OneToOne(mappedBy = "delivery")
+//    private Order order;
 
     // Constructors, getters, and setters
 }

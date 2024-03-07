@@ -3,6 +3,8 @@ package com.Group11.soulfulplates.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Set;
+
 @Entity
 @Data
 @Table(name = "stores")
@@ -28,6 +30,9 @@ public class Store {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Order> orders;
 
     public Long getStoreId() {
         return storeId;
