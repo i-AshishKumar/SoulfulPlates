@@ -1,11 +1,13 @@
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
+@Data
 @Table(name = "cart")
 public class Cart {
 

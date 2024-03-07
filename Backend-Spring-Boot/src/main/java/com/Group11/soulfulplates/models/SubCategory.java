@@ -23,9 +23,8 @@ public class SubCategory {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    // Define a set of items for this subcategory
-//    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL)
-//    private Set<Item> items = new HashSet<>();
+     //Define a set of items for this subcategory
+    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL)
+    private Set<MenuItem> items = new HashSet<>();
 
-    // Constructors, getters, and setters
 }

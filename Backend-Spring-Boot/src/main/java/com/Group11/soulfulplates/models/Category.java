@@ -28,5 +28,4 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<SubCategory> subCategories = new HashSet<>();
 
-    // Constructors, getters, and setters
 }
