@@ -138,4 +138,44 @@ class UserControllerTest {
         verify(addressRepository, times(1)).findByUser(user);
     }
 
+    @Test
+    void testUpdateAddressForUser_UserAndAddressExist_AddressUpdatedSuccessfully() {
+        // Given
+        Long userId = 1L;
+        Long addressId = 1L;
+        Address existingAddress = new Address();
+        existingAddress.setAddressId(addressId);
+        existingAddress.setStreet("Old Street");
+        existingAddress.setCity("Old City");
+
+        Address updatedAddressDetails = new Address();
+        updatedAddressDetails.setStreet("New Street");
+        updatedAddressDetails.setCity("New City");
+
+        User user = new User();
+        user.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(addressRepository.findById(addressId)).thenReturn(Optional.of(existingAddress));
+        when(addressRepository.save(existingAddress)).thenReturn(existingAddress);
+
+        // When
+        ResponseEntity<MessageResponse> responseEntity = userController.updateAddressForUser(userId, addressId, updatedAddressDetails);
+
+        // Then
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        MessageResponse response = responseEntity.getBody();
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Address updated successfully!", response.getDescription());
+
+        assertEquals("New Street", existingAddress.getStreet());
+        assertEquals("New City", existingAddress.getCity());
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(addressRepository, times(1)).findById(addressId);
+        verify(addressRepository, times(1)).save(existingAddress);
+    }
+
 }
