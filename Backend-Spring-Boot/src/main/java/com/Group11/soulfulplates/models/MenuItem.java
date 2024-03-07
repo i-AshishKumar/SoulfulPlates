@@ -40,7 +40,7 @@ public class MenuItem {
 
     // Constructor
     public MenuItem(){
-        this.seller = new Seller();
+        this.store = new Store();
 
     }
 
@@ -54,12 +54,12 @@ public class MenuItem {
         return menuItemId;
     }
 
-    public Seller getSeller() {
-        return seller;
+    public Store getSeller() {
+        return store;
     }
 
-    public void setSeller(Seller seller) {
-        this.seller = seller;
+    public void setSeller(Store seller) {
+        this.store = seller;
     }
 
     public String getName() {

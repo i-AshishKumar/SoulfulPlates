@@ -2,14 +2,14 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.ERole;
 import com.Group11.soulfulplates.models.Role;
-import com.Group11.soulfulplates.models.Seller;
+
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.request.LoginRequest;
 import com.Group11.soulfulplates.payload.request.SignupRequest;
 import com.Group11.soulfulplates.payload.response.JwtResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.RoleRepository;
-import com.Group11.soulfulplates.repository.SellerRepository;
+import com.Group11.soulfulplates.repository.StoreRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.security.jwt.JwtUtils;
 import com.Group11.soulfulplates.security.services.UserDetailsImpl;
@@ -54,7 +54,7 @@ public class AuthControllerTest {
     private SecurityContextHolder securityContextHolder;
 
     @Mock
-    private SellerRepository sellerRepository;
+    private StoreRepository storeRepository;
 
     @Mock
     private LoginRequest loginRequest;

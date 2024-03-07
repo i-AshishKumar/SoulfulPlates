@@ -12,7 +12,7 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "seller_id", referencedColumnName = "seller_id")
-    private Seller seller;
+    private Store seller;
 
     private String categoryName;
 
