@@ -1,10 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/constants/app_text_styles.dart';
 import 'package:soulful_plates/constants/size_config.dart';
 import 'package:soulful_plates/routing/route_names.dart';
+import 'package:soulful_plates/ui/pages/home/home_screen.dart';
 import 'package:soulful_plates/utils/extensions.dart';
 
 import '../../../constants/app_colors.dart';
+import '../../../utils/utils.dart';
 import '../../widgets/base_common_widget.dart';
 import 'restaurant_detail_controller.dart';
 
@@ -16,7 +20,7 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Restaurant Detail"),
+          // title: const Text("Restaurant Detail"),
           actions: [
             InkWell(
               onTap: () {
@@ -58,10 +62,118 @@ class RestaurantDetailScreen extends GetView<RestaurantDetailController>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          16.rVerticalSizedBox(),
-          16.rVerticalSizedBox(),
+          HomeScreen.getRestaurantCard(),
+          Text(
+            "Lunch",
+            style: AppTextStyles.textStyleBlack18With700,
+          ).paddingHorizontal16(),
+          8.rVerticalSizedBox(),
+          Text(
+            "Quick bites",
+            style: AppTextStyles.textStyleBlack16With700,
+          ).paddingHorizontal16(),
+          8.rVerticalSizedBox(),
+          getItemCard(),
+          1.rVerticalGreySizedBox(),
+          getItemCard(),
+          1.rVerticalGreySizedBox(),
+          getItemCard(),
+          1.rVerticalGreySizedBox(),
+          getItemCard(),
+          1.rVerticalGreySizedBox(),
+          getItemCard(),
+          1.rVerticalGreySizedBox(),
+          getItemCard(),
+          1.rVerticalGreySizedBox(),
+          getItemCard(),
         ],
-      ).paddingHorizontal24(),
-    );
+      ),
+    ).paddingAllDefault();
+  }
+
+  Widget getItemCard() {
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          8.rHorizontalSizedBox(),
+          Expanded(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    Utils().getFoodTypeIcon('Veg'),
+                    width: 18.rSize(),
+                    height: 18.rSize(),
+                  ),
+                  4.rHorizontalSizedBox(),
+                  Text(
+                    "Eggs",
+                    style: AppTextStyles.textStyleBlackTwo14With600,
+                  ),
+                  4.rHorizontalSizedBox(),
+                ],
+              ),
+              2.rVerticalSizedBox(),
+              Text(
+                "Punjabi Chhole with Bhature",
+                maxLines: 2,
+                style: AppTextStyles.textStyleBlack16With700,
+              ),
+              2.rVerticalSizedBox(),
+              Text(
+                "\$ 12.45",
+                style: AppTextStyles.textStyleBlackTwo14With600,
+              ),
+              4.rVerticalSizedBox(),
+              Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1.25,
+                      color: AppColor.black2TextColor.withOpacity(0.75),
+                    ),
+                    borderRadius: BorderRadius.circular(40)),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.info_outline,
+                      size: 18,
+                      color: AppColor.black2TextColor,
+                    ),
+                    4.rHorizontalSizedBox(),
+                    Text(
+                      "Item Info",
+                      style: AppTextStyles.textStyleBlackTwo14With600,
+                    ),
+                    4.rHorizontalSizedBox(),
+                  ],
+                ).paddingAll4(),
+              ),
+              4.rVerticalSizedBox(),
+            ],
+          ).paddingAllDefault()),
+          ClipRRect(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+            child: CachedNetworkImage(
+              imageUrl: "https://static.toiimg.com/photo/62601713.cms",
+              fit: BoxFit.fill,
+              color: AppColor.blackTextColor.withOpacity(0.1),
+              colorBlendMode: BlendMode.color,
+              width: 100,
+              height: 100,
+            ),
+          ).paddingUpSide412(),
+        ],
+      ),
+    ).paddingUpSide812();
   }
 }
