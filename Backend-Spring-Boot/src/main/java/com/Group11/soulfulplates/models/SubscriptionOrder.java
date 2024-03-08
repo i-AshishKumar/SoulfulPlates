@@ -27,7 +27,7 @@ public class SubscriptionOrder {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private SubscriptionOrderStatus status;
+    private ESubscriptionOrder status;
 
 
 
