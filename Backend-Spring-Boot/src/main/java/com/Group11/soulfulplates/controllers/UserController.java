@@ -8,13 +8,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -119,4 +124,48 @@ public class UserController {
 
         return ResponseEntity.ok(new MessageResponse(1, "Address deleted successfully!", null));
     }
+
+    @PostMapping("/image/{userId}")
+    public ResponseEntity<MessageResponse> updateUserImage(@PathVariable Long userId,
+                                                           @RequestParam("file") MultipartFile file) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+
+        // Check if the uploaded file is not empty
+        if (file.isEmpty()) {
+            throw new RuntimeException("Failed to store empty file.");
+        }
+
+        String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
+        String fileExtension = StringUtils.getFilenameExtension(originalFilename);
+        String fileNameWithoutExtension = StringUtils.stripFilenameExtension(originalFilename);
+        String fileName = StringUtils.cleanPath(fileNameWithoutExtension + "_" + System.currentTimeMillis() + "." + fileExtension);
+
+        try {
+            // Copy the file to the uploads directory
+            Path uploadsDir = Paths.get("uploads");
+            if (!Files.exists(uploadsDir)) {
+                Files.createDirectories(uploadsDir);
+            }
+            Path filePath = uploadsDir.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath);
+
+            // Update the user's profile image URL
+            String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/uploads/")
+                    .path(fileName)
+                    .toUriString();
+            user.setProfileImageUrl(fileUrl);
+
+//            user.setProfileImageUrl(String.valueOf(filePath));
+
+            userRepository.save(user);
+
+            return ResponseEntity.ok(new MessageResponse(1, "User image updated successfully!", user.getProfileImageUrl()));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store file " + fileName + ". Please try again!", e);
+        }
+    }
+
 }
