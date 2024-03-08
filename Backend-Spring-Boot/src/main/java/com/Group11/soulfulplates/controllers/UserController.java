@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -125,6 +126,9 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse(1, "Address deleted successfully!", null));
     }
 
+    @Value("${upload.path}")
+    private String uploadPath;
+
     @PostMapping("/image/{userId}")
     public ResponseEntity<MessageResponse> updateUserImage(@PathVariable Long userId,
                                                            @RequestParam("file") MultipartFile file) {
@@ -143,8 +147,9 @@ public class UserController {
         String fileName = StringUtils.cleanPath(fileNameWithoutExtension + "_" + System.currentTimeMillis() + "." + fileExtension);
 
         try {
-            // Copy the file to the uploads directory
-            Path uploadsDir = Paths.get("uploads");
+
+            Path uploadsDir = Paths.get(uploadPath);
+
             if (!Files.exists(uploadsDir)) {
                 Files.createDirectories(uploadsDir);
             }
