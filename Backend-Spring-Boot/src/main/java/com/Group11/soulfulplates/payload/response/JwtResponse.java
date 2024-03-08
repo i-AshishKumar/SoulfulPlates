@@ -1,6 +1,6 @@
 package com.Group11.soulfulplates.payload.response;
 
-import com.Group11.soulfulplates.models.Seller;
+import com.Group11.soulfulplates.models.Store;
 import lombok.Data;
 
 import java.util.List;

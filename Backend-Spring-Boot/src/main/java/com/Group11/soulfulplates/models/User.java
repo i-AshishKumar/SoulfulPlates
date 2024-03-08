@@ -40,7 +40,11 @@ public class User {
   @Size(max = 120)
   private String password;
 
+  @Column(name = "notificationFlag")
   boolean notificationFlag = true;
+
+  @Column(name = "profile_image_url")
+  private String profileImageUrl;
 
   @NotBlank
   @Size(max = 15)
@@ -54,7 +58,7 @@ public class User {
   private Set<Role> roles = new HashSet<>();
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private Seller seller;
+  private Store store;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Address> addresses = new HashSet<>();
