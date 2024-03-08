@@ -238,61 +238,58 @@ class CardOne extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         elevation: 2, // Slight elevation
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Left side
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Total Collected',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Left side
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Total Collected',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                8.rVerticalSizedBox(),
+                Text(
+                  '1000.00 CAD',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
-                  8.rVerticalSizedBox(),
-                  Text(
-                    '1000.00 CAD',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                ),
+                12.rVerticalSizedBox(),
+                Text(
+                  '54',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
-                  12.rVerticalSizedBox(),
-                  Text(
-                    '54',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
-              ),
-              // Right side
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    'Today',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  8.rVerticalSizedBox(),
-                  Text(
-                    'Amount',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  12.rVerticalSizedBox(),
-                  Text(
-                    'Number of Orders',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+                ),
+              ],
+            ),
+            // Right side
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  'Today',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                8.rVerticalSizedBox(),
+                Text(
+                  'Amount',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                12.rVerticalSizedBox(),
+                Text(
+                  'Number of Orders',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ],
+        ).paddingAll16(),
       ),
     );
   }
@@ -315,141 +312,138 @@ class CardTwo extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           elevation: 0,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.orange.shade500,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    'Food Preparing',
-                    style: TextStyle(color: Colors.white),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade500,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
                   ),
                 ),
-                SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '5 mins left',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Icon(
-                      Icons.hourglass_bottom,
-                      color: Colors.grey,
-                      size: 28,
-                    ),
-                  ],
+                child: Text(
+                  'Food Preparing',
+                  style: TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Order ID',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                        GestureDetector(
-                          onTap: () {
-                            // Navigate to order detail screen
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OrderDetailScreen(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            '2141',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+              ),
+              12.rVerticalSizedBox(), //SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '5 mins left',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Icon(
+                    Icons.hourglass_bottom,
+                    color: Colors.grey,
+                    size: 28,
+                  ),
+                ],
+              ),
+              16.rHorizontalSizedBox(), //SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Order ID',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      4.rHorizontalSizedBox(), //SizedBox(height: 4),
+                      GestureDetector(
+                        onTap: () {
+                          // Navigate to order detail screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OrderDetailScreen(),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Address',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          '123 Main St, City, Country',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Implement call driver functionality
+                          );
                         },
                         child: Text(
-                          'Call Driver',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.green.shade200,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                          '2141',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Implement track driver functionality
-                        },
-                        child: Text(
-                          'Track Driver',
-                          style: TextStyle(fontSize: 16),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Address',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      4.rVerticalSizedBox(), //SizedBox(height: 4),
+                      Text(
+                        '123 Main St, City, Country',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              16.rVerticalSizedBox(), // SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Implement call driver functionality
+                      },
+                      child: Text(
+                        'Call Driver',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green.shade200,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
                         ),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.green.shade200,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+                  ),
+                  12.rHorizontalSizedBox(), //SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Implement track driver functionality
+                      },
+                      child: Text(
+                        'Track Driver',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green.shade200,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ).paddingAll16(),
         ),
       ),
     );
@@ -473,143 +467,295 @@ class CardThree extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           elevation: 0,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.purple.shade400,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    'Food Preparing',
-                    style: TextStyle(color: Colors.white),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.purple.shade400,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
                   ),
                 ),
-                SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '5 mins left',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Icon(
-                      Icons.hourglass_empty_outlined,
-                      color: Colors.grey,
-                      size: 28,
-                    ),
-                  ],
+                child: Text(
+                  'Food Preparing',
+                  style: TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Order ID',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                        GestureDetector(
-                          onTap: () {
-                            // Navigate to order detail screen
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OrderDetailScreen(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            '2151',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+              ),
+              12.rVerticalSizedBox(), //SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '5 mins left',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Icon(
+                    Icons.hourglass_bottom,
+                    color: Colors.grey,
+                    size: 28,
+                  ),
+                ],
+              ),
+              16.rHorizontalSizedBox(), //SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Order ID',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      4.rHorizontalSizedBox(), //SizedBox(height: 4),
+                      GestureDetector(
+                        onTap: () {
+                          // Navigate to order detail screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OrderDetailScreen(),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Address',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          '123 Main St, City, Country',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Implement call driver functionality
+                          );
                         },
                         child: Text(
-                          'Call Driver',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.green.shade200,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                          '2141',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Implement track driver functionality
-                        },
-                        child: Text(
-                          'Track Driver',
-                          style: TextStyle(fontSize: 16),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Address',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      4.rVerticalSizedBox(), //SizedBox(height: 4),
+                      Text(
+                        '123 Main St, City, Country',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              16.rVerticalSizedBox(), // SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Implement call driver functionality
+                      },
+                      child: Text(
+                        'Call Driver',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green.shade200,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
                         ),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.green.shade200,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+                  ),
+                  12.rHorizontalSizedBox(), //SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Implement track driver functionality
+                      },
+                      child: Text(
+                        'Track Driver',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green.shade200,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ).paddingAll16(),
         ),
       ),
     );
   }
 }
+//
+// class CardThree extends StatelessWidget {
+//   const CardThree({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Material(
+//       elevation: 3,
+//       shadowColor: Colors.teal,
+//       borderRadius: BorderRadius.circular(12),
+//       child: Container(
+//         width: double.infinity,
+//         constraints: BoxConstraints(maxWidth: 400),
+//         child: Card(
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(12),
+//           ),
+//           elevation: 0,
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: <Widget>[
+//               Container(
+//                 padding: EdgeInsets.symmetric(
+//                   vertical: 8,
+//                   horizontal: 16,
+//                 ),
+//                 decoration: BoxDecoration(
+//                   color: Colors.purple.shade400,
+//                   borderRadius: BorderRadius.only(
+//                     topLeft: Radius.circular(12),
+//                     bottomRight: Radius.circular(12),
+//                   ),
+//                 ),
+//                 child: Text(
+//                   'Food Preparing',
+//                   style: TextStyle(color: Colors.white),
+//                 ),
+//               ),
+//               12.rVerticalSizedBox(), //SizedBox(height: 12),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Text(
+//                     '5 mins left',
+//                     style: TextStyle(fontSize: 16),
+//                   ),
+//                   Icon(
+//                     Icons.hourglass_empty_outlined,
+//                     color: Colors.grey,
+//                     size: 28,
+//                   ),
+//                 ],
+//               ),
+//               16.rHorizontalSizedBox(), //SizedBox(height: 16),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text(
+//                         'Order ID',
+//                         style: TextStyle(fontWeight: FontWeight.bold),
+//                       ),
+//                       4.rHorizontalSizedBox(), //SizedBox(height: 4),
+//                       GestureDetector(
+//                         onTap: () {
+//                           // Navigate to order detail screen
+//                           Navigator.push(
+//                             context,
+//                             MaterialPageRoute(
+//                               builder: (context) => OrderDetailScreen(),
+//                             ),
+//                           );
+//                         },
+//                         child: Text(
+//                           '2151',
+//                           style: TextStyle(
+//                             color: Colors.black,
+//                             fontSize: 16,
+//                             fontWeight: FontWeight.bold,
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                   Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text(
+//                         'Address',
+//                         style: TextStyle(fontWeight: FontWeight.bold),
+//                       ),
+//                       4.rVerticalSizedBox(), //SizedBox(height: 4),
+//                       Text(
+//                         '123 Main St, City, Country',
+//                         style: TextStyle(fontSize: 16),
+//                       ),
+//                     ],
+//                   ),
+//                 ],
+//               ),
+//               16.rHorizontalSizedBox(), //SizedBox(height: 16),
+//               Row(
+//                 children: [
+//                   Expanded(
+//                     child: ElevatedButton(
+//                       onPressed: () {
+//                         // Implement call driver functionality
+//                       },
+//                       child: Text(
+//                         'Call Driver',
+//                         style: TextStyle(fontSize: 16),
+//                       ),
+//                       style: ElevatedButton.styleFrom(
+//                         primary: Colors.green.shade200,
+//                         padding: EdgeInsets.symmetric(
+//                           vertical: 16,
+//                         ),
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(12),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   12.rHorizontalSizedBox(), //SizedBox(width: 12),
+//                   Expanded(
+//                     child: ElevatedButton(
+//                       onPressed: () {
+//                         // Implement track driver functionality
+//                       },
+//                       child: Text(
+//                         'Track Driver',
+//                         style: TextStyle(fontSize: 16),
+//                       ),
+//                       style: ElevatedButton.styleFrom(
+//                         primary: Colors.green.shade200,
+//                         padding: EdgeInsets.symmetric(
+//                           vertical: 16,
+//                         ),
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(12),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ).paddingAll16(),
+//         ),
+//       ),
+//     );
+//   }
+// }
