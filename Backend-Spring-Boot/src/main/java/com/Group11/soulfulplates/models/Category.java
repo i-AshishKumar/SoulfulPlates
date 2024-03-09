@@ -11,7 +11,7 @@ public class Category {
     private Long categoryId;
 
     @ManyToOne
-    @JoinColumn(name = "seller_id", referencedColumnName = "seller_id")
+    @JoinColumn(name = "seller_id")
     private Store seller;
 
     private String categoryName;
