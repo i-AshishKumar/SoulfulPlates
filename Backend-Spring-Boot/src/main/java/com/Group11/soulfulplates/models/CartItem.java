@@ -2,8 +2,12 @@ package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
 import com.Group11.soulfulplates.models.Order;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+@Data
 @Entity
 public class CartItem {
     @Id

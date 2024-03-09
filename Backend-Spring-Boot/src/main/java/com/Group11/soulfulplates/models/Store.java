@@ -3,6 +3,7 @@ package com.Group11.soulfulplates.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -33,6 +34,9 @@ public class Store {
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Order> orders;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Payment> paymnets;
 
     public Long getStoreId() {
         return storeId;
