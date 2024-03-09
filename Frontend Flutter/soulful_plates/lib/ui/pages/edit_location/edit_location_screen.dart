@@ -50,7 +50,7 @@ class EditLocationScreen extends GetView<EditLocationController>
             8.rHorizontalSizedBox(),
             AppTextField(
               controller: controller.nameController,
-              hintText: 'Location Name',
+              hintText: 'Enter Location Name',
             ),
             16.rHorizontalSizedBox(),
             Row(
@@ -62,6 +62,7 @@ class EditLocationScreen extends GetView<EditLocationController>
                       LocationResult? result = await showLocationPicker(
                         context,
                         title: '', // Pass an empty string for the API key
+                        //apikey:'',
                         initialCenter: LatLng(0.0, 0.0), // Initial map center
                         automaticallyAnimateToCurrentLocation:
                             true, // Auto center to user location
