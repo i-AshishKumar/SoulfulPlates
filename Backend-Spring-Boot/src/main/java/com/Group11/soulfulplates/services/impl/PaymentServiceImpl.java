@@ -69,4 +69,18 @@ public class PaymentServiceImpl implements PaymentService {
             throw new Exception("Invalid Transaction Id");
         }
     }
+
+    @Override
+    public void updatePaymentStatus(Long paymentId, Long transactionId, String status) throws Exception {
+        Payment payment = paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new Exception("Payment not found"));
+
+        // Optionally verify the transactionId matches if needed
+        if (!payment.getTransaction().getTransactionId().equals(transactionId)) {
+            throw new Exception("Transaction ID does not match the payment record");
+        }
+
+        payment.setStatus(status);
+        paymentRepository.save(payment);
+    }
 }
