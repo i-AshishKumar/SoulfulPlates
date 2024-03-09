@@ -6,4 +6,5 @@ import java.util.Map;
 
 public interface PaymentService {
     Map<String, Object> createPaymentAndTransaction(CreatePaymentRequest request) throws Exception;
+    void updatePaymentStatus(Long paymentId, Long transactionId, String status) throws Exception;
 }
