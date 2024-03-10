@@ -24,8 +24,6 @@ public class OrderController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<CreateOrderResponse> createOrder(@RequestBody(required = false) CreateOrderRequest request) {
-        System.out.println(request.getInstructions());
-        System.out.println(request.getUserId());
         CreateOrderResponse response = orderService.createOrder(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

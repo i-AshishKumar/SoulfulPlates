@@ -49,11 +49,9 @@ public class OrderServiceImpl implements OrderService {
         order.setStore(store);
         order.setInstructions(request.getInstructions());
         order.setStatus("Pending");
-        order.setRatingId(null);
+        order.setRating(null);
         order.setUpdatedAt(new Date());
         order.setCreatedAt(new Date());
-
-        System.out.println(order);
 
         order = orderRepository.save(order);
 

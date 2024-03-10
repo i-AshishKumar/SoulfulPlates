@@ -4,10 +4,14 @@ import com.Group11.soulfulplates.models.CartItem;
 import com.Group11.soulfulplates.models.Store;
 import com.Group11.soulfulplates.models.User;
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.List;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Entity
+@Data
 @Table(name = "orders")
 public class Order {
     @Id
@@ -34,8 +38,9 @@ public class Order {
     @Column
     private Date updatedAt;
 
-    @Column
-    private Long ratingId;
+    @OneToOne
+    @JoinColumn(name = "ratingId")
+    private Rating rating;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
@@ -110,11 +115,26 @@ public class Order {
         this.updatedAt = updatedAt;
     }
 
-    public Long getRatingId() {
-        return ratingId;
+    public Rating getRating() {
+        return rating;
     }
 
-    public void setRatingId(Long ratingId) {
-        this.ratingId = ratingId;
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", user=" + (user != null ? user.getId() : "null") +
+                ", store=" + (store != null ? store.getStoreId() : "null") +
+                ", instructions='" + instructions + '\'' +
+                ", status='" + status + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", rating=" + (rating != null ? rating.getRatingId() : "null") +
+                '}';
+    }
+
 }

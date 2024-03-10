@@ -1,0 +1,61 @@
+package com.Group11.soulfulplates.services.impl;
+
+import com.Group11.soulfulplates.models.Order;
+import com.Group11.soulfulplates.models.Rating;
+import com.Group11.soulfulplates.payload.request.CreateRatingRequest;
+import com.Group11.soulfulplates.repository.OrderRepository;
+import com.Group11.soulfulplates.repository.RatingRepository;
+import com.Group11.soulfulplates.repository.StoreRepository;
+import com.Group11.soulfulplates.services.RatingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+
+@Service
+public class RatingServiceImpl implements RatingService {
+
+    @Autowired
+    private RatingRepository ratingRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private StoreRepository storeRepository;
+
+    @Override
+    @Transactional
+    public void addRatingAndLinkToOrder(CreateRatingRequest ratingData) throws Exception {
+        Rating rating = new Rating();
+        if(ratingData.getOrderId() == null){
+            throw new Exception("Order is Null in request");
+        }
+        if(ratingData.getStoreId() == null){
+            throw new Exception("Store Id is Null in request");
+        }
+        Order order = orderRepository.findById(ratingData.getOrderId()).orElseThrow(() -> new Exception("Order not found"));
+        rating.setStore(storeRepository.findById(ratingData.getStoreId()).orElseThrow(() -> new Exception("Store not found")));
+        rating.setRating(ratingData.getRating());
+        rating.setFeedback(ratingData.getFeedback());
+        rating.setCreatedAt(new Date());
+        rating.setUpdatedAt(new Date());
+        System.out.println(ratingData.getOrderId());
+        System.out.println(ratingData.getStoreId());
+        Rating savedRating = ratingRepository.save(rating);
+        System.out.println(savedRating);
+
+        if(savedRating == null || savedRating.getRatingId() == null){
+            throw new Exception("Rating Id Not Created");
+        }
+
+        if(order != null){
+            order.setRating(savedRating);
+        } else {
+            throw new Exception("Order not found");
+        }
+        orderRepository.save(order);
+        System.out.println(savedRating);
+    }
+}
