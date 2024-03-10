@@ -6,4 +6,5 @@ import java.util.Map;
 
 public interface RatingService {
     void addRatingAndLinkToOrder(CreateRatingRequest ratingData) throws Exception;
+    double getAverageRating(Long storeId);
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class RatingServiceImpl implements RatingService {
@@ -58,4 +59,18 @@ public class RatingServiceImpl implements RatingService {
         orderRepository.save(order);
         System.out.println(savedRating);
     }
+
+    @Override
+    public double getAverageRating(Long storeId) {
+        List<Rating> ratings = ratingRepository.findByStoreId(storeId);
+        if (ratings.isEmpty()) {
+            return 0; // or any default value
+        }
+        double sum = 0;
+        for (Rating rating : ratings) {
+            sum += rating.getRating();
+        }
+        return sum / ratings.size();
+    }
+
 }
