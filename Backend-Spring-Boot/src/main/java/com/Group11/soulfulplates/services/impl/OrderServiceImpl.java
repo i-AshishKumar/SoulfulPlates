@@ -53,8 +53,6 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdatedAt(new Date());
         order.setCreatedAt(new Date());
 
-        System.out.println(order);
-
         order = orderRepository.save(order);
 
         // Logic to create and save CartItem entities
