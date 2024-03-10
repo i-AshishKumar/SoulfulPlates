@@ -34,8 +34,9 @@ public class Order {
     @Column
     private Date updatedAt;
 
-    @Column
-    private Long ratingId;
+    @OneToOne
+    @JoinColumn(name = "ratingId")
+    private Rating rating;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
@@ -110,8 +111,12 @@ public class Order {
         this.updatedAt = updatedAt;
     }
 
-    public Long getRatingId() {
-        return ratingId;
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 
     public void setRatingId(Long ratingId) {
