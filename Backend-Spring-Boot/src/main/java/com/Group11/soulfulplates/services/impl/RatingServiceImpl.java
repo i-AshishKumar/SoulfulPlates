@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class RatingServiceImpl implements RatingService {
@@ -36,15 +37,20 @@ public class RatingServiceImpl implements RatingService {
             throw new Exception("Store Id is Null in request");
         }
         Order order = orderRepository.findById(ratingData.getOrderId()).orElseThrow(() -> new Exception("Order not found"));
-        rating.setStore(storeRepository.findById(ratingData.getStoreId()).orElseThrow(() -> new Exception("Store not found")));
-        rating.setRating(ratingData.getRating());
-        rating.setFeedback(ratingData.getFeedback());
-        rating.setCreatedAt(new Date());
-        rating.setUpdatedAt(new Date());
-        System.out.println(ratingData.getOrderId());
-        System.out.println(ratingData.getStoreId());
+        if(order.getRating() != null && order.getRating().getRatingId() != null){
+            rating = ratingRepository.findByRatingId(order.getRating().getRatingId());
+            rating.setUpdatedAt(new Date());
+            rating.setRating(ratingData.getRating());
+            rating.setFeedback(ratingData.getFeedback());
+        } else {
+            rating.setStore(storeRepository.findById(ratingData.getStoreId()).orElseThrow(() -> new Exception("Store not found")));
+            rating.setRating(ratingData.getRating());
+            rating.setFeedback(ratingData.getFeedback());
+            rating.setCreatedAt(new Date());
+            rating.setUpdatedAt(new Date());
+        }
+
         Rating savedRating = ratingRepository.save(rating);
-        System.out.println(savedRating);
 
         if(savedRating == null || savedRating.getRatingId() == null){
             throw new Exception("Rating Id Not Created");
@@ -58,4 +64,18 @@ public class RatingServiceImpl implements RatingService {
         orderRepository.save(order);
         System.out.println(savedRating);
     }
+
+    @Override
+    public double getAverageRating(Long storeId) {
+        List<Rating> ratings = ratingRepository.findByStoreStoreId(storeId);
+        if (ratings.isEmpty()) {
+            return 0; // or any default value
+        }
+        double sum = 0;
+        for (Rating rating : ratings) {
+            sum += rating.getRating();
+        }
+        return sum / ratings.size();
+    }
+
 }
