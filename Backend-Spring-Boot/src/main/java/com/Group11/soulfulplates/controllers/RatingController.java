@@ -34,7 +34,7 @@ public class RatingController {
     public ResponseEntity<?> getAverageRating(@PathVariable Long storeId) {
         try {
             double averageRating = ratingService.getAverageRating(storeId);
-            return ResponseEntity.ok().body(new MessageResponse(1, "Rating Added.", averageRating));
+            return ResponseEntity.ok().body(new MessageResponse(1, "Success", averageRating));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(-1, e.getMessage(), null));
         }
