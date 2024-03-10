@@ -37,15 +37,20 @@ public class RatingServiceImpl implements RatingService {
             throw new Exception("Store Id is Null in request");
         }
         Order order = orderRepository.findById(ratingData.getOrderId()).orElseThrow(() -> new Exception("Order not found"));
-        rating.setStore(storeRepository.findById(ratingData.getStoreId()).orElseThrow(() -> new Exception("Store not found")));
-        rating.setRating(ratingData.getRating());
-        rating.setFeedback(ratingData.getFeedback());
-        rating.setCreatedAt(new Date());
-        rating.setUpdatedAt(new Date());
-        System.out.println(ratingData.getOrderId());
-        System.out.println(ratingData.getStoreId());
+        if(order.getRating() != null && order.getRating().getRatingId() != null){
+            rating = ratingRepository.findByRatingId(order.getRating().getRatingId());
+            rating.setUpdatedAt(new Date());
+            rating.setRating(ratingData.getRating());
+            rating.setFeedback(ratingData.getFeedback());
+        } else {
+            rating.setStore(storeRepository.findById(ratingData.getStoreId()).orElseThrow(() -> new Exception("Store not found")));
+            rating.setRating(ratingData.getRating());
+            rating.setFeedback(ratingData.getFeedback());
+            rating.setCreatedAt(new Date());
+            rating.setUpdatedAt(new Date());
+        }
+
         Rating savedRating = ratingRepository.save(rating);
-        System.out.println(savedRating);
 
         if(savedRating == null || savedRating.getRatingId() == null){
             throw new Exception("Rating Id Not Created");
