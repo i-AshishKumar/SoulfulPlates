@@ -62,7 +62,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public double getAverageRating(Long storeId) {
-        List<Rating> ratings = ratingRepository.findByStoreId(storeId);
+        List<Rating> ratings = ratingRepository.findByStoreStoreId(storeId);
         if (ratings.isEmpty()) {
             return 0; // or any default value
         }
