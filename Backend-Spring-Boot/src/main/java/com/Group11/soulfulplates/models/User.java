@@ -63,6 +63,12 @@ public class User {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Set<Address> addresses = new HashSet<>();
 
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private Set<Order> orders;
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private Set<Transaction> transactions;
+
   public User() {
   }
 

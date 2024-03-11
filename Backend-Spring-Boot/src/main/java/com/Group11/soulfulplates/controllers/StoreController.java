@@ -1,12 +1,18 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Store;
+import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.StoreRepository;
 import com.Group11.soulfulplates.services.AddressService;
 import com.Group11.soulfulplates.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import com.Group11.soulfulplates.repository.UserRepository;
+import com.Group11.soulfulplates.services.AddressService;
+import com.Group11.soulfulplates.services.StoreService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
@@ -20,15 +26,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/sellers")
+@RequestMapping("/api/stores")
 public class StoreController {
 
     private final StoreService storeService;
 
     @Autowired
     private StoreRepository storeRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     public StoreController(StoreService storeService, AddressService addressService) {
@@ -60,26 +73,42 @@ public class StoreController {
         return ResponseEntity.ok(sellers);
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateStore(@PathVariable Long id, @RequestBody Store seller) {
-        seller.setStoreId(id); // Ensure the seller ID is set to the path variable ID
-//        seller.setAddress(addressService.getAddressById(seller.getAddressId()));
-        if (!storeService.existsById(id)){
-            return ResponseEntity.ok(new MessageResponse(-1, "Store Not Found!", null));
-        };
-        Store updatedStore = storeService.updateStore(seller);
-        return ResponseEntity.ok(new MessageResponse(1, "Store Details Updated Successfully!", updatedStore));
-    }
+//    @PutMapping("/{id}")
+//    @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+//    public ResponseEntity<?> updateStore(@PathVariable Long id, @RequestBody Store seller) {
+//        seller.setStoreId(id); // Ensure the seller ID is set to the path variable ID
+////        seller.setAddress(addressService.getAddressById(seller.getAddressId()));
+//        if (!storeService.existsById(id)){
+//            return ResponseEntity.ok(new MessageResponse(-1, "Store Not Found!", null));
+//        };
+//        Store updatedStore = storeService.updateStore(seller);
+//        return ResponseEntity.ok(new MessageResponse(1, "Store Details Updated Successfully!", updatedStore));
+//    }
 
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStore(@PathVariable Long id) {
-        if (!storeService.existsById(id)){
+        if (!storeService.existsById(id)) {
             return ResponseEntity.ok(new MessageResponse(-1, "Store Not Found!", null));
-        };
+        }
+        ;
         storeService.deleteStore(id);
         return ResponseEntity.ok(new MessageResponse(-1, "Store Deleted Successfully!", null));
+    }
+
+
+    @PostMapping("/updateStore/{userId}")
+    public ResponseEntity<?> updateStore(@PathVariable Long userId, @RequestBody(required = false) Store storeDetails) {
+        try {
+            Store updatedStore = storeService.updateStoreByUserId(userId, storeDetails);
+            return ResponseEntity.ok(new MessageResponse(1, "Store Details Updated", null));
+        } catch (Exception e) {
+            // map to hold response body
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("code", -1);
+            responseBody.put("description", "Seller's Store not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
     }
 
     @Value("${upload.path}")
@@ -127,3 +156,4 @@ public class StoreController {
         }
     }
 }
+

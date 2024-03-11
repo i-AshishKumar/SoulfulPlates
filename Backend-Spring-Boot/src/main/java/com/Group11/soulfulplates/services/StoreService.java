@@ -14,7 +14,12 @@ public interface StoreService {
 
     public List<Store> getAllStores();
 
-    public Store updateStore(Store seller);
+//    public Store updateStore(Store seller);
 
     public void deleteStore(Long id);
+
+//    Store saveStore(Store store);
+
+    Store updateStoreByUserId(Long userId, Store storeDetails) throws Exception;
 }
+

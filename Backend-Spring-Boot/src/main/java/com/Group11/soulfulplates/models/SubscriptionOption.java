@@ -28,7 +28,5 @@ public class SubscriptionOption {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-    // Getters and setters omitted for brevity
-
 }
 
