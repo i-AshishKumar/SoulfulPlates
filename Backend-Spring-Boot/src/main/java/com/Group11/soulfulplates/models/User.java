@@ -40,7 +40,11 @@ public class User {
   @Size(max = 120)
   private String password;
 
+  @Column(name = "notificationFlag")
   boolean notificationFlag = true;
+
+  @Column(name = "profile_image_url")
+  private String profileImageUrl;
 
   @NotBlank
   @Size(max = 15)

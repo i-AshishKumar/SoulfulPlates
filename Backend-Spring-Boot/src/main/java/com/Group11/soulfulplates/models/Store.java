@@ -28,6 +28,9 @@ public class Store {
     @Column(name = "storeContactNumber")
     private String storeContactNumber;
 
+    @Column(name = "store_image_url")
+    private String storeImageUrl;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

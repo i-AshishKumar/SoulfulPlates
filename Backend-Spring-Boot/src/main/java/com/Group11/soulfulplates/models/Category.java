@@ -11,10 +11,8 @@ public class Category {
     private Long categoryId;
 
     @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private Store seller;
+    @JoinColumn(name = "store_id", referencedColumnName = "store_id")
+    private Store store;
 
     private String categoryName;
-
-    // Getters and setters
 }
