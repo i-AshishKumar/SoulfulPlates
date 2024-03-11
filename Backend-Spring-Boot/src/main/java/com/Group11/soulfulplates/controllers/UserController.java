@@ -38,6 +38,7 @@ public class UserController {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
+
         // Toggle the value of notificationFlag
         user.setNotificationFlag(!user.isNotificationFlag());
 
@@ -81,10 +82,7 @@ public class UserController {
             responseData.add(addressNode);
         }
 
-        // Create a response message with the modified addresses list
-        MessageResponse response = new MessageResponse(1, "Addresses fetched successfully!", responseData);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new MessageResponse(1, "Addresses fetched successfully!", responseData));
     }
 
 
@@ -162,8 +160,6 @@ public class UserController {
                     .path(fileName)
                     .toUriString();
             user.setProfileImageUrl(fileUrl);
-
-//            user.setProfileImageUrl(String.valueOf(filePath));
 
             userRepository.save(user);
 

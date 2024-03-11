@@ -1,10 +1,8 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Store;
-import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.StoreRepository;
-import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.services.AddressService;
 import com.Group11.soulfulplates.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,29 +20,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/sellers")
 public class StoreController {
 
-    private final StoreService sellerService;
-    private final AddressService addressService;
+    private final StoreService storeService;
 
     @Autowired
     private StoreRepository storeRepository;
 
     @Autowired
-    public StoreController(StoreService sellerService, AddressService addressService) {
-        this.sellerService = sellerService;
-        this.addressService = addressService;
+    public StoreController(StoreService storeService, AddressService addressService) {
+        this.storeService = storeService;
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createStore(@RequestBody Store seller) {
-        Store newStore = sellerService.createStore(seller);
-        if (!sellerService.existsById(seller.getStoreId())){
+        Store newStore = storeService.createStore(seller);
+        if (!storeService.existsById(seller.getStoreId())){
             return ResponseEntity.ok(new MessageResponse(-1, "Store Not Found!", null));
         };
         return ResponseEntity.ok(new MessageResponse(1, "Store Created Successfully!",newStore));
@@ -53,7 +48,7 @@ public class StoreController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getStoreById(@PathVariable Long id) {
-        return sellerService.getStoreById(id)
+        return storeService.getStoreById(id)
                 .map(seller -> ResponseEntity.ok(new MessageResponse(1, "Store Found", seller))) // If cart is found, return the cart
                 .orElseGet(() -> ResponseEntity.ok(new MessageResponse(1, "No Store Found", null))); // No cart found case
     }
@@ -61,7 +56,7 @@ public class StoreController {
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Store>> getAllStores() {
-        List<Store> sellers = sellerService.getAllStores();
+        List<Store> sellers = storeService.getAllStores();
         return ResponseEntity.ok(sellers);
     }
 
@@ -70,20 +65,20 @@ public class StoreController {
     public ResponseEntity<?> updateStore(@PathVariable Long id, @RequestBody Store seller) {
         seller.setStoreId(id); // Ensure the seller ID is set to the path variable ID
 //        seller.setAddress(addressService.getAddressById(seller.getAddressId()));
-        if (!sellerService.existsById(id)){
+        if (!storeService.existsById(id)){
             return ResponseEntity.ok(new MessageResponse(-1, "Store Not Found!", null));
         };
-        Store updatedStore = sellerService.updateStore(seller);
+        Store updatedStore = storeService.updateStore(seller);
         return ResponseEntity.ok(new MessageResponse(1, "Store Details Updated Successfully!", updatedStore));
     }
 
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStore(@PathVariable Long id) {
-        if (!sellerService.existsById(id)){
+        if (!storeService.existsById(id)){
             return ResponseEntity.ok(new MessageResponse(-1, "Store Not Found!", null));
         };
-        sellerService.deleteStore(id);
+        storeService.deleteStore(id);
         return ResponseEntity.ok(new MessageResponse(-1, "Store Deleted Successfully!", null));
     }
 
@@ -123,8 +118,6 @@ public class StoreController {
                     .path(fileName)
                     .toUriString();
             store.setStoreImageUrl(fileUrl);
-
-//            user.setProfileImageUrl(String.valueOf(filePath));
 
             storeRepository.save(store);
 
