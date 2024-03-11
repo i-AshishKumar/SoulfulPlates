@@ -26,7 +26,11 @@ public class Store {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "store_image_url")
+    private String storeImageUrl;
+
     public String getName() {
         return storeName;
     }
+
 }

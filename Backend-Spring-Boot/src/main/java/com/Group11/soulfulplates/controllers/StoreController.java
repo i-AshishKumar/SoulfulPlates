@@ -1,15 +1,27 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Store;
+import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
+import com.Group11.soulfulplates.repository.StoreRepository;
+import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.services.AddressService;
 import com.Group11.soulfulplates.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -18,6 +30,9 @@ public class StoreController {
 
     private final StoreService sellerService;
     private final AddressService addressService;
+
+    @Autowired
+    private StoreRepository storeRepository;
 
     @Autowired
     public StoreController(StoreService sellerService, AddressService addressService) {
@@ -70,5 +85,52 @@ public class StoreController {
         };
         sellerService.deleteStore(id);
         return ResponseEntity.ok(new MessageResponse(-1, "Store Deleted Successfully!", null));
+    }
+
+    @Value("${upload.path}")
+    private String uploadPath;
+
+    @PostMapping("/image/{storeId}")
+    public ResponseEntity<MessageResponse> updateUserImage(@PathVariable Long storeId,
+                                                           @RequestParam("file") MultipartFile file) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new RuntimeException("Store not found with id: " + storeId));
+
+
+        // Check if the uploaded file is not empty
+        if (file.isEmpty()) {
+            return ResponseEntity.ok(new MessageResponse(-1, "Failed to store empty file.", null));
+        }
+
+        String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
+        String fileExtension = StringUtils.getFilenameExtension(originalFilename);
+        String fileNameWithoutExtension = StringUtils.stripFilenameExtension(originalFilename);
+        String fileName = StringUtils.cleanPath(fileNameWithoutExtension + "_" + System.currentTimeMillis() + "." + fileExtension);
+
+        try {
+
+            Path uploadsDir = Paths.get(uploadPath);
+
+            if (!Files.exists(uploadsDir)) {
+                Files.createDirectories(uploadsDir);
+            }
+            Path filePath = uploadsDir.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath);
+
+            // Update the user's profile image URL
+            String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/uploads/")
+                    .path(fileName)
+                    .toUriString();
+            store.setStoreImageUrl(fileUrl);
+
+//            user.setProfileImageUrl(String.valueOf(filePath));
+
+            storeRepository.save(store);
+
+            return ResponseEntity.ok(new MessageResponse(1, "Store image updated successfully!", store.getStoreImageUrl()));
+        } catch (IOException e) {
+            return ResponseEntity.ok(new MessageResponse(-1, "Failed to store file " + fileName + ". Please try again!", null));
+        }
     }
 }

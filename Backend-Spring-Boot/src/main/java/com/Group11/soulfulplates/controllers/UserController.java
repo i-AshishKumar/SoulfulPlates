@@ -138,7 +138,7 @@ public class UserController {
 
         // Check if the uploaded file is not empty
         if (file.isEmpty()) {
-            throw new RuntimeException("Failed to store empty file.");
+            return ResponseEntity.ok(new MessageResponse(-1, "Failed to store empty file.", null));
         }
 
         String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
@@ -169,7 +169,7 @@ public class UserController {
 
             return ResponseEntity.ok(new MessageResponse(1, "User image updated successfully!", user.getProfileImageUrl()));
         } catch (IOException e) {
-            throw new RuntimeException("Failed to store file " + fileName + ". Please try again!", e);
+            return ResponseEntity.ok(new MessageResponse(-1, "Failed to store file " + fileName + ". Please try again!", null));
         }
     }
 
