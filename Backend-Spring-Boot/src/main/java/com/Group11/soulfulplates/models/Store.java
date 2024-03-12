@@ -3,6 +3,9 @@ package com.Group11.soulfulplates.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Data
 @Table(name = "stores")
@@ -25,9 +28,18 @@ public class Store {
     @Column(name = "storeContactNumber")
     private String storeContactNumber;
 
+    @Column(name = "store_image_url")
+    private String storeImageUrl;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Order> orders;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Payment> paymnets;
 
     public Long getStoreId() {
         return storeId;

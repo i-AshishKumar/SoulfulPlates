@@ -54,6 +54,11 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColor.primaryColor,
   );
+  static final textStylePrimaryLight14With700 = TextStyle(
+    fontSize: SizeConfig.font14,
+    fontWeight: FontWeight.w700,
+    color: AppColor.primaryColorLight,
+  );
   static final textStyleBlackThree14With400 = TextStyle(
     fontSize: SizeConfig.font14,
     fontWeight: FontWeight.w400,
