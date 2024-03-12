@@ -19,17 +19,24 @@ class HomeSellerScreen extends GetView<HomeSellerController>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Home",
-          textAlign: TextAlign.center, // Center the title
+          "Soulful Plates",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.bold), // Center the title
         ),
-        leading: Image.asset(
-          AppIcons.appIcon,
-          fit: BoxFit.contain,
-          // width: 16,
-          // height: 16,
+        // leadingWidth: 35.0,
+        backgroundColor: Colors.green.shade800,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 15.0),
+          child: Image.asset(
+            AppIcons.appIconWhite,
+          ),
         ),
         actions: [
           PopupMenuButton(
+            iconColor: Colors.white,
             itemBuilder: (BuildContext context) => <PopupMenuEntry>[
               PopupMenuItem(
                 child: ListTile(
@@ -80,7 +87,7 @@ class HomeSellerScreen extends GetView<HomeSellerController>
                     child: Text(
                       'ORDERS',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Cambria',
                       ),
@@ -283,39 +290,59 @@ class CardTwo extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 16,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade500,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    bottomRight: Radius.circular(12),
-                  ),
-                ),
-                child: Text(
-                  'Food Preparing',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              12.rVerticalSizedBox(), //SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '5 mins left',
-                    style: TextStyle(fontSize: 16),
+                  Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.orange.shade500,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            bottomRight: Radius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          'Food Preparing',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
                   ),
-                  Icon(
-                    Icons.hourglass_bottom,
-                    color: Colors.grey,
-                    size: 28,
-                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                '5 mins left',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          8.rHorizontalSizedBox(),
+                          Column(
+                            children: [
+                              Icon(
+                                Icons.hourglass_bottom,
+                                color: Colors.grey,
+                                // size: 28,
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  )
                 ],
               ),
-              16.rHorizontalSizedBox(), //SizedBox(height: 16),
+              18.rVerticalSizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -326,7 +353,6 @@ class CardTwo extends StatelessWidget {
                         'Order ID',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      4.rHorizontalSizedBox(), //SizedBox(height: 4),
                       GestureDetector(
                         onTap: () {
                           // Navigate to order detail screen
@@ -355,7 +381,6 @@ class CardTwo extends StatelessWidget {
                         'Address',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      4.rVerticalSizedBox(), //SizedBox(height: 4),
                       Text(
                         '123 Main St, City, Country',
                         style: TextStyle(fontSize: 16),
@@ -364,7 +389,7 @@ class CardTwo extends StatelessWidget {
                   ),
                 ],
               ),
-              16.rVerticalSizedBox(), // SizedBox(height: 16),
+              18.rVerticalSizedBox(), // SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
@@ -378,14 +403,15 @@ class CardTwo extends StatelessWidget {
                         style: TextStyle(fontSize: 16),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.green.shade200,
+                        primary: Colors.green.shade100,
                         padding: EdgeInsets.symmetric(
                           vertical: 10, // Increased button size
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 3, // Elevation for button
+                            borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(
+                                color: Colors.green.shade800, width: 1)),
+                        elevation: 2, // Elevation for button
                       ),
                     ),
                   ),
@@ -397,17 +423,18 @@ class CardTwo extends StatelessWidget {
                       },
                       icon: Icon(Icons.my_location), // Track icon
                       label: Text(
-                        'Track Driver',
+                        'Track Order',
                         style: TextStyle(fontSize: 16),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.green.shade200,
+                        primary: Colors.green.shade100,
                         padding: EdgeInsets.symmetric(
                           vertical: 10, // Increased button size
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                            borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(
+                                color: Colors.green.shade800, width: 1)),
                         elevation: 3, // Elevation for button
                       ),
                     ),
