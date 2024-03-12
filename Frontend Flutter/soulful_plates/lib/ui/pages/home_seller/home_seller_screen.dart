@@ -455,7 +455,7 @@ class CardThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 3,
+      // elevation: 3,
       shadowColor: Colors.teal,
       borderRadius: BorderRadius.circular(12),
       child: Container(
@@ -465,45 +465,66 @@ class CardThree extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: BorderSide(
-                color: Colors.black, width: 1), // Border around the card
+                color: Colors.green.shade800,
+                width: 1), // Border around the card
           ),
-          elevation: 5, // Elevation from top
+          elevation: 2, // Elevation from top
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 16,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.purple.shade400,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    bottomRight: Radius.circular(12),
-                  ),
-                ),
-                child: Text(
-                  'Food Preparing',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              12.rVerticalSizedBox(), //SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '5 mins left',
-                    style: TextStyle(fontSize: 16),
+                  Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.purple.shade500,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            bottomRight: Radius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          'Out for Delivery',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
                   ),
-                  Icon(
-                    Icons.hourglass_bottom,
-                    color: Colors.grey,
-                    size: 28,
-                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                '10 mins left',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          8.rHorizontalSizedBox(),
+                          Column(
+                            children: [
+                              Icon(
+                                Icons.hourglass_bottom,
+                                color: Colors.grey,
+                                // size: 28,
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  )
                 ],
               ),
-              16.rHorizontalSizedBox(), //SizedBox(height: 16),
+              18.rVerticalSizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -514,7 +535,6 @@ class CardThree extends StatelessWidget {
                         'Order ID',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      4.rHorizontalSizedBox(), //SizedBox(height: 4),
                       GestureDetector(
                         onTap: () {
                           // Navigate to order detail screen
@@ -526,11 +546,11 @@ class CardThree extends StatelessWidget {
                           );
                         },
                         child: Text(
-                          '2141',
+                          '2231',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            //fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -543,16 +563,15 @@ class CardThree extends StatelessWidget {
                         'Address',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      4.rVerticalSizedBox(), //SizedBox(height: 4),
                       Text(
-                        '123 Main St, City, Country',
+                        '121 Yale St, City, Country',
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
                 ],
               ),
-              16.rVerticalSizedBox(), // SizedBox(height: 16),
+              18.rVerticalSizedBox(), // SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
@@ -566,14 +585,15 @@ class CardThree extends StatelessWidget {
                         style: TextStyle(fontSize: 16),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.green.shade200,
+                        primary: Colors.green.shade100,
                         padding: EdgeInsets.symmetric(
                           vertical: 10, // Increased button size
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 3, // Elevation for button
+                            borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(
+                                color: Colors.green.shade800, width: 1)),
+                        elevation: 2, // Elevation for button
                       ),
                     ),
                   ),
@@ -583,19 +603,20 @@ class CardThree extends StatelessWidget {
                       onPressed: () {
                         // Implement track driver functionality
                       },
-                      icon: Icon(Icons.location_on), // Track icon
+                      icon: Icon(Icons.my_location), // Track icon
                       label: Text(
-                        'Track Driver',
+                        'Track Order',
                         style: TextStyle(fontSize: 16),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.green.shade200,
+                        primary: Colors.green.shade100,
                         padding: EdgeInsets.symmetric(
                           vertical: 10, // Increased button size
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                            borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(
+                                color: Colors.green.shade800, width: 1)),
                         elevation: 3, // Elevation for button
                       ),
                     ),
