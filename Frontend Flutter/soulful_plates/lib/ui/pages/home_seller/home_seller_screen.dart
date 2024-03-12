@@ -22,16 +22,16 @@ class HomeSellerScreen extends GetView<HomeSellerController>
           "Soulful Plates",
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: Colors.white,
+              color: Colors.green.shade800,
               fontSize: 25,
               fontWeight: FontWeight.bold), // Center the title
         ),
         // leadingWidth: 35.0,
-        backgroundColor: Colors.green.shade800,
+        backgroundColor: Colors.white,
         leading: Padding(
           padding: const EdgeInsets.only(left: 15.0),
           child: Image.asset(
-            AppIcons.appIconWhite,
+            AppIcons.appIcon,
           ),
         ),
         actions: [
