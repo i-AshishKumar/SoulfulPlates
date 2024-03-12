@@ -1,135 +1,52 @@
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "menu_items")
 public class MenuItem {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "menu_item_id")
     private Long menuItemId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "seller_id", nullable = false)
-    private Store store;
+    @Column(name = "store_id")
+    private Long storeId;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "item_name")
+    private String itemName;
+
+    @Column(name = "item_image")
+    private String itemImage;
+
+    @Column(name = "item_price")
+    private String itemPrice;
+
+    @Column(name = "type")
+    private String type;
+
+    @Column(name = "category_id")
+    private Long categoryId;
+
+    @Column(name = "sub_category_id")
+    private Long subCategoryId;
+
+    @Column(name = "serving_type")
+    private Integer servingType;
+
+    @Column(name = "portion")
+    private String portion;
+
+    @Column(name = "in_stock")
+    private Boolean inStock;
+
+    @Column(name = "is_recommended")
+    private Boolean isRecommended;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "image")
-    private String image;
-
-    @Column(name = "price", nullable = false)
-    private int price;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private EMenuItem type;
-
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive;
-
-    @Column(name = "category")
-    private String category;
-
-    // Constructor
-    public MenuItem(){
-        this.store = new Store();
-
-    }
-
-    // Getters and setters
-    public Long getMenuItemId() {
-        return menuItemId;
-    }
-
-    public Long setMenuItemId(Long menuItemId) {
-        this.menuItemId = menuItemId;
-        return menuItemId;
-    }
-
-    public Store getSeller() {
-        return store;
-    }
-
-    public void setSeller(Store seller) {
-        this.store = seller;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public EMenuItem getType() {
-        return type;
-    }
-
-    public void setType(EMenuItem type) {
-        this.type = type;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean active) {
-        isActive = active;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 }
-
-/*
-* {
-    "menuItemId": 1,
-    "seller": 1,
-    "name": "sambar idli",
-    "description": "spicy tangy side with steamed rice cakes",
-    "image": "idlisambar.png",
-    "price": 50,
-    "type": "ONCE",
-    "isActive": true,
-    "category": "breakfast"
-}
-*
-* */
