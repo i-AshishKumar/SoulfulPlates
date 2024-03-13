@@ -4,11 +4,15 @@ import com.Group11.soulfulplates.models.*;
 import com.Group11.soulfulplates.payload.request.CreateOrderRequest;
 import com.Group11.soulfulplates.payload.response.CreateOrderResponse;
 import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
+import com.Group11.soulfulplates.payload.response.OrdersResponse;
 import com.Group11.soulfulplates.repository.*;
 import com.Group11.soulfulplates.services.OrderService;
 import com.Group11.soulfulplates.utils.CartItemUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -109,7 +113,7 @@ public class OrderServiceImpl implements OrderService {
 //                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         orderDetails.setUserId(order.getUser().getId());
         orderDetails.setStoreId(order.getStore().getStoreId());
-        // Assuming that you have methods to get the rating and feedback
+
         if(order.getRating()!= null){
             orderDetails.setRating(order.getRating().getRating());
             orderDetails.setFeedback(order.getRating().getFeedback());
@@ -117,7 +121,7 @@ public class OrderServiceImpl implements OrderService {
             orderDetails.setRating(null);
             orderDetails.setFeedback(null);
         }
-        // Assuming that you have a method to get the payment status
+
         orderDetails.setPaymentStatus(order.getStatus());
 
         List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(order.getOrderId());
@@ -159,5 +163,76 @@ public class OrderServiceImpl implements OrderService {
 
         return menuItemDTO;
     }
+
+    public OrdersResponse getOrdersForUser(Long userId, String status, Integer limit, Integer offset) throws Exception {
+        // Create a PageRequest object for pagination and sorting
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        // Fetch the orders using the repository
+        Page<Order> ordersPage = orderRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, status, pageRequest);
+
+        // Convert the Page<Order> to List<OrderData>
+        List<OrdersResponse.OrderData> orderDataList = ordersPage.getContent().stream()
+                .map(this::convertToOrderData)
+                .collect(Collectors.toList());
+
+        // Return the response
+        return new OrdersResponse(1, "Success", orderDataList);
+    }
+
+    private OrdersResponse.OrderData convertToOrderData(Order order) {
+        OrdersResponse.OrderData orderData = new OrdersResponse.OrderData();
+        orderData.setOrderId(order.getOrderId());
+        orderData.setOrderStatus(order.getStatus());
+        orderData.setCreatedDate(order.getCreatedAt());
+        orderData.setUserId(order.getUser().getId());
+        orderData.setStoreId(order.getStore().getStoreId());
+        if(order.getRating()!= null) {
+            orderData.setRating(order.getRating().getRating());
+            orderData.setFeedback(order.getRating().getFeedback());
+        }
+        orderData.setPaymentStatus(order.getStatus());
+
+        List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(order.getOrderId());
+        List<Long> itemIds = null;
+        if(cartItems.size() > 0){
+            itemIds = CartItemUtils.extractItemIds(cartItems);
+        }
+
+        if(itemIds != null){
+            List<MenuItem> menuItems = menuItemRepository.findAllById(itemIds);
+
+            orderData.setItems(menuItems.stream()
+                    .map(this::convertToItemData)
+                    .collect(Collectors.toList()));
+
+        }
+
+        return orderData;
+    }
+
+    private OrdersResponse.OrderData.ItemData convertToItemData(MenuItem menuItem) {
+        OrdersResponse.OrderData.ItemData itemData = new OrdersResponse.OrderData.ItemData();
+        itemData.setItemId(menuItem.getMenuItemId());
+        itemData.setStoreId(menuItem.getStoreId());
+        itemData.setItemName(menuItem.getItemName());
+        itemData.setItemImage(menuItem.getItemImage());
+        itemData.setItemPrice(String.valueOf(menuItem.getItemPrice()));
+        itemData.setType(menuItem.getType());
+
+        itemData.setCategoryId(menuItem.getCategoryId());
+//        itemData.setCategory(menuItem.getCategory());
+        itemData.setSubCategoryId(menuItem.getSubCategoryId());
+//        itemData.setSubCategory(menuItem.getSubCategory());
+
+        itemData.setServingType(menuItem.getServingType());
+        itemData.setPortion(menuItem.getPortion());
+        itemData.setInStock(menuItem.getInStock());
+        itemData.setIsRecommended(menuItem.getIsRecommended());
+        itemData.setDescription(menuItem.getDescription());
+
+        return itemData;
+    }
+
 
 }
