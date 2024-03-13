@@ -1,7 +1,9 @@
 package com.Group11.soulfulplates.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "menu_items")
 public class MenuItem {
@@ -11,40 +13,40 @@ public class MenuItem {
     @Column(name = "menu_item_id")
     private Long menuItemId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "seller_id", nullable = false)
-    private Store store;
+    @Column(name = "store_id")
+    private Long storeId;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "item_name")
+    private String itemName;
+
+    @Column(name = "item_image")
+    private String itemImage;
+
+    @Column(name = "item_price")
+    private String itemPrice;
+
+    @Column(name = "type")
+    private String type;
+
+    @Column(name = "category_id")
+    private Long categoryId;
+
+    @Column(name = "sub_category_id")
+    private Long subCategoryId;
+
+    @Column(name = "serving_type")
+    private Integer servingType;
+
+    @Column(name = "portion")
+    private String portion;
+
+    @Column(name = "in_stock")
+    private Boolean inStock;
+
+    @Column(name = "is_recommended")
+    private Boolean isRecommended;
 
     @Column(name = "description")
     private String description;
-
-    @Column(name = "image")
-    private String image;
-
-    @Column(name = "price", nullable = false)
-    private int price;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private EMenuItem type;
-
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive;
-
-    @Column(name = "category")
-    private String category;
-
-    // Getters and setters
-    public Long getMenuItemId() {
-        return menuItemId;
-    }
-
-    public Long setMenuItemId(Long menuItemId) {
-        this.menuItemId = menuItemId;
-        return menuItemId;
-    }
 
 }

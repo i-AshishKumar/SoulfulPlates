@@ -20,10 +20,6 @@ public class StoreServiceImpl implements StoreService {
         this.storeRepository = storeRepo;
     }
 
-    @Override
-    public Store saveStore(Store store) {
-        return storeRepository.save(store);
-    }
 
     @Override
     @Transactional
@@ -39,4 +35,34 @@ public class StoreServiceImpl implements StoreService {
         return storeRepository.save(store);
     }
 
+
+    @Override
+    public Store createStore(Store seller) {
+        return storeRepository.save(seller);
+    }
+
+    @Override
+    public Optional<Store> getStoreById(Long id) {
+        return storeRepository.findById(id);
+    }
+
+    @Override
+    public List<Store> getAllStores() {
+        return storeRepository.findAll();
+    }
+
+
+    @Override
+    public void deleteStore(Long id) {
+        storeRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return storeRepository.existsById(id);
+    }
+
+
 }
+
+
