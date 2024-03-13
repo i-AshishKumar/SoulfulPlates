@@ -2,17 +2,16 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Order;
 import com.Group11.soulfulplates.payload.request.CreateOrderRequest;
+import com.Group11.soulfulplates.payload.request.GetOrderDetailsRequest;
 import com.Group11.soulfulplates.payload.response.CreateOrderResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
+import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
 import com.Group11.soulfulplates.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -59,4 +58,16 @@ public class OrderController {
             this.status = status;
         }
     }
+
+    @GetMapping("/getDetails")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<OrderDetailsResponse> getOrderDetails(@RequestBody GetOrderDetailsRequest request) {
+        try {
+            OrderDetailsResponse response = orderService.getOrderDetails(request.getUserId(), request.getOrderId());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1, "Error getting order details: " + e.getMessage(), null));
+        }
+    }
+
 }
