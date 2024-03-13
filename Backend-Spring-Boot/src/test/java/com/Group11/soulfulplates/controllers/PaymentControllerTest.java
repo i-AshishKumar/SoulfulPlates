@@ -30,6 +30,21 @@ class PaymentControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @Test
+    void createPaymentAndTransaction_Success() throws Exception {
+        // Given
+        CreatePaymentRequest request = new CreatePaymentRequest();
+        Map<String, Object> response = new HashMap<>();
+        when(paymentService.createPaymentAndTransaction(request)).thenReturn(response);
+
+        // When
+        ResponseEntity<?> responseEntity = paymentController.createPaymentAndTransaction(request);
+
+        // Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(paymentService, times(1)).createPaymentAndTransaction(request);
+    }
+
 
 }
 
