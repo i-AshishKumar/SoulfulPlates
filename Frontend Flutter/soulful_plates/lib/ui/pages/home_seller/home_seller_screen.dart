@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/constants/app_icons.dart';
 import 'package:soulful_plates/constants/size_config.dart';
 import 'package:soulful_plates/routing/route_names.dart';
 import 'package:soulful_plates/utils/extensions.dart';
 
-import '../../../constants/app_icons.dart';
 import '../../widgets/base_common_widget.dart';
 import '../order_detail/order_detail_screen.dart';
 import 'home_seller_controller.dart';
@@ -22,17 +21,15 @@ class HomeSellerScreen extends GetView<HomeSellerController>
           "Soulful Plates",
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: Colors.green.shade800,
-              fontSize: 25,
-              fontWeight: FontWeight.bold), // Center the title
+            color: Colors.green.shade800,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        // leadingWidth: 35.0,
         backgroundColor: Colors.white,
         leading: Padding(
           padding: const EdgeInsets.only(left: 15.0),
-          child: Image.asset(
-            AppIcons.appIcon,
-          ),
+          child: Image.asset(AppIcons.appIcon),
         ),
         actions: [
           PopupMenuButton(
@@ -43,8 +40,6 @@ class HomeSellerScreen extends GetView<HomeSellerController>
                   leading: Icon(Icons.history),
                   title: Text('Transaction History'),
                   onTap: () {
-                    // Navigate to the Restaurant Details Screen
-                    //Get.to(() => restaurantDetailViewRoute());
                     Get.toNamed(transactionHistorySellerViewRoute);
                   },
                 ),
@@ -54,8 +49,6 @@ class HomeSellerScreen extends GetView<HomeSellerController>
                   leading: Icon(Icons.store),
                   title: Text('Store Details'),
                   onTap: () {
-                    // Navigate to the View Cart Screen
-                    //Get.to(() => ViewCartScreen());
                     Get.toNamed(storeDetailsViewRoute);
                   },
                 ),
@@ -66,49 +59,54 @@ class HomeSellerScreen extends GetView<HomeSellerController>
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: ListView(children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              20.rVerticalSizedBox(),
-              CardOne(),
-              20.rVerticalSizedBox(),
-              //10.rVerticalSizedBox(),
-              Row(
-                children: [
-                  Expanded(
-                    child: Divider(
-                      color: Colors.black,
-                      thickness: 1,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      'ORDERS',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Cambria',
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      color: Colors.black,
-                      thickness: 1,
-                    ),
-                  ),
-                ],
-              ),
-              20.rVerticalSizedBox(),
-              CardTwo(),
-              20.rVerticalSizedBox(),
-              CardThree(),
-            ],
-          ).paddingAll16(),
-        ]),
+        child: getBody(context),
       ),
+    );
+  }
+
+  Widget getBody(BuildContext context) {
+    return ListView(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            20.rVerticalSizedBox(),
+            CardOne(),
+            20.rVerticalSizedBox(),
+            Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    color: Colors.black,
+                    thickness: 1,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    'ORDERS',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Cambria',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    color: Colors.black,
+                    thickness: 1,
+                  ),
+                ),
+              ],
+            ),
+            20.rVerticalSizedBox(),
+            CardTwo(),
+            20.rVerticalSizedBox(),
+            CardThree(),
+          ],
+        ).paddingAll16(),
+      ],
     );
   }
 }
@@ -126,9 +124,11 @@ class CardOne extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
           side: BorderSide(
-              color: Colors.black, width: 1), // Border around the card
+            color: Colors.black,
+            width: 1,
+          ),
         ),
-        elevation: 3, // Slight elevation
+        elevation: 3,
         child: Flex(
           direction: Axis.vertical,
           children: [
@@ -141,7 +141,6 @@ class CardOne extends StatelessWidget {
                       children: [
                         Text(
                           'Earnings',
-                          // textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
@@ -166,9 +165,10 @@ class CardOne extends StatelessWidget {
                                 Text(
                                   'Amount',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: Colors.white),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ],
                             )
@@ -181,9 +181,10 @@ class CardOne extends StatelessWidget {
                                 Text(
                                   '\$1000.00 CAD',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24,
-                                      color: Colors.white),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ],
                             )
@@ -201,9 +202,10 @@ class CardOne extends StatelessWidget {
                                 Text(
                                   'Orders',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: Colors.white),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ],
                             )
@@ -216,9 +218,10 @@ class CardOne extends StatelessWidget {
                                 Text(
                                   '#54',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24,
-                                      color: Colors.white),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ],
                             )
@@ -232,36 +235,6 @@ class CardOne extends StatelessWidget {
             )
           ],
         ).paddingAll16(),
-
-        // child: Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: <Widget>[
-        //     // Left side
-        //     Column(
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: <Widget>[
-        //
-        //
-        //
-        //       ],
-        //     ),
-        //     // Right side
-        //     Column(
-        //       crossAxisAlignment: CrossAxisAlignment.end,
-        //       children: <Widget>[
-        //         // Text(
-        //         //   'Today',
-        //         //   style: TextStyle(
-        //         //       fontWeight: FontWeight.bold, color: Colors.white),
-        //         // ),
-        //         8.rVerticalSizedBox(),
-        //
-        //
-        //       ],
-        //     ),
-        //   ],
-        // ).paddingAll16(),
       ),
     );
   }
@@ -273,8 +246,6 @@ class CardTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      // elevation: 3,
-      shadowColor: Colors.teal,
       borderRadius: BorderRadius.circular(12),
       child: Container(
         width: double.infinity,
@@ -283,10 +254,11 @@ class CardTwo extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: BorderSide(
-                color: Colors.green.shade800,
-                width: 1), // Border around the card
+              color: Colors.green.shade800,
+              width: 1,
+            ),
           ),
-          elevation: 2, // Elevation from top
+          elevation: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -332,7 +304,6 @@ class CardTwo extends StatelessWidget {
                               Icon(
                                 Icons.hourglass_bottom,
                                 color: Colors.grey,
-                                // size: 28,
                               ),
                             ],
                           ),
@@ -355,7 +326,6 @@ class CardTwo extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Navigate to order detail screen
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -368,7 +338,6 @@ class CardTwo extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
-                            //fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -389,7 +358,7 @@ class CardTwo extends StatelessWidget {
                   ),
                 ],
               ),
-              18.rVerticalSizedBox(), // SizedBox(height: 16),
+              18.rVerticalSizedBox(),
               Row(
                 children: [
                   Expanded(
@@ -397,7 +366,7 @@ class CardTwo extends StatelessWidget {
                       onPressed: () {
                         // Implement call driver functionality
                       },
-                      icon: Icon(Icons.phone), // Call icon
+                      icon: Icon(Icons.phone),
                       label: Text(
                         'Call Driver',
                         style: TextStyle(fontSize: 16),
@@ -405,23 +374,26 @@ class CardTwo extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         primary: Colors.green.shade100,
                         padding: EdgeInsets.symmetric(
-                          vertical: 10, // Increased button size
+                          vertical: 10,
                         ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            side: BorderSide(
-                                color: Colors.green.shade800, width: 1)),
-                        elevation: 2, // Elevation for button
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: Colors.green.shade800,
+                            width: 1,
+                          ),
+                        ),
+                        elevation: 2,
                       ),
                     ),
                   ),
-                  12.rHorizontalSizedBox(), //SizedBox(width: 12),
+                  12.rHorizontalSizedBox(),
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () {
                         // Implement track driver functionality
                       },
-                      icon: Icon(Icons.my_location), // Track icon
+                      icon: Icon(Icons.my_location),
                       label: Text(
                         'Track Order',
                         style: TextStyle(fontSize: 16),
@@ -429,13 +401,16 @@ class CardTwo extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         primary: Colors.green.shade100,
                         padding: EdgeInsets.symmetric(
-                          vertical: 10, // Increased button size
+                          vertical: 10,
                         ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            side: BorderSide(
-                                color: Colors.green.shade800, width: 1)),
-                        elevation: 3, // Elevation for button
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: Colors.green.shade800,
+                            width: 1,
+                          ),
+                        ),
+                        elevation: 3,
                       ),
                     ),
                   ),
@@ -455,8 +430,6 @@ class CardThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      // elevation: 3,
-      shadowColor: Colors.teal,
       borderRadius: BorderRadius.circular(12),
       child: Container(
         width: double.infinity,
@@ -465,10 +438,11 @@ class CardThree extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: BorderSide(
-                color: Colors.green.shade800,
-                width: 1), // Border around the card
+              color: Colors.green.shade800,
+              width: 1,
+            ),
           ),
-          elevation: 2, // Elevation from top
+          elevation: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -514,7 +488,6 @@ class CardThree extends StatelessWidget {
                               Icon(
                                 Icons.hourglass_bottom,
                                 color: Colors.grey,
-                                // size: 28,
                               ),
                             ],
                           ),
@@ -537,7 +510,6 @@ class CardThree extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Navigate to order detail screen
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -550,7 +522,6 @@ class CardThree extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
-                            //fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -571,7 +542,7 @@ class CardThree extends StatelessWidget {
                   ),
                 ],
               ),
-              18.rVerticalSizedBox(), // SizedBox(height: 16),
+              18.rVerticalSizedBox(),
               Row(
                 children: [
                   Expanded(
@@ -579,7 +550,7 @@ class CardThree extends StatelessWidget {
                       onPressed: () {
                         // Implement call driver functionality
                       },
-                      icon: Icon(Icons.phone), // Call icon
+                      icon: Icon(Icons.phone),
                       label: Text(
                         'Call Driver',
                         style: TextStyle(fontSize: 16),
@@ -587,23 +558,26 @@ class CardThree extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         primary: Colors.green.shade100,
                         padding: EdgeInsets.symmetric(
-                          vertical: 10, // Increased button size
+                          vertical: 10,
                         ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            side: BorderSide(
-                                color: Colors.green.shade800, width: 1)),
-                        elevation: 2, // Elevation for button
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: Colors.green.shade800,
+                            width: 1,
+                          ),
+                        ),
+                        elevation: 2,
                       ),
                     ),
                   ),
-                  12.rHorizontalSizedBox(), //SizedBox(width: 12),
+                  12.rHorizontalSizedBox(),
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () {
                         // Implement track driver functionality
                       },
-                      icon: Icon(Icons.my_location), // Track icon
+                      icon: Icon(Icons.my_location),
                       label: Text(
                         'Track Order',
                         style: TextStyle(fontSize: 16),
@@ -611,13 +585,16 @@ class CardThree extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         primary: Colors.green.shade100,
                         padding: EdgeInsets.symmetric(
-                          vertical: 10, // Increased button size
+                          vertical: 10,
                         ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            side: BorderSide(
-                                color: Colors.green.shade800, width: 1)),
-                        elevation: 3, // Elevation for button
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: Colors.green.shade800,
+                            width: 1,
+                          ),
+                        ),
+                        elevation: 3,
                       ),
                     ),
                   ),
