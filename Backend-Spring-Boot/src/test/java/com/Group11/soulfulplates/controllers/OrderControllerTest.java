@@ -83,5 +83,28 @@ class OrderControllerTest {
         verify(orderService, times(1)).getOrdersForStore(storeId, status, limit, offset);
     }
 
+    @Test
+    void getOrdersForStore_InvalidStatus_ReturnsErrorMessage() {
+        // Given
+        long storeId = 1L;
+        String status = "InvalidStatus"; // Invalid status
+        int limit = 20;
+        int offset = 0;
 
+        when(orderService.getOrdersForStore(storeId, status, limit, offset)).thenReturn(null);
+
+        // When
+        ResponseEntity<MessageResponse> responseEntity = com.Group11.soulfulplates.controllers.OrderController.getOrdersForStore(storeId, status, limit, offset);
+
+        // Then
+        assertNotNull(responseEntity);
+        assertEquals(400, responseEntity.getStatusCodeValue());
+
+        MessageResponse response = responseEntity.getBody();
+        assertNotNull(response);
+        assertEquals(0, response.getCode());
+        assertEquals("Invalid status provided: " + status, response.getDescription());
+
+        verify(orderService, times(1)).getOrdersForStore(storeId, status, limit, offset);
+    }
 }
