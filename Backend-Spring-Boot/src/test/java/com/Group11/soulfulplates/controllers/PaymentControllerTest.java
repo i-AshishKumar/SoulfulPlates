@@ -45,6 +45,51 @@ class PaymentControllerTest {
         verify(paymentService, times(1)).createPaymentAndTransaction(request);
     }
 
+    @Test
+    void createPaymentAndTransaction_Failure() throws Exception {
+        // Given
+        CreatePaymentRequest request = new CreatePaymentRequest();
+        when(paymentService.createPaymentAndTransaction(request)).thenThrow(new RuntimeException("Error creating payment"));
 
+        // When
+        ResponseEntity<?> responseEntity = paymentController.createPaymentAndTransaction(request);
+
+        // Then
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        verify(paymentService, times(1)).createPaymentAndTransaction(request);
+    }
+
+    @Test
+    void updatePaymentStatus_Success() throws Exception {
+        // Given
+        UpdatePaymentStatusRequest request = new UpdatePaymentStatusRequest();
+
+        // When
+        ResponseEntity<?> responseEntity = paymentController.updatePaymentStatus(request);
+
+        // Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(paymentService, times(1)).updatePaymentStatus(request.getPaymentId(), request.getTransactionId(), request.getStatus());
+    }
+
+    @Test
+    void updatePaymentStatus_Failure() throws Exception {
+        // Given
+        UpdatePaymentStatusRequest request = new UpdatePaymentStatusRequest();
+        request.setPaymentId(1L);
+        request.setTransactionId(1L);
+        request.setStatus("Failed");
+
+        doThrow(new RuntimeException("Error updating payment status")).when(paymentService)
+                .updatePaymentStatus(anyLong(), anyLong(), anyString());
+
+        // When
+        ResponseEntity<?> responseEntity = paymentController.updatePaymentStatus(request);
+
+        // Then
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        verify(paymentService, times(1)).updatePaymentStatus(request.getPaymentId(),
+                request.getTransactionId(), request.getStatus());
+    }
 }
 
