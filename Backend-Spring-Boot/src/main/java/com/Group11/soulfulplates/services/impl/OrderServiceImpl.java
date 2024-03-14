@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -234,5 +235,20 @@ public class OrderServiceImpl implements OrderService {
         return itemData;
     }
 
+    public OrdersResponse getOrdersForStore(Long storeId, String status, Integer limit, Integer offset) throws Exception {
+        // Create a PageRequest object for pagination and sorting
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        // Fetch the orders using the repository
+        Page<Order> ordersPage = orderRepository.findByStoreStoreIdAndStatusOrderByCreatedAtDesc(storeId, status, pageRequest);
+
+        // Convert the Page<Order> to List<OrderData>
+        List<OrdersResponse.OrderData> orderDataList = ordersPage.getContent().stream()
+                .map(this::convertToOrderData)
+                .collect(Collectors.toList());
+
+        // Return the response
+        return new OrdersResponse(1, "Success", orderDataList);
+    }
 
 }

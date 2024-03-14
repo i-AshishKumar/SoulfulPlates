@@ -11,4 +11,5 @@ public interface OrderService {
     Order updateOrderStatus(Long orderId, String status);
     OrderDetailsResponse getOrderDetails(Long userId, Long orderId) throws Exception;
     OrdersResponse getOrdersForUser(Long userId, String status, Integer limit, Integer offset) throws Exception;
+    OrdersResponse getOrdersForStore(Long storeId, String status, Integer limit, Integer offset) throws Exception;
 }
