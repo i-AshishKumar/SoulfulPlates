@@ -116,6 +116,7 @@ public class OrderServiceImpl implements OrderService {
 //                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         orderDetails.setUserId(order.getUser().getId());
         orderDetails.setStoreId(order.getStore().getStoreId());
+        orderDetails.setInstructions(order.getInstructions());
 
         if(order.getRating()!= null){
             orderDetails.setRating(order.getRating().getRating());
@@ -134,13 +135,17 @@ public class OrderServiceImpl implements OrderService {
 
         List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(order.getOrderId());
         List<Long> itemIds = null;
+        Double totalAmount = null;
         if(cartItems.size() > 0){
             itemIds = CartItemUtils.extractItemIds(cartItems);
+            totalAmount = CartItemUtils.getTotalForOrderId(cartItems);
         }
 
         if(itemIds == null){
             throw new Exception("Menu Items not found");
         }
+
+        orderDetails.setTotalAmount(totalAmount);
 
         List<MenuItem> menuItems = menuItemRepository.findAllById(itemIds);
 
@@ -195,6 +200,8 @@ public class OrderServiceImpl implements OrderService {
         orderData.setCreatedDate(order.getCreatedAt());
         orderData.setUserId(order.getUser().getId());
         orderData.setStoreId(order.getStore().getStoreId());
+        orderData.setInstructions(order.getInstructions());
+
         if(order.getRating()!= null) {
             orderData.setRating(order.getRating().getRating());
             orderData.setFeedback(order.getRating().getFeedback());
@@ -210,17 +217,19 @@ public class OrderServiceImpl implements OrderService {
 
         List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(order.getOrderId());
         List<Long> itemIds = null;
+        Double totalAmount = null;
         if(cartItems.size() > 0){
             itemIds = CartItemUtils.extractItemIds(cartItems);
+            totalAmount = CartItemUtils.getTotalForOrderId(cartItems);
         }
+
+        orderData.setTotalAmount(totalAmount);
 
         if(itemIds != null){
             List<MenuItem> menuItems = menuItemRepository.findAllById(itemIds);
-
             orderData.setItems(menuItems.stream()
                     .map(this::convertToItemData)
                     .collect(Collectors.toList()));
-
         }
 
         return orderData;
