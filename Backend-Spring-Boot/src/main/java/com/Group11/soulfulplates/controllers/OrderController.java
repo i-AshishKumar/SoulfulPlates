@@ -4,6 +4,7 @@ import com.Group11.soulfulplates.models.Order;
 import com.Group11.soulfulplates.payload.request.CreateOrderRequest;
 import com.Group11.soulfulplates.payload.request.GetOrderDetailsRequest;
 import com.Group11.soulfulplates.payload.request.GetOrdersRequest;
+import com.Group11.soulfulplates.payload.request.GetStoreOrders;
 import com.Group11.soulfulplates.payload.response.CreateOrderResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
@@ -73,9 +74,21 @@ public class OrderController {
     }
 
     @GetMapping("/getForUser")
+    @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity getOrdersForUser(@RequestBody GetOrdersRequest request) {
         try {
             OrdersResponse response = orderService.getOrdersForUser(request.getUserId(), request.getStatus(), request.getLimit(), request.getOffset());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1, "Error getting order details: " + e.getMessage(), null));
+        }
+    }
+
+    @GetMapping("/getForStore")
+    @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity getOrdersForStore(@RequestBody GetStoreOrders request) {
+        try {
+            OrdersResponse response = orderService.getOrdersForStore(request.getStoreId(), request.getStatus(), request.getLimit(), request.getOffset());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new OrderDetailsResponse(-1, "Error getting order details: " + e.getMessage(), null));
