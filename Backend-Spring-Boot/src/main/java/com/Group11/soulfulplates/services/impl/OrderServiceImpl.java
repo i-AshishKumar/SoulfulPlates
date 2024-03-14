@@ -30,17 +30,20 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final PaymentRepository paymentRepository;
-    @Autowired
-    private final MenuItemRepository menuItemRepository; // Assume this exists
+    private final MenuItemRepository menuItemRepository;
+    private final CategoryRepository categoryRepository;
+    private final SubcategoryRepository subCategoryRepository;
 
         @Autowired
-    public OrderServiceImpl(UserRepository userRepository, StoreRepository storeRepository, OrderRepository orderRepository, CartItemRepository cartItemRepository, MenuItemRepository menuItemRepository, PaymentRepository paymentRepository) {
+    public OrderServiceImpl(UserRepository userRepository, StoreRepository storeRepository, OrderRepository orderRepository, CartItemRepository cartItemRepository, MenuItemRepository menuItemRepository, PaymentRepository paymentRepository, CategoryRepository categoryRepository, SubcategoryRepository subCategoryRepository) {
             this.userRepository = userRepository;
             this.storeRepository = storeRepository;
             this.orderRepository = orderRepository;
             this.cartItemRepository = cartItemRepository;
             this.menuItemRepository = menuItemRepository;
             this.paymentRepository = paymentRepository;
+            this.categoryRepository = categoryRepository;
+            this.subCategoryRepository = subCategoryRepository;
     }
 
 
@@ -127,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         if(order.getOrderId() != null){
-            Optional<Payment> payment = paymentRepository.findByOrderOrderId(order.getOrderId());
+            Optional<Payment> payment = paymentRepository.findFirstByOrderOrderIdOrderByPaymentIdDesc(order.getOrderId());
             if(!payment.isEmpty()){
                 orderDetails.setPaymentStatus(payment.get().getStatus());
             }
@@ -165,9 +168,17 @@ public class OrderServiceImpl implements OrderService {
         menuItemDTO.setItemPrice(menuItem.getItemPrice());
         menuItemDTO.setType(menuItem.getType());
         menuItemDTO.setCategoryId(menuItem.getCategoryId());
-//        menuItemDTO.setCategory(menuItem.getCategory().getName());
+        Category category = categoryRepository.getReferenceById(menuItem.getCategoryId());
+        if(category != null){
+            menuItemDTO.setCategory(category.getCategoryName());
+        }
+
         menuItemDTO.setSubCategoryId(menuItem.getSubCategoryId());
-//        menuItemDTO.setSubCategory(menuItem.getSubCategory().getName());
+        SubCategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubCategoryId());
+        if(subCategory != null){
+            menuItemDTO.setSubCategory(subCategory.getSubcategoryName());
+        }
+
         menuItemDTO.setServingType(menuItem.getServingType());
         menuItemDTO.setPortion(menuItem.getPortion());
         menuItemDTO.setInStock(menuItem.getInStock());
@@ -208,12 +219,12 @@ public class OrderServiceImpl implements OrderService {
         }
 
         if(order.getOrderId() != null){
-            Optional<Payment> payment = paymentRepository.findByOrderOrderId(order.getOrderId());
+            Optional<Payment> payment = paymentRepository.findFirstByOrderOrderIdOrderByPaymentIdDesc(order.getOrderId());
             if(!payment.isEmpty()){
                 orderData.setPaymentStatus(payment.get().getStatus());
             }
         }
-//        orderData.setPaymentStatus(order.getStatus());
+        orderData.setPaymentStatus(order.getStatus());
 
         List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(order.getOrderId());
         List<Long> itemIds = null;
@@ -245,9 +256,20 @@ public class OrderServiceImpl implements OrderService {
         itemData.setType(menuItem.getType());
 
         itemData.setCategoryId(menuItem.getCategoryId());
-//        itemData.setCategory(menuItem.getCategory());
+        Category category = categoryRepository.getReferenceById(menuItem.getCategoryId());
+        if(category != null){
+            itemData.setCategory(category.getCategoryName());
+        } else {
+            itemData.setCategory(null);
+        }
+
         itemData.setSubCategoryId(menuItem.getSubCategoryId());
-//        itemData.setSubCategory(menuItem.getSubCategory());
+        SubCategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubCategoryId());
+        if(subCategory != null){
+            itemData.setSubCategory(subCategory.getSubcategoryName());
+        } else {
+            itemData.setSubCategory(null);
+        }
 
         itemData.setServingType(menuItem.getServingType());
         itemData.setPortion(menuItem.getPortion());
