@@ -29,16 +29,18 @@ public class OrderServiceImpl implements OrderService {
     private final StoreRepository storeRepository;
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
+    private final PaymentRepository paymentRepository;
     @Autowired
     private final MenuItemRepository menuItemRepository; // Assume this exists
 
         @Autowired
-    public OrderServiceImpl(UserRepository userRepository, StoreRepository storeRepository, OrderRepository orderRepository, CartItemRepository cartItemRepository, MenuItemRepository menuItemRepository) {
+    public OrderServiceImpl(UserRepository userRepository, StoreRepository storeRepository, OrderRepository orderRepository, CartItemRepository cartItemRepository, MenuItemRepository menuItemRepository, PaymentRepository paymentRepository) {
             this.userRepository = userRepository;
             this.storeRepository = storeRepository;
             this.orderRepository = orderRepository;
             this.cartItemRepository = cartItemRepository;
             this.menuItemRepository = menuItemRepository;
+            this.paymentRepository = paymentRepository;
     }
 
 
@@ -123,7 +125,12 @@ public class OrderServiceImpl implements OrderService {
             orderDetails.setFeedback(null);
         }
 
-        orderDetails.setPaymentStatus(order.getStatus());
+        if(order.getOrderId() != null){
+            Optional<Payment> payment = paymentRepository.findByOrderOrderId(order.getOrderId());
+            if(!payment.isEmpty()){
+                orderDetails.setPaymentStatus(payment.get().getStatus());
+            }
+        }
 
         List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(order.getOrderId());
         List<Long> itemIds = null;
@@ -192,7 +199,14 @@ public class OrderServiceImpl implements OrderService {
             orderData.setRating(order.getRating().getRating());
             orderData.setFeedback(order.getRating().getFeedback());
         }
-        orderData.setPaymentStatus(order.getStatus());
+
+        if(order.getOrderId() != null){
+            Optional<Payment> payment = paymentRepository.findByOrderOrderId(order.getOrderId());
+            if(!payment.isEmpty()){
+                orderData.setPaymentStatus(payment.get().getStatus());
+            }
+        }
+//        orderData.setPaymentStatus(order.getStatus());
 
         List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(order.getOrderId());
         List<Long> itemIds = null;
