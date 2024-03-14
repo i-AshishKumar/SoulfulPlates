@@ -47,6 +47,8 @@ public class OrdersResponse {
         private Integer rating;
         private String feedback;
         private String paymentStatus;
+        private Double totalAmount;
+        private String instructions;
         private List<ItemData> items;
 
         public OrderData() {}
@@ -113,6 +115,22 @@ public class OrdersResponse {
 
         public void setPaymentStatus(String paymentStatus) {
             this.paymentStatus = paymentStatus;
+        }
+
+        public Double getTotalAmount() {
+            return totalAmount;
+        }
+
+        public void setTotalAmount(Double totalAmount) {
+            this.totalAmount = totalAmount;
+        }
+
+        public String getInstructions() {
+            return instructions;
+        }
+
+        public void setInstructions(String instructions) {
+            this.instructions = instructions;
         }
 
         public List<ItemData> getItems() {

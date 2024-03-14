@@ -50,6 +50,8 @@ public class OrderDetailsResponse {
         private Integer rating;
         private String feedback;
         private String paymentStatus;
+        private Double totalAmount;
+        private String instructions;
         private List<MenuItemDTO> items;
 
         // Getters and setters
@@ -115,6 +117,22 @@ public class OrderDetailsResponse {
 
         public void setPaymentStatus(String paymentStatus) {
             this.paymentStatus = paymentStatus;
+        }
+
+        public Double getTotalAmount() {
+            return totalAmount;
+        }
+
+        public void setTotalAmount(Double totalAmount) {
+            this.totalAmount = totalAmount;
+        }
+
+        public String getInstructions() {
+            return instructions;
+        }
+
+        public void setInstructions(String instructions) {
+            this.instructions = instructions;
         }
 
         public List<MenuItemDTO> getItems() {
