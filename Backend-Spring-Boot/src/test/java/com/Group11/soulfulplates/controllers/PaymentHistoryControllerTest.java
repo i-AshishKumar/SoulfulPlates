@@ -81,5 +81,35 @@ class PaymentHistoryControllerTest {
         assertEquals(-1, responseBody.get("code"));
         assertEquals("User not found with id: " + request.getUserId(), responseBody.get("description"));
     }
+
+    @Test
+    void getRecentPayments_EmptyResult_ReturnsSuccessWithEmptyData() throws Exception {
+        // Given
+        GetPaymentsRequest request = new GetPaymentsRequest();
+        request.setUserId(1L);
+        request.setLimit(20);
+        request.setOffset(0);
+        request.setStatus("completed");
+
+        List<Payment> payments = new ArrayList<>(); // Empty list
+
+        when(paymentService.getRecentPayments(request.getUserId(), request.getLimit(), request.getOffset(), request.getStatus()))
+                .thenReturn(payments);
+
+        // When
+        ResponseEntity<?> responseEntity = paymentController.getRecentPayments(request);
+
+        // Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+
+        Map<String, Object> responseBody = (Map<String, Object>) responseEntity.getBody();
+        assertEquals(1, responseBody.get("code"));
+        assertEquals("Success", responseBody.get("description"));
+        assertNotNull(responseBody.get("data"));
+
+        List<Map<String, Object>> responseData = (List<Map<String, Object>>) responseBody.get("data");
+        assertTrue(responseData.isEmpty()); // Ensure data is empty
+    }
 }
 
