@@ -1,15 +1,22 @@
 package com.Group11.soulfulplates.services.impl;
 
+import com.Group11.soulfulplates.models.CartItem;
+import com.Group11.soulfulplates.models.MenuItem;
 import com.Group11.soulfulplates.models.Payment;
 import com.Group11.soulfulplates.models.Transaction;
 import com.Group11.soulfulplates.payload.request.CreatePaymentRequest;
 import com.Group11.soulfulplates.repository.*;
 import com.Group11.soulfulplates.services.PaymentService;
+import com.Group11.soulfulplates.utils.CartItemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -21,13 +28,20 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentRepository paymentRepository;
 
     @Autowired
-    private OrderRepository orderRepository; // Assume this exists
+    private OrderRepository orderRepository;
 
     @Autowired
-    private UserRepository userRepository; // Assume this exists
+    private UserRepository userRepository;
 
     @Autowired
-    private StoreRepository storeRepository; // Assume this exists
+    private StoreRepository storeRepository;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
+    @Autowired
+    private MenuItemRepository menuItemRepository;
+
 
     @Override
     @Transactional
@@ -50,6 +64,20 @@ public class PaymentServiceImpl implements PaymentService {
         Transaction savedTransaction = transactionRepository.save(transaction);
 
         if(savedTransaction.getTransactionId()!=null){
+
+            List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(request.getOrderId());
+            List<Long> itemIds = null;
+            Double totalAmount = null;
+            if(cartItems.size() > 0){
+                totalAmount = CartItemUtils.getTotalForOrderId(cartItems);
+                System.out.println(totalAmount);
+                if(totalAmount > request.getAmount().doubleValue()){
+                    savedTransaction.setStatus("Failed");
+                    transactionRepository.save(savedTransaction);
+                    throw new Exception("Payment Failed: Payment Amount is lesser than expected");
+                }
+            }
+
             Payment payment = new Payment();
             payment.setTransaction(savedTransaction);
             payment.setOrder(orderRepository.findById(request.getOrderId()).orElseThrow(() -> new Exception("Order not found")));
