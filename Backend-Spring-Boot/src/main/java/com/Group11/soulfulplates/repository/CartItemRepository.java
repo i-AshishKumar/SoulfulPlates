@@ -4,7 +4,9 @@ import com.Group11.soulfulplates.models.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
-    // You can define custom methods here, but save, findAll, findById, etc., are provided by JpaRepository.
+    List<CartItem> findByOrderOrderId(Long orderId);
 }
