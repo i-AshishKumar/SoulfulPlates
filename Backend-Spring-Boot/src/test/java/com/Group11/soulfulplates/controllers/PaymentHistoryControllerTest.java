@@ -58,6 +58,28 @@ class PaymentHistoryControllerTest {
         // Add assertions for each payment object in responseData
     }
 
+    @Test
+    void getRecentPayments_UserNotFound_ReturnsBadRequest() throws Exception {
+        // Given
+        GetPaymentsRequest request = new GetPaymentsRequest();
+        request.setUserId(1L);
+        request.setLimit(20);
+        request.setOffset(0);
+        request.setStatus("completed");
 
+        when(paymentService.getRecentPayments(anyLong(), anyInt(), anyInt(), anyString()))
+                .thenThrow(new RuntimeException("User not found with id: " + request.getUserId()));
+
+        // When
+        ResponseEntity<?> responseEntity = paymentController.getRecentPayments(request);
+
+        // Then
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+
+        Map<String, Object> responseBody = (Map<String, Object>) responseEntity.getBody();
+        assertEquals(-1, responseBody.get("code"));
+        assertEquals("User not found with id: " + request.getUserId(), responseBody.get("description"));
+    }
 }
 
