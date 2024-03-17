@@ -128,6 +128,19 @@ public class PaymentServiceImpl implements PaymentService {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getBuyerPaymentHistory(Long userId, int limit, int offset, String status) throws Exception {
+        Pageable pageable = PageRequest.of(offset / limit, limit, Sort.by("paymentId").descending());
+        Page<Payment> paymentPage;
+        if (status != null && !status.isEmpty()) {
+            paymentPage = paymentRepository.findByOrderUserUserIdAndStatus(userId, status, pageable);
+        } else {
+            paymentPage = paymentRepository.findByOrderUserUserId(userId, pageable);
+        }
+        return buildPaymentResponse(paymentPage.getContent());
+    }
+
 
 
 }
