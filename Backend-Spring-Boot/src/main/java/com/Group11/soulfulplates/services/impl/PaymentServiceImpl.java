@@ -9,6 +9,10 @@ import com.Group11.soulfulplates.repository.*;
 import com.Group11.soulfulplates.services.PaymentService;
 import com.Group11.soulfulplates.utils.CartItemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,5 +115,45 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setStatus(status);
         paymentRepository.save(payment);
     }
+
+    private List<Map<String, Object>> buildPaymentResponse(List<Payment> payments) {
+        return payments.stream().map(payment -> {
+            Map<String, Object> paymentMap = new HashMap<>();
+            paymentMap.put("user_id", payment.getOrder().getUser().getId());
+            paymentMap.put("store_id", payment.getStore().getStoreId());
+            paymentMap.put("amount", payment.getAmount());
+            paymentMap.put("order_id", payment.getOrder().getOrderId());
+            // Add more fields as needed
+            return paymentMap;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getBuyerPaymentHistory(Long userId, int limit, int offset, String status) throws Exception {
+        Pageable pageable = PageRequest.of(offset / limit, limit, Sort.by("paymentId").descending());
+        Page<Payment> paymentPage;
+        if (status != null && !status.isEmpty()) {
+            paymentPage = paymentRepository.findByOrderUserUserIdAndStatus(userId, status, pageable);
+        } else {
+            paymentPage = paymentRepository.findByOrderUserUserId(userId, pageable);
+        }
+        return buildPaymentResponse(paymentPage.getContent());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getSellerPaymentHistory(Long storeId, int limit, int offset, String status) throws Exception {
+        Pageable pageable = PageRequest.of(offset / limit, limit, Sort.by("paymentId").descending());
+        Page<Payment> paymentPage;
+        if (status != null && !status.isEmpty()) {
+            paymentPage = paymentRepository.findByStoreStoreIdAndStatus(storeId, status, pageable);
+        } else {
+            paymentPage = paymentRepository.findByStoreStoreId(storeId, pageable);
+        }
+        return buildPaymentResponse(paymentPage.getContent());
+    }
+
+
 
 }
