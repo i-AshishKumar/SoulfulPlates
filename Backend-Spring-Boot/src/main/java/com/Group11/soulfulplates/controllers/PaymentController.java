@@ -40,6 +40,36 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(new MessageResponse(0, "Error updating payment status: " + e.getMessage(), null));
         }
     }
+    @GetMapping("/buyerPaymentHistory")
+    @PreAuthorize("hasRole('ROLE_BUYER')")
+    public ResponseEntity<?> getBuyerPaymentHistory(
+            @RequestParam Long userId,
+            @RequestParam int limit,
+            @RequestParam int offset,
+            @RequestParam(required = false) String status
+    ) {
+        try {
+            List<Map<String, Object>> payments = paymentService.getBuyerPaymentHistory(userId, limit, offset, status);
+            return ResponseEntity.ok().body(Map.of("code", 1, "description", "Success", "data", payments));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("code", -1, "description", "Error: " + e.getMessage()));
+        }
+    }
 
+    @GetMapping("/sellerPaymentHistory")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public ResponseEntity<?> getSellerPaymentHistory(
+            @RequestParam Long storeId,
+            @RequestParam int limit,
+            @RequestParam int offset,
+            @RequestParam(required = false) String status
+    ) {
+        try {
+            List<Map<String, Object>> payments = paymentService.getSellerPaymentHistory(storeId, limit, offset, status);
+            return ResponseEntity.ok().body(Map.of("code", 1, "description", "Success", "data", payments));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("code", -1, "description", "Error: " + e.getMessage()));
+        }
+    }
 
 }
