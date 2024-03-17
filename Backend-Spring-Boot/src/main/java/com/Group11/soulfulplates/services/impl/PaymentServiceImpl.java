@@ -116,4 +116,18 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(payment);
     }
 
+    private List<Map<String, Object>> buildPaymentResponse(List<Payment> payments) {
+        return payments.stream().map(payment -> {
+            Map<String, Object> paymentMap = new HashMap<>();
+            paymentMap.put("user_id", payment.getOrder().getUser().getId());
+            paymentMap.put("store_id", payment.getStore().getStoreId());
+            paymentMap.put("amount", payment.getAmount());
+            paymentMap.put("order_id", payment.getOrder().getOrderId());
+            // Add more fields as needed
+            return paymentMap;
+        }).collect(Collectors.toList());
+    }
+
+
+
 }
