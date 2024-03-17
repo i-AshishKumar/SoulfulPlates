@@ -11,7 +11,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -90,6 +92,50 @@ class PaymentControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         verify(paymentService, times(1)).updatePaymentStatus(request.getPaymentId(),
                 request.getTransactionId(), request.getStatus());
+    }
+
+    @Test
+    void getBuyerPaymentHistory_Success() throws Exception {
+        // Given
+        Long userId = 1L;
+        int limit = 20;
+        int offset = 0;
+        String status = "completed";
+
+        List<Map<String, Object>> payments = new ArrayList<>();
+        // Add some sample payments to the list
+
+        when(paymentService.getBuyerPaymentHistory(userId, limit, offset, status))
+                .thenReturn(payments);
+
+        // When
+        ResponseEntity<?> responseEntity = paymentController.getBuyerPaymentHistory(userId, limit, offset, status);
+
+        // Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((Map<String, Object>) responseEntity.getBody()).get("code"));
+        assertEquals("Success", ((Map<String, Object>) responseEntity.getBody()).get("description"));
+        assertEquals(payments, ((Map<String, Object>) responseEntity.getBody()).get("data"));
+    }
+
+    @Test
+    void getBuyerPaymentHistory_Exception_ReturnsBadRequest() throws Exception {
+        // Given
+        Long userId = 1L;
+        int limit = 20;
+        int offset = 0;
+        String status = "completed";
+
+        when(paymentService.getBuyerPaymentHistory(userId, limit, offset, status))
+                .thenThrow(new RuntimeException("Internal server error"));
+
+        // When
+        ResponseEntity<?> responseEntity = paymentController.getBuyerPaymentHistory(userId, limit, offset, status);
+
+        // Then
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(-1, ((Map<String, Object>) responseEntity.getBody()).get("code"));
+        assertEquals("Error: Internal server error", ((Map<String, Object>) responseEntity.getBody()).get("description"));
     }
 }
 
