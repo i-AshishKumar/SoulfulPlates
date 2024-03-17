@@ -76,4 +76,44 @@ class PaymentServiceImplTest {
         assertEquals(payments.size(), result.size());
         // Add more assertions if needed
     }
+    @Test
+    void getBuyerPaymentHistory_EmptyResult() throws Exception {
+        // Given
+        Long userId = 1L;
+        int limit = 20;
+        int offset = 0;
+        String status = "completed";
+
+        Page<Payment> paymentPage = new PageImpl<>(new ArrayList<>());
+
+        when(paymentRepository.findByOrderUserUserIdAndStatus(userId, status, PageRequest.of(offset / limit, limit, Sort.by("paymentId").descending())))
+                .thenReturn(paymentPage);
+
+        // When
+        List<Map<String, Object>> result = paymentService.getBuyerPaymentHistory(userId, limit, offset, status);
+
+        // Then
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void getSellerPaymentHistory_EmptyResult() throws Exception {
+        // Given
+        Long storeId = 1L;
+        int limit = 20;
+        int offset = 0;
+        String status = "completed";
+
+        Page<Payment> paymentPage = new PageImpl<>(new ArrayList<>());
+
+        when(paymentRepository.findByStoreStoreIdAndStatus(storeId, status, PageRequest.of(offset / limit, limit, Sort.by("paymentId").descending())))
+                .thenReturn(paymentPage);
+
+        // When
+        List<Map<String, Object>> result = paymentService.getSellerPaymentHistory(storeId, limit, offset, status);
+
+        // Then
+        assertEquals(0, result.size());
+    }
+
 }
