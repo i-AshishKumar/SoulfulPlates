@@ -147,8 +147,6 @@ class PaymentControllerTest {
         String status = "completed";
 
         List<Map<String, Object>> payments = new ArrayList<>();
-        // Add some sample payments to the list
-
         when(paymentService.getSellerPaymentHistory(storeId, limit, offset, status))
                 .thenReturn(payments);
 
