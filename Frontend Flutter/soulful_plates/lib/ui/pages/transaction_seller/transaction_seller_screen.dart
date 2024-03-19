@@ -126,7 +126,7 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
             CardOne(),
             10.rVerticalSizedBox(),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 6),
+              padding: EdgeInsets.symmetric(horizontal: 3),
               child: Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -141,7 +141,7 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
                   ),
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'Search',
+                      hintText: 'Search Order No',
                       prefixIcon: Icon(Icons.search),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.0),
@@ -227,10 +227,14 @@ class CardOne extends StatelessWidget {
                 end: Alignment.bottomRight,
                 colors: [
                   AppColor.emeraldGreen,
-                  Colors.green.shade800.withOpacity(0.7)
+                  Colors.green.shade900.withOpacity(0.8)
                 ], // Change colors as needed
               ),
             ),
+            // decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.circular(8),
+            //   color: AppColor.emeraldGreen, // Change to your desired color
+            // ),
             width: double.infinity,
             constraints: BoxConstraints(maxWidth: 500),
             child: Padding(
@@ -444,7 +448,7 @@ class CardTwo extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   color: Colors.greenAccent.shade100,
                 ),
-                padding: EdgeInsets.all(8),
+                padding: EdgeInsets.all(6),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -453,7 +457,7 @@ class CardTwo extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'No',
+                          'Order No',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 4),
