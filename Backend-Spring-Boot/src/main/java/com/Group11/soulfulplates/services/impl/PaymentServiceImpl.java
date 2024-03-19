@@ -5,6 +5,8 @@ import com.Group11.soulfulplates.models.MenuItem;
 import com.Group11.soulfulplates.models.Payment;
 import com.Group11.soulfulplates.models.Transaction;
 import com.Group11.soulfulplates.payload.request.CreatePaymentRequest;
+import com.Group11.soulfulplates.payload.request.PaymentFilterRequest;
+import com.Group11.soulfulplates.payload.response.PaymentFilterResponse;
 import com.Group11.soulfulplates.repository.*;
 import com.Group11.soulfulplates.services.PaymentService;
 import com.Group11.soulfulplates.utils.CartItemUtils;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +63,8 @@ public class PaymentServiceImpl implements PaymentService {
         transaction.setCardExpiry(request.getCardExpiry()); // Adjust for your model
         transaction.setCvv(request.getCvv());
         transaction.setStatus("Processing");
+        transaction.setCreatedAt(new Date());
+        transaction.setUpdatedAt(new Date());
 
         if(request.getOrderId() == null && request.getOrderId() <= 0) {
             throw new Exception("Invalid Order Id");
@@ -87,6 +92,8 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setOrder(orderRepository.findById(request.getOrderId()).orElseThrow(() -> new Exception("Order not found")));
             payment.setAmount(request.getAmount());
             payment.setStatus("Pending");
+            payment.setCreatedAt(new Date());
+            payment.setUpdatedAt(new Date());
             if(request.getStoreId() != null && request.getStoreId() > 0) {
                 payment.setStore(storeRepository.findById(request.getStoreId()).orElseThrow(() -> new Exception("Store not found")));
             } else {
@@ -113,6 +120,7 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         payment.setStatus(status);
+        payment.setUpdatedAt(new Date());
         paymentRepository.save(payment);
     }
 
