@@ -76,6 +76,7 @@ class PaymentServiceImplTest {
         assertEquals(payments.size(), result.size());
         // Add more assertions if needed
     }
+
     @Test
     void getBuyerPaymentHistory_EmptyResult() throws Exception {
         // Given
