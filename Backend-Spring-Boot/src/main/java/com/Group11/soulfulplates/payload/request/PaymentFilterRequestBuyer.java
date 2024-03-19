@@ -1,6 +1,6 @@
 package com.Group11.soulfulplates.payload.request;
 
-public class PaymentFilterRequest {
+public class PaymentFilterRequestBuyer {
     private Long userId;
     private int limit;
     private int offset;
