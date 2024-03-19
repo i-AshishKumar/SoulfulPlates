@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Map;
 
 @Service
@@ -29,6 +30,8 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setCardExpiry((String) request.get("card_expiry")); // Adjust based on your entity's date type
         transaction.setCvv((String) request.get("cvv"));
         transaction.setStatus("Initiated"); // Example status, adjust as necessary
+        transaction.setCreatedAt(new Date());
+        transaction.setUpdatedAt(new Date());
 
         return transactionRepository.save(transaction);
     }
@@ -38,6 +41,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new Exception("Transaction not found"));
         transaction.setStatus(status);
+        transaction.setUpdatedAt(new Date());
         transactionRepository.save(transaction);
     }
 }
