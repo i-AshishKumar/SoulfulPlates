@@ -1,7 +1,8 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.payload.request.CreatePaymentRequest;
-import com.Group11.soulfulplates.payload.request.PaymentFilterRequest;
+import com.Group11.soulfulplates.payload.request.PaymentFilterRequestBuyer;
+import com.Group11.soulfulplates.payload.request.PaymentFilterRequestSeller;
 import com.Group11.soulfulplates.payload.request.UpdatePaymentStatusRequest;
 import com.Group11.soulfulplates.payload.response.PaymentFilterResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
@@ -46,9 +47,21 @@ public class PaymentController {
 
     @GetMapping("/buyerPaymentHistory")
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public ResponseEntity<?> filterPayments(@RequestBody PaymentFilterRequest request) {
+    public ResponseEntity<?> filterPayments(@RequestBody PaymentFilterRequestBuyer request) {
         try {
             List<PaymentFilterResponse> response = paymentService.filterPayments(request.getUserId(),request.getStatus(), request.getLimit(), request.getOffset());
+            return ResponseEntity.ok(new MessageResponse(1, "Success", response));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(-1, "Failure", null));
+        }
+    }
+
+    @GetMapping("/sellerPaymentHistory")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public ResponseEntity<?> filterSellerPayments(@RequestBody PaymentFilterRequestSeller request) {
+        try {
+            List<PaymentFilterResponse> response = paymentService.filterPayments(request.getStoreId(),request.getStatus(), request.getLimit(), request.getOffset());
             return ResponseEntity.ok(new MessageResponse(1, "Success", response));
         } catch (Exception e) {
             e.printStackTrace();
