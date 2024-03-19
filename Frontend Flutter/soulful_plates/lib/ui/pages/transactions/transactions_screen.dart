@@ -47,26 +47,25 @@ class TransactionsScreen extends GetView<TransactionsController>
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            10.rVerticalSizedBox(),
             CardOne(),
+            10.rVerticalSizedBox(),
             Padding(
-              padding: EdgeInsets.all(14.0),
+              padding: EdgeInsets.symmetric(horizontal: 3),
               child: Expanded(
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3), // changes position of shadow
+                        color: Colors.lightGreen.shade100.withOpacity(0.9),
+                        //spreadRadius: 2,
+                        //offset: Offset(0, 2), // changes position of shadow
                       ),
                     ],
                   ),
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'Search',
+                      hintText: 'Search Order No',
                       prefixIcon: Icon(Icons.search),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.0),
@@ -78,7 +77,7 @@ class TransactionsScreen extends GetView<TransactionsController>
                         borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide(
                           color:
-                              Colors.blue, // specify focused border color here
+                              Colors.black, // specify focused border color here
                         ),
                       ),
                     ),
@@ -86,7 +85,7 @@ class TransactionsScreen extends GetView<TransactionsController>
                 ),
               ),
             ),
-            10.rVerticalSizedBox(),
+            20.rVerticalSizedBox(),
             Row(
               children: [
                 Expanded(
@@ -96,11 +95,11 @@ class TransactionsScreen extends GetView<TransactionsController>
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     'Invoice',
                     style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Cambria',
                     ),
@@ -131,134 +130,143 @@ class CardOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColor.emeraldGreen,
-            Colors.green.shade700.withOpacity(0.6)
-          ], // Change colors as needed
-        ),
-      ),
       width: double.infinity,
       constraints: BoxConstraints(maxWidth: 500),
-      child: Card(
-        color: Colors.transparent, // Set card color to transparent
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: BorderSide(
-            color: Colors.black,
-            width: 1,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Card(
+          elevation: 1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(
+              color: Colors.black,
+              width: 1,
+            ),
           ),
-        ),
-        elevation: 1,
-        child: Flex(
-          direction: Axis.vertical,
-          children: [
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '12',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.white,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColor.emeraldGreen,
+                  Colors.green.shade900.withOpacity(0.8)
+                ], // Change colors as needed
+              ),
+            ),
+            // decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.circular(8),
+            //   color: AppColor.emeraldGreen, // Change to your desired color
+            // ),
+            width: double.infinity,
+            constraints: BoxConstraints(maxWidth: 500),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Flex(
+                direction: Axis.vertical,
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '12',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              Text(
+                                'Paid',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                            height: 12), // Add some space between the two texts
-                        Text(
-                          'Paid',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '05',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              Text(
+                                'Unpaid',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '05',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.white,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '02',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              Text(
+                                'Overdue',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                            height: 12), // Add some space between the two texts
-                        Text(
-                          'Unpaid',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '03',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              Text(
+                                'Draft',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '02',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(
-                            height: 12), // Add some space between the two texts
-                        Text(
-                          'Overdue',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '03',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(
-                            height: 12), // Add some space between the two texts
-                        Text(
-                          'Draft',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ).paddingAll16(),
-          ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -271,18 +279,18 @@ class CardTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      borderRadius: BorderRadius.circular(12),
-      elevation: 3, // Added elevation
+      borderRadius: BorderRadius.circular(10),
+      elevation: 4, // Added elevation
       child: Container(
         width: double.infinity,
         constraints: BoxConstraints(maxWidth: 400),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.black, width: 1), // Add border
+        ),
         child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(
-              color: Colors.green.shade800,
-              width: 1,
-            ),
+            borderRadius: BorderRadius.circular(10),
           ),
           elevation: 0, // Removed elevation from the Card
           child: Column(
@@ -320,7 +328,7 @@ class CardTwo extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              'Happy Foods',
+                              'Anjali Rachel',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -345,10 +353,7 @@ class CardTwo extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors
                                 .teal.shade700, // Change button color as needed
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8),
-                              bottomRight: Radius.circular(8),
-                            ),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             'Paid',
@@ -367,7 +372,7 @@ class CardTwo extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   color: Colors.greenAccent.shade100,
                 ),
-                padding: EdgeInsets.all(8),
+                padding: EdgeInsets.all(6),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -376,7 +381,7 @@ class CardTwo extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'No',
+                          'Order No',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 4),
