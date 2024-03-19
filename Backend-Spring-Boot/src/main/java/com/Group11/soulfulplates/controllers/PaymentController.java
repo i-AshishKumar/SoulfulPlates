@@ -1,10 +1,13 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.payload.request.CreatePaymentRequest;
+import com.Group11.soulfulplates.payload.request.PaymentFilterRequest;
 import com.Group11.soulfulplates.payload.request.UpdatePaymentStatusRequest;
+import com.Group11.soulfulplates.payload.response.PaymentFilterResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -40,36 +43,16 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(new MessageResponse(0, "Error updating payment status: " + e.getMessage(), null));
         }
     }
+
     @GetMapping("/buyerPaymentHistory")
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public ResponseEntity<?> getBuyerPaymentHistory(
-            @RequestParam Long userId,
-            @RequestParam int limit,
-            @RequestParam int offset,
-            @RequestParam(required = false) String status
-    ) {
+    public ResponseEntity<?> filterPayments(@RequestBody PaymentFilterRequest request) {
         try {
-            List<Map<String, Object>> payments = paymentService.getBuyerPaymentHistory(userId, limit, offset, status);
-            return ResponseEntity.ok().body(Map.of("code", 1, "description", "Success", "data", payments));
+            List<PaymentFilterResponse> response = paymentService.filterPayments(request.getUserId(),request.getStatus(), request.getLimit(), request.getOffset());
+            return ResponseEntity.ok(new MessageResponse(1, "Success", response));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("code", -1, "description", "Error: " + e.getMessage()));
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(-1, "Failure", null));
         }
     }
-
-    @GetMapping("/sellerPaymentHistory")
-    @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<?> getSellerPaymentHistory(
-            @RequestParam Long storeId,
-            @RequestParam int limit,
-            @RequestParam int offset,
-            @RequestParam(required = false) String status
-    ) {
-        try {
-            List<Map<String, Object>> payments = paymentService.getSellerPaymentHistory(storeId, limit, offset, status);
-            return ResponseEntity.ok().body(Map.of("code", 1, "description", "Success", "data", payments));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("code", -1, "description", "Error: " + e.getMessage()));
-        }
-    }
-
 }
