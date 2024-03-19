@@ -28,7 +28,7 @@ class HomeSellerScreen extends GetView<HomeSellerController>
         ),
         backgroundColor: Colors.white,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 15.0),
+          padding: const EdgeInsets.only(left: 10.0),
           child: Image.asset(AppIcons.appIcon),
         ),
         actions: [
@@ -70,7 +70,7 @@ class HomeSellerScreen extends GetView<HomeSellerController>
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            20.rVerticalSizedBox(),
+            10.rVerticalSizedBox(),
             CardOne(),
             20.rVerticalSizedBox(),
             Row(
@@ -104,6 +104,8 @@ class HomeSellerScreen extends GetView<HomeSellerController>
             CardTwo(),
             20.rVerticalSizedBox(),
             CardThree(),
+            20.rVerticalSizedBox(),
+            CardFour(),
           ],
         ).paddingAll16(),
       ],
@@ -426,6 +428,190 @@ class CardTwo extends StatelessWidget {
 
 class CardThree extends StatelessWidget {
   const CardThree({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: double.infinity,
+        constraints: BoxConstraints(maxWidth: 400),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              color: Colors.green.shade800,
+              width: 1,
+            ),
+          ),
+          elevation: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.purple.shade500,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            bottomRight: Radius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          'Out for Delivery',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                '10 mins left',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          8.rHorizontalSizedBox(),
+                          Column(
+                            children: [
+                              Icon(
+                                Icons.hourglass_bottom,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              ),
+              18.rVerticalSizedBox(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Order ID',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OrderDetailScreen(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          '2231',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Address',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '121 Yale St, City, Country',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              18.rVerticalSizedBox(),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        // Implement call driver functionality
+                      },
+                      icon: Icon(Icons.phone),
+                      label: Text(
+                        'Call Driver',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green.shade100,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 10,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: Colors.green.shade800,
+                            width: 1,
+                          ),
+                        ),
+                        elevation: 2,
+                      ),
+                    ),
+                  ),
+                  12.rHorizontalSizedBox(),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        // Implement track driver functionality
+                      },
+                      icon: Icon(Icons.my_location),
+                      label: Text(
+                        'Track Order',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green.shade100,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 10,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: Colors.green.shade800,
+                            width: 1,
+                          ),
+                        ),
+                        elevation: 3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ).paddingAll16(),
+        ),
+      ),
+    );
+  }
+}
+
+class CardFour extends StatelessWidget {
+  const CardFour({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
