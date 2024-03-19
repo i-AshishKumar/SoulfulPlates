@@ -47,8 +47,6 @@ class TransactionsScreen extends GetView<TransactionsController>
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CardOne(),
-            10.rVerticalSizedBox(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 3),
               child: Expanded(
@@ -114,9 +112,9 @@ class TransactionsScreen extends GetView<TransactionsController>
               ],
             ),
             20.rVerticalSizedBox(),
-            CardTwo(),
+            CardOne(),
             20.rVerticalSizedBox(),
-            CardTwo(),
+            CardOne(),
           ],
         ).paddingAll16(),
       ],
@@ -126,155 +124,6 @@ class TransactionsScreen extends GetView<TransactionsController>
 
 class CardOne extends StatelessWidget {
   const CardOne({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      constraints: BoxConstraints(maxWidth: 500),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Card(
-          elevation: 1,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(
-              color: Colors.black,
-              width: 1,
-            ),
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColor.emeraldGreen,
-                  Colors.green.shade900.withOpacity(0.8)
-                ], // Change colors as needed
-              ),
-            ),
-            // decoration: BoxDecoration(
-            //   borderRadius: BorderRadius.circular(8),
-            //   color: AppColor.emeraldGreen, // Change to your desired color
-            // ),
-            width: double.infinity,
-            constraints: BoxConstraints(maxWidth: 500),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Flex(
-                direction: Axis.vertical,
-                children: [
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '12',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                              Text(
-                                'Paid',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '05',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                              Text(
-                                'Unpaid',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '02',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                              Text(
-                                'Overdue',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '03',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                              Text(
-                                'Draft',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CardTwo extends StatelessWidget {
-  const CardTwo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -328,7 +177,7 @@ class CardTwo extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              'Anjali Rachel',
+                              'Happy Foods',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -438,7 +287,7 @@ class CardTwo extends StatelessWidget {
               ),
               SizedBox(height: 5), // Add vertical spacing
             ],
-          ).paddingAll(16),
+          ).paddingAll(10),
         ),
       ),
     );
