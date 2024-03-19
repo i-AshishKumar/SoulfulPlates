@@ -116,44 +116,33 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(payment);
     }
 
-    private List<Map<String, Object>> buildPaymentResponse(List<Payment> payments) {
+    @Override
+    public List<PaymentFilterResponse> filterPayments(Long userId, String status, Integer limit, Integer offset) {
+        System.out.println(limit);
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        Page<Payment> payments = paymentRepository.findByTransactionUserIdAndStatusOrderByCreatedAtDesc(
+                userId,
+                status,
+                pageRequest);
+
         return payments.stream().map(payment -> {
-            Map<String, Object> paymentMap = new HashMap<>();
-            paymentMap.put("user_id", payment.getOrder().getUser().getId());
-            paymentMap.put("store_id", payment.getStore().getStoreId());
-            paymentMap.put("amount", payment.getAmount());
-            paymentMap.put("order_id", payment.getOrder().getOrderId());
-            // Add more fields as needed
-            return paymentMap;
+            Transaction transaction = payment.getTransaction();
+            return new PaymentFilterResponse(
+                    transaction.getUser().getId(),
+                    payment.getStore().getStoreId(),
+                    payment.getAmount(),
+                    payment.getOrder().getOrderId(),
+                    "12**-****-**61",
+                    transaction.getCardExpiry(),
+                    "***",
+                    payment.getStatus(),
+                    payment.getPaymentId(),
+                    transaction.getTransactionId(),
+                    transaction.getStatus(),
+                    transaction.getCreatedAt(),
+                    transaction.getUpdatedAt()
+            );
         }).collect(Collectors.toList());
     }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Map<String, Object>> getBuyerPaymentHistory(Long userId, int limit, int offset, String status) throws Exception {
-        Pageable pageable = PageRequest.of(offset / limit, limit, Sort.by("paymentId").descending());
-        Page<Payment> paymentPage;
-        if (status != null && !status.isEmpty()) {
-            paymentPage = paymentRepository.findByOrderUserUserIdAndStatus(userId, status, pageable);
-        } else {
-            paymentPage = paymentRepository.findByOrderUserUserId(userId, pageable);
-        }
-        return buildPaymentResponse(paymentPage.getContent());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Map<String, Object>> getSellerPaymentHistory(Long storeId, int limit, int offset, String status) throws Exception {
-        Pageable pageable = PageRequest.of(offset / limit, limit, Sort.by("paymentId").descending());
-        Page<Payment> paymentPage;
-        if (status != null && !status.isEmpty()) {
-            paymentPage = paymentRepository.findByStoreStoreIdAndStatus(storeId, status, pageable);
-        } else {
-            paymentPage = paymentRepository.findByStoreStoreId(storeId, pageable);
-        }
-        return buildPaymentResponse(paymentPage.getContent());
-    }
-
-
-
 }
