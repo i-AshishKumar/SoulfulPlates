@@ -161,35 +161,7 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
                 ),
               ),
             ),
-            10.rVerticalSizedBox(),
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: Divider(
-            //         color: Colors.black,
-            //         thickness: 1,
-            //       ),
-            //     ),
-            //     Padding(
-            //       padding: EdgeInsets.symmetric(horizontal: 16),
-            //       child: Text(
-            //         'Invoice',
-            //         style: TextStyle(
-            //           fontSize: 22,
-            //           fontWeight: FontWeight.bold,
-            //           fontFamily: 'Cambria',
-            //         ),
-            //       ),
-            //     ),
-            //     Expanded(
-            //       child: Divider(
-            //         color: Colors.black,
-            //         thickness: 1,
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            10.rVerticalSizedBox(),
+            20.rVerticalSizedBox(),
             CardTwo(),
             20.rVerticalSizedBox(),
             CardTwo(),
