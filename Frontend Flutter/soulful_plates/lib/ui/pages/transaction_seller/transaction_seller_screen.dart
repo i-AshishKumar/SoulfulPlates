@@ -126,7 +126,7 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
             CardOne(),
             10.rVerticalSizedBox(),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3),
+              padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
               child: Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -161,34 +161,36 @@ class TransactionSellerScreen extends GetView<TransactionSellerController>
                 ),
               ),
             ),
-            20.rVerticalSizedBox(),
-            Row(
-              children: [
-                Expanded(
-                  child: Divider(
-                    color: Colors.black,
-                    thickness: 1,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Invoice',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Cambria',
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Divider(
-                    color: Colors.black,
-                    thickness: 1,
-                  ),
-                ),
-              ],
-            ),
+            10.rVerticalSizedBox(),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: Divider(
+            //         color: Colors.black,
+            //         thickness: 1,
+            //       ),
+            //     ),
+            //     Padding(
+            //       padding: EdgeInsets.symmetric(horizontal: 16),
+            //       child: Text(
+            //         'Invoice',
+            //         style: TextStyle(
+            //           fontSize: 22,
+            //           fontWeight: FontWeight.bold,
+            //           fontFamily: 'Cambria',
+            //         ),
+            //       ),
+            //     ),
+            //     Expanded(
+            //       child: Divider(
+            //         color: Colors.black,
+            //         thickness: 1,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            10.rVerticalSizedBox(),
+            CardTwo(),
             20.rVerticalSizedBox(),
             CardTwo(),
             20.rVerticalSizedBox(),
@@ -514,7 +516,7 @@ class CardTwo extends StatelessWidget {
               ),
               SizedBox(height: 5), // Add vertical spacing
             ],
-          ).paddingAll(16),
+          ).paddingAll(10),
         ),
       ),
     );
