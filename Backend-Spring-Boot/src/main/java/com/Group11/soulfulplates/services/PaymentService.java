@@ -1,7 +1,6 @@
 package com.Group11.soulfulplates.services;
 
 import com.Group11.soulfulplates.payload.request.CreatePaymentRequest;
-import com.Group11.soulfulplates.payload.request.PaymentFilterRequest;
 import com.Group11.soulfulplates.payload.response.PaymentFilterResponse;
 
 import java.util.List;
@@ -11,4 +10,5 @@ public interface PaymentService {
     Map<String, Object> createPaymentAndTransaction(CreatePaymentRequest request) throws Exception;
     void updatePaymentStatus(Long paymentId, Long transactionId, String status) throws Exception;
     List<PaymentFilterResponse> filterPayments(Long userId, String status, Integer limit, Integer offset);
+    List<PaymentFilterResponse> filterSellerPayments(Long storeId, String status, Integer limit, Integer offset);
 }

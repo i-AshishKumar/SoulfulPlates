@@ -1,11 +1,9 @@
 package com.Group11.soulfulplates.services.impl;
 
 import com.Group11.soulfulplates.models.CartItem;
-import com.Group11.soulfulplates.models.MenuItem;
 import com.Group11.soulfulplates.models.Payment;
 import com.Group11.soulfulplates.models.Transaction;
 import com.Group11.soulfulplates.payload.request.CreatePaymentRequest;
-import com.Group11.soulfulplates.payload.request.PaymentFilterRequest;
 import com.Group11.soulfulplates.payload.response.PaymentFilterResponse;
 import com.Group11.soulfulplates.repository.*;
 import com.Group11.soulfulplates.services.PaymentService;
@@ -13,12 +11,10 @@ import com.Group11.soulfulplates.utils.CartItemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -131,6 +127,35 @@ public class PaymentServiceImpl implements PaymentService {
 
         Page<Payment> payments = paymentRepository.findByTransactionUserIdAndStatusOrderByCreatedAtDesc(
                 userId,
+                status,
+                pageRequest);
+
+        return payments.stream().map(payment -> {
+            Transaction transaction = payment.getTransaction();
+            return new PaymentFilterResponse(
+                    transaction.getUser().getId(),
+                    payment.getStore().getStoreId(),
+                    payment.getAmount(),
+                    payment.getOrder().getOrderId(),
+                    "12**-****-**61",
+                    transaction.getCardExpiry(),
+                    "***",
+                    payment.getStatus(),
+                    payment.getPaymentId(),
+                    transaction.getTransactionId(),
+                    transaction.getStatus(),
+                    transaction.getCreatedAt(),
+                    transaction.getUpdatedAt()
+            );
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PaymentFilterResponse> filterSellerPayments(Long storeId, String status, Integer limit, Integer offset) {
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        Page<Payment> payments = paymentRepository.findByStoreStoreIdAndStatusOrderByCreatedAtDesc(
+                storeId,
                 status,
                 pageRequest);
 
