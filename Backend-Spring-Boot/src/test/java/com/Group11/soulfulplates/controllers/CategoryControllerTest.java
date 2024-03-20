@@ -170,5 +170,19 @@ class CategoryControllerTest {
         assertEquals(null, response.getData());
         assertEquals(request.getSubcategoryName(), subcategory.getSubcategoryName());
     }
+    @Test
+    public void testDeleteSubcategory() {
+        // Invoke controller method
+        MessageResponse response = categoryController.deleteSubcategory(1L);
+
+        // Verify behavior
+        verify(subcategoryService, times(1)).deleteSubcategory(1L);
+
+        // Assertions
+        assertEquals(1, response.getCode());
+        assertEquals("Subcategory deleted.", response.getDescription());
+        assertEquals(null, response.getData());
+    }
+
 
 }
