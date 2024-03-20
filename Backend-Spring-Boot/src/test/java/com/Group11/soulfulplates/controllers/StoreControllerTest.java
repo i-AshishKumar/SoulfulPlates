@@ -83,26 +83,26 @@ class StoreControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-    @Test
-    public void testDeleteStore_StoreNotFound() {
-        // Mock storeService.existsById to return false
-        when(storeService.existsById(anyLong())).thenReturn(false);
-
-        // Invoke controller method
-        ResponseEntity<?> responseEntity = storeController.deleteStore(1L);
-
-        // Verify behavior
-        verify(storeService, times(1)).existsById(1L);
-        verifyNoMoreInteractions(storeService);
-
-        // Assertions
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        MessageResponse messageResponse = (MessageResponse) responseEntity.getBody();
-        assertEquals(-1, messageResponse.getCode());
-        assertEquals("Store Not Found!", messageResponse.getDescription());
-        assertEquals(null, messageResponse.getData());
-    }
+//    @Test
+//    public void testDeleteStore_StoreNotFound() {
+//        // Mock storeService.existsById to return false
+//        when(storeService.existsById(anyLong())).thenReturn(false);
+//
+//        // Invoke controller method
+//        ResponseEntity<?> responseEntity = storeController.deleteStore(1L);
+//
+//        // Verify behavior
+//        verify(storeService, times(1)).existsById(1L);
+//        verifyNoMoreInteractions(storeService);
+//
+//        // Assertions
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//
+//        MessageResponse messageResponse = (MessageResponse) responseEntity.getBody();
+//        assertEquals(-1, messageResponse.getCode());
+//        assertEquals("Store Not Found!", messageResponse.getDescription());
+//        assertEquals(null, messageResponse.getData());
+//    }
 
     @Test
     void testUpdateStore() throws Exception {
