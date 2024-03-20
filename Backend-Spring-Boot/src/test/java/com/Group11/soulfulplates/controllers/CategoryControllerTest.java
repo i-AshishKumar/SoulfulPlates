@@ -28,6 +28,7 @@ class CategoryControllerTest {
     @Mock
     private SubcategoryService subcategoryService;
 
+
     @InjectMocks
     private CategoryController categoryController;
 
@@ -142,6 +143,32 @@ class CategoryControllerTest {
         // Verify service method invocation
         verify(categoryService, times(1)).getCategoryById(categoryId);
         verify(subcategoryService, times(1)).createSubcategory(any(SubCategory.class));
+    }
+
+    @Test
+    public void testEditSubcategory() {
+        // Prepare test data
+        SubcategoryRequest request = new SubcategoryRequest();
+        request.setSubcategoryName("Updated Subcategory Name");
+
+        SubCategory subcategory = new SubCategory();
+        subcategory.setSubcategoryName("Original Subcategory Name");
+
+        // Mock behavior
+        when(subcategoryService.getSubcategoryById(anyLong())).thenReturn(subcategory);
+
+        // Invoke controller method
+        MessageResponse response = categoryController.editSubcategory(request, 1L);
+
+        // Verify behavior
+        verify(subcategoryService, times(1)).getSubcategoryById(1L);
+        verify(subcategoryService, times(1)).editSubcategory(subcategory);
+
+        // Assertions
+        assertEquals(1, response.getCode());
+        assertEquals("Subcategory updated.", response.getDescription());
+        assertEquals(null, response.getData());
+        assertEquals(request.getSubcategoryName(), subcategory.getSubcategoryName());
     }
 
 }
