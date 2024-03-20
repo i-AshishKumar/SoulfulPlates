@@ -127,6 +127,4 @@ public class WishlistControllerTest {
         assertNull(response.getBody().getData());
     }
 
-
-
 }
