@@ -18,9 +18,10 @@ import com.Group11.soulfulplates.security.jwt.JwtUtils;
 import com.Group11.soulfulplates.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,6 +54,7 @@ public class AuthController {
 
   @Autowired
   JwtUtils jwtUtils;
+
 
   @PostMapping("/signup")
   public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
@@ -111,56 +113,64 @@ public class AuthController {
 
   @PostMapping("/signin")
   public ResponseEntity<MessageResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-    Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+    try {
+      Authentication authentication = authenticationManager.authenticate(
+              new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtUtils.generateJwtToken(authentication);
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+      String jwt = jwtUtils.generateJwtToken(authentication);
 
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-    List<String> roles = userDetails.getAuthorities().stream()
-            .map(Object::toString)
-            .collect(Collectors.toList());
+      UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+      List<String> roles = userDetails.getAuthorities().stream()
+              .map(Object::toString)
+              .collect(Collectors.toList());
 
-    // Fetch store information if exists
-    Optional<Store> storeOptional = storeRepository.findByUser_Id(userDetails.getId());
+      // Fetch store information if exists
+      Optional<Store> storeOptional = storeRepository.findByUser_Id(userDetails.getId());
 
-    // If store details exist, append them to JwtResponse
-    if (storeOptional.isPresent()) {
-      Store store = storeOptional.get();
-      JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
-              userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag(),
-      store.getStoreId(), store.getStoreName(), store.getStoreEmail(), store.getContactNumber() );
-      return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
-    }else{
-      // Create JwtResponse without store details
-      JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
-              userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag());
-      return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
+      // If store details exist, append them to JwtResponse
+      if (storeOptional.isPresent()) {
+        Store store = storeOptional.get();
+        JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
+                userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag(),
+                store.getStoreId(), store.getStoreName(), store.getStoreEmail(), store.getContactNumber());
+        return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
+      } else {
+        // Create JwtResponse without store details
+        JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
+                userDetails.getEmail(), roles, userDetails.getContactNumber(), userDetails.getFirstname(), userDetails.isNotificationFlag());
+        return ResponseEntity.ok(new MessageResponse(1, "User authenticated successfully!", jwtResponse));
 
+      }
+    } catch (BadCredentialsException ex) {
+      // Handle BadCredentialsException
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+              .body(new MessageResponse(-1, "Invalid username or password", null));
     }
   }
+
 
 
   @PostMapping("/forget-password")
-//  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
   public ResponseEntity<MessageResponse> generateForgetPasswordCode(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
-    if (userRepository.existsByEmail(forgetPasswordRequest.getEmail())) {
-      try {
+    try {
+      if (userRepository.existsByEmail(forgetPasswordRequest.getEmail())) {
         return ResponseEntity.ok(new MessageResponse(1, "Forget password code generated successfully!",
                 Collections.singletonMap("OTP_Code", OtpResponse.OtpCode())));
-      } catch (Exception e) {
-        return ResponseEntity.badRequest()
-                .body(new MessageResponse(-1, "Error occurred while generating forget password code.", null));
+      } else {
+        return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse(-1, "Error: Email does not exists!", null));
       }
-    } else{
+    } catch (RuntimeException e) {
       return ResponseEntity
               .badRequest()
-              .body(new MessageResponse(-1, "Error: Email does not exists!", null));
+              .body(new MessageResponse(-1, "Error occurred while generating forget password code.", null));
     }
   }
+
+
   @PostMapping("/reset-password")
-//  @PreAuthorize("hasRole('ROLE_BUYER') or hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
   public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
     if (userRepository.existsByEmail(resetPasswordRequest.getEmail())) {
       try {
@@ -169,7 +179,6 @@ public class AuthController {
           User user = optionalUser.get();
           user.setPassword(encoder.encode(resetPasswordRequest.getNewPassword()));
           userRepository.save(user);
-
           return ResponseEntity.ok(new MessageResponse(1, "Password reset successfully!", null));
         } else {
           return ResponseEntity.badRequest()
@@ -179,7 +188,6 @@ public class AuthController {
         return ResponseEntity.badRequest()
                 .body(new MessageResponse(-1, "Error occurred while resetting password.", null));
       }
-
     } else {
       return ResponseEntity
               .badRequest()
