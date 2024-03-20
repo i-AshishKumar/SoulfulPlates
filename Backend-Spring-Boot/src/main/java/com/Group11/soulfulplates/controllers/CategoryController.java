@@ -6,7 +6,7 @@ import com.Group11.soulfulplates.payload.request.CategoryRequest;
 import com.Group11.soulfulplates.payload.request.SubcategoryRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.services.CategoryService;
-import com.Group11.soulfulplates.services.impl.SubcategoryService;
+import com.Group11.soulfulplates.services.SubcategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
