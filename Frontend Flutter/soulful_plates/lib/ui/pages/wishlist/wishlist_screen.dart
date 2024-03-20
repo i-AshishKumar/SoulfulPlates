@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soulful_plates/ui/widgets/base_button.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sized_box.dart';
@@ -34,6 +35,41 @@ class WishlistScreen extends GetView<WishlistController> with BaseCommonWidget {
   Widget getBody(BuildContext context) {
     return Column(
       children: [
+        12.rVerticalSizedBox(),
+        BaseButton(
+            text: "Get Address",
+            onSubmit: () {
+              // controller.addAddress(data: {
+              //   "street": "123 Main St",
+              //   "city": "New York",
+              //   "state": "NY",
+              //   "postalCode": "10001",
+              //   "country": "USA",
+              //   "lat": "40.7128",
+              //   "longitude": "-74.0060",
+              //   "label": "Home"
+              // });
+
+              // controller.updateAddress(data: {
+              //   "id": "2",
+              //   "street": "123 ",
+              //   "city": "New York",
+              //   "state": "NY",
+              //   "postalCode": "10001",
+              //   "country": "USA",
+              //   "lat": "40.7128",
+              //   "longitude": "-74.0060",
+              //   "label": "Home"
+              // });
+
+              // controller.deleteAddress(data: {"id": "2"});
+
+              // controller.getAddress();
+
+              // controller.updateNotificationStatus();
+
+              controller.getNearByStores();
+            }),
         12.rVerticalSizedBox(),
         Expanded(
           child: Stack(children: [
@@ -109,6 +145,7 @@ class WishlistScreen extends GetView<WishlistController> with BaseCommonWidget {
                 : AppSizedBox.sizedBox0
           ]).paddingSymmetricSide(vertical: 8, horizontal: 16),
         ),
+        12.rVerticalSizedBox(),
       ],
     );
   }
