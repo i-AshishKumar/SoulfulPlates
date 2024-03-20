@@ -2,13 +2,14 @@ package com.Group11.soulfulplates.security;
 
 import com.Group11.soulfulplates.security.jwt.AuthEntryPointJwt;
 import com.Group11.soulfulplates.security.jwt.AuthTokenFilter;
-import com.Group11.soulfulplates.security.services.UserDetailsServiceImpl;
+import com.Group11.soulfulplates.security.services.UserDetailsServiceImplTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.when;
 class WebSecurityConfigTest {
 
     @Mock
-    UserDetailsServiceImpl userDetailsService;
+    UserDetailsServiceImplTest userDetailsService;
 
     @Mock
     AuthEntryPointJwt unauthorizedHandler;
@@ -35,6 +36,8 @@ class WebSecurityConfigTest {
 
     @InjectMocks
     WebSecurityConfig webSecurityConfig;
+
+
 
     @BeforeEach
     void setUp() {
@@ -59,4 +62,38 @@ class WebSecurityConfigTest {
     void testPasswordEncoderBean() {
         assertNotNull(webSecurityConfig.passwordEncoder());
     }
+
+    @Test
+    void authenticationJwtTokenFilter() {
+        AuthTokenFilter authTokenFilter = webSecurityConfig.authenticationJwtTokenFilter();
+        assertNotNull(authTokenFilter);
+    }
+    @Test
+    void authenticationProvider() {
+        AuthenticationProvider authenticationProvider = webSecurityConfig.authenticationProvider();
+        assertNotNull(authenticationProvider);
+    }
+
+    @Test
+    void authenticationManager() throws Exception {
+        // Mock AuthenticationManager
+        AuthenticationManager authenticationManagerMock = mock(AuthenticationManager.class);
+
+        // Mock AuthenticationConfiguration
+        AuthenticationConfiguration authenticationConfiguration = mock(AuthenticationConfiguration.class);
+        when(authenticationConfiguration.getAuthenticationManager()).thenReturn(authenticationManagerMock);
+
+        // Call the method
+        AuthenticationManager authenticationManager = webSecurityConfig.authenticationManager(authenticationConfiguration);
+
+        // Assert that the returned value is not null
+        assertNotNull(authenticationManager);
+    }
+
+    @Test
+    void passwordEncoder() {
+        PasswordEncoder passwordEncoder = webSecurityConfig.passwordEncoder();
+        assertNotNull(passwordEncoder);
+    }
+
 }

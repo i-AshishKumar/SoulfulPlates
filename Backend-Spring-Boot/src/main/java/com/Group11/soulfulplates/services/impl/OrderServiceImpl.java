@@ -204,7 +204,7 @@ public class OrderServiceImpl implements OrderService {
         return new OrdersResponse(1, "Success", orderDataList);
     }
 
-    private OrdersResponse.OrderData convertToOrderData(Order order) {
+    OrdersResponse.OrderData convertToOrderData(Order order) {
         OrdersResponse.OrderData orderData = new OrdersResponse.OrderData();
         orderData.setOrderId(order.getOrderId());
         orderData.setOrderStatus(order.getStatus());
