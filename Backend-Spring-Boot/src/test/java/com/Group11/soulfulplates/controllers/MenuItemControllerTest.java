@@ -9,9 +9,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class MenuItemControllerTest {
@@ -21,10 +22,41 @@ class MenuItemControllerTest {
 
     @InjectMocks
     private MenuItemController menuItemController;
+    private MenuItemRequest validMenuItemRequest;
+    private Long validMenuItemId;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this); // Initialize mocks
+        validMenuItemRequest = new MenuItemRequest();
+        validMenuItemRequest.setItemName("Updated Item");
+        validMenuItemRequest.setStoreId(1L);
+        validMenuItemRequest.setItemPrice(String.valueOf(10.99));
+        validMenuItemId = 1L;
+
     }
+
+    @Test
+    void testCreateMenuItem_ValidMenuItem_Success() {
+        // Given
+        MenuItemRequest menuItemRequest = new MenuItemRequest();
+        menuItemRequest.setItemName("Test Item");
+        menuItemRequest.setStoreId(1L);
+
+        doNothing().when(menuItemService).createMenuItem(any());
+
+        // When
+        MessageResponse response = menuItemController.createMenuItem(menuItemRequest);
+
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Menu item created.", response.getDescription());
+        assertNull(response.getData());
+
+        verify(menuItemService).createMenuItem(any());
+    }
+
 
     @Test
     void testEditMenuItem_MenuItemExists_Success() {
@@ -65,5 +97,49 @@ class MenuItemControllerTest {
         assertEquals("Menu item not found.", response.getDescription());
     }
 
-    // Add more test cases for edge cases and error scenarios
+    @Test
+    void testEditMenuItem_MenuItemFoundAndUpdated_Success() {
+        // Given
+        MenuItem menuItem = new MenuItem();
+        when(menuItemService.findMenuById(validMenuItemId)).thenReturn(menuItem);
+
+        // When
+        MessageResponse response = menuItemController.editMenuItem(validMenuItemId, validMenuItemRequest);
+
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Menu item updated successfully.", response.getDescription());
+        assertNull(response.getData());
+        verify(menuItemService, times(1)).editMenuItem(validMenuItemId, menuItem);
+    }
+    @Test
+    void testEditMenuItem_MenuItemNotFound_Failure() {
+        // Given
+        when(menuItemService.findMenuById(validMenuItemId)).thenReturn(null);
+
+        // When
+        MessageResponse response = menuItemController.editMenuItem(validMenuItemId, validMenuItemRequest);
+
+        // Then
+        assertNotNull(response);
+        assertEquals(0, response.getCode());
+        assertEquals("Menu item not found.", response.getDescription());
+        assertNull(response.getData());
+        verify(menuItemService, never()).editMenuItem(any(), any());
+    }
+
+    @Test
+    void deleteMenuItem_ValidMenuItemId_Success() {
+        // When
+        MessageResponse response = menuItemController.deleteMenuItem(validMenuItemId);
+
+        // Then
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Menu item deleted successfully.", response.getDescription());
+        assertNull(response.getData());
+        verify(menuItemService, times(1)).deleteMenuItem(validMenuItemId);
+    }
+
 }
