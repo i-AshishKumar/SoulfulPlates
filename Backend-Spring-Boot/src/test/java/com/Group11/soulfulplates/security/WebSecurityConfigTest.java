@@ -1,44 +1,62 @@
-//package com.Group11.soulfulplates.security;
-//
-//import com.Group11.soulfulplates.security.jwt.AuthEntryPointJwt;
-//import com.Group11.soulfulplates.security.jwt.AuthTokenFilter;
-//import com.Group11.soulfulplates.security.services.UserDetailsServiceImpl;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.test.mock.mockito.MockBean;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-//import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-//
-//@SpringBootTest
-//@AutoConfigureMockMvc
-//class WebSecurityConfigTest {
-//
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @MockBean
-//    private UserDetailsServiceImpl userDetailsService;
-//
-//    @MockBean
-//    private AuthEntryPointJwt unauthorizedHandler;
-//
-//    @MockBean
-//    private AuthenticationManager authenticationManager;
-//
-//    @MockBean
-//    private AuthTokenFilter authTokenFilter;
-//
-//    @MockBean
-//    private PasswordEncoder passwordEncoder;
-//
-//    @Test
-//    void testAuthenticatedEndpointRequiresAuthentication() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.get("/api/private/test"))
-//                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
-//    }
-//}
+package com.Group11.soulfulplates.security;
+
+import com.Group11.soulfulplates.security.jwt.AuthEntryPointJwt;
+import com.Group11.soulfulplates.security.jwt.AuthTokenFilter;
+import com.Group11.soulfulplates.security.services.UserDetailsServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+class WebSecurityConfigTest {
+
+    @Mock
+    UserDetailsServiceImpl userDetailsService;
+
+    @Mock
+    AuthEntryPointJwt unauthorizedHandler;
+
+    @Mock
+    AuthTokenFilter authTokenFilter;
+
+    @Mock
+    PasswordEncoder passwordEncoder;
+
+    @Mock
+    AuthenticationConfiguration authConfig;
+
+    @InjectMocks
+    WebSecurityConfig webSecurityConfig;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void testAuthenticationJwtTokenFilterBean() {
+        assertNotNull(webSecurityConfig.authenticationJwtTokenFilter());
+    }
+
+    @Test
+    void testAuthenticationManagerBean() throws Exception {
+        // Mock AuthenticationManager
+        AuthenticationManager authenticationManagerMock = mock(AuthenticationManager.class);
+        when(authConfig.getAuthenticationManager()).thenReturn(authenticationManagerMock);
+
+        assertNotNull(webSecurityConfig.authenticationManager(authConfig));
+    }
+
+    @Test
+    void testPasswordEncoderBean() {
+        assertNotNull(webSecurityConfig.passwordEncoder());
+    }
+}

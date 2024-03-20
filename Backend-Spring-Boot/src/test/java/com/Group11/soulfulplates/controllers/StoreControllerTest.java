@@ -95,5 +95,62 @@ class StoreControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("No Store Found", ((MessageResponse) responseEntity.getBody()).getDescription());
     }
+    @Test
+    void testUpdateStore_Success() throws Exception {
+        // Setup
+        Store store = new Store();
+        store.setStoreId(1L);
+
+        // Mock the service method to return the updated store
+        when(storeService.updateStoreByUserId(1L, store)).thenReturn(store);
+
+        // Call the controller method
+        ResponseEntity<?> response = storeController.updateStore(1L, store);
+
+        // Assertion
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testUpdateStore_NotFound() throws Exception {
+        // Setup
+        Store store = new Store();
+        store.setStoreId(1L);
+
+        // Mock the service method to return empty optional, indicating store not found
+        when(storeService.updateStoreByUserId(1L, store)).thenThrow(new RuntimeException("Store not found"));
+
+        // Call the controller method
+        ResponseEntity<?> response = storeController.updateStore(1L, store);
+
+        // Assertion
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void testDeleteStore_NotFound() {
+        // Setup
+        when(storeService.existsById(1L)).thenReturn(false);
+
+        // Call the controller method
+        ResponseEntity<?> response = storeController.deleteStore(1L);
+
+        // Assertion
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Store Not Found!", ((MessageResponse) response.getBody()).getDescription());
+    }
+
+    @Test
+    void testDeleteStore_StoreNotFound() {
+        // Setup
+        when(storeService.existsById(1L)).thenReturn(false);
+
+        // Call the controller method
+        ResponseEntity<?> response = storeController.deleteStore(1L);
+
+        // Assertion
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Store Not Found!", ((MessageResponse) response.getBody()).getDescription());
+    }
 
 }

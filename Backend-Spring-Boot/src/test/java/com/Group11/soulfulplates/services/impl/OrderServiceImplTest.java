@@ -145,4 +145,18 @@ class OrderServiceImplTest {
         verify(orderRepository, times(1)).findByOrderIdAndUserId(orderId, userId);
     }
 
+    @Test
+    void testGetOrderDetails_OrderNotFound() {
+        // Given
+        Long userId = 1L;
+        Long orderId = 1L;
+
+        when(orderRepository.findByOrderIdAndUserId(orderId, userId)).thenReturn(Optional.empty()); // Mock the orderRepository to return an empty Optional
+
+        // When, Then
+        assertThrows(Exception.class, () -> orderService.getOrderDetails(userId, orderId));
+        // Add more assertions as needed based on the expected behavior of the method
+    }
+
+
 }
