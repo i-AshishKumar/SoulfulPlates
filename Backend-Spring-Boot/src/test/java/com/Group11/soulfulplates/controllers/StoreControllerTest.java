@@ -14,6 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -145,6 +150,31 @@ class StoreControllerTest {
         assertEquals("Seller's Store not found", responseBody.get("description"));
     }
 
+
+    @Test
+    public void testUpdateUserImage_EmptyFile() {
+        // Mock storeRepository
+        Store store = new Store(); // Create a mock store object
+        when(storeRepository.findById(anyLong())).thenReturn(Optional.of(store));
+
+        // Mock a valid MultipartFile object
+        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", new byte[0]);
+
+        // Invoke controller method
+        ResponseEntity<MessageResponse> responseEntity = storeController.updateUserImage(1L, file);
+
+        // Verify behavior
+        verify(storeRepository, times(1)).findById(1L);
+        verifyNoMoreInteractions(storeRepository);
+
+        // Assertions
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        MessageResponse messageResponse = responseEntity.getBody();
+        assertEquals(-1, messageResponse.getCode());
+        assertEquals("Failed to store empty file.", messageResponse.getDescription());
+        assertEquals(null, messageResponse.getData());
+    }
 
 
 }
