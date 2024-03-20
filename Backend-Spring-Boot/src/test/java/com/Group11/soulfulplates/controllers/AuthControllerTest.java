@@ -29,7 +29,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -172,7 +173,7 @@ public class AuthControllerTest {
 
         // Verify the response
         assertEquals(-1, responseEntity.getBody().getCode());
-        assertEquals("Error: Email does not exists!", responseEntity.getBody().getDescription());
+        assertEquals("Error: Email does not exist!", responseEntity.getBody().getDescription());
         assertNull(responseEntity.getBody().getData());
     }
 
@@ -248,7 +249,7 @@ public class AuthControllerTest {
     void testAuthenticateUser_Failure() {
         // Mock authentication result
         when(authenticationManager.authenticate(any()))
-                .thenThrow(new BadCredentialsException("Invalid credentials"));
+                .thenThrow(BadCredentialsException.class);
 
         // Test login request
         LoginRequest loginRequest = new LoginRequest();
