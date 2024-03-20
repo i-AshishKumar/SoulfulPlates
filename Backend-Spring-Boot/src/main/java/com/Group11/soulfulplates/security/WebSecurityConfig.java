@@ -20,7 +20,7 @@ import com.Group11.soulfulplates.security.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableMethodSecurity
-public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 

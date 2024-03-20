@@ -1,15 +1,12 @@
 package com.Group11.soulfulplates.controllers;
 
 
-import com.Group11.soulfulplates.models.Category;
 import com.Group11.soulfulplates.models.MenuItem;
 import com.Group11.soulfulplates.payload.request.MenuItemRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.impl.MenuItemService;
+import com.Group11.soulfulplates.services.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/menu-items")

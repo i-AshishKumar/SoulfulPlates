@@ -1,15 +1,14 @@
 package com.Group11.soulfulplates.controllers;
 
-import com.Group11.soulfulplates.controllers.MenuItemController;
 import com.Group11.soulfulplates.models.MenuItem;
 import com.Group11.soulfulplates.payload.request.MenuItemRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.impl.MenuItemService;
+import com.Group11.soulfulplates.services.MenuItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,7 +55,6 @@ class MenuItemControllerTest {
 
         verify(menuItemService).createMenuItem(any());
     }
-
 
     @Test
     void testEditMenuItem_MenuItemExists_Success() {
