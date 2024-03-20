@@ -5,7 +5,7 @@ import com.Group11.soulfulplates.models.SubCategory;
 import com.Group11.soulfulplates.payload.request.CategoryRequest;
 import com.Group11.soulfulplates.payload.request.SubcategoryRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.impl.CategoryService;
+import com.Group11.soulfulplates.services.CategoryService;
 import com.Group11.soulfulplates.services.impl.SubcategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
