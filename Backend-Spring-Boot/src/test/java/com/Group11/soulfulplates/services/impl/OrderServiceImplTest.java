@@ -6,6 +6,7 @@ import com.Group11.soulfulplates.models.Store;
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.request.CreateOrderRequest;
 import com.Group11.soulfulplates.payload.response.CreateOrderResponse;
+import com.Group11.soulfulplates.payload.response.OrderDetailsResponse;
 import com.Group11.soulfulplates.payload.response.OrdersResponse;
 import com.Group11.soulfulplates.repository.CartItemRepository;
 import com.Group11.soulfulplates.repository.OrderRepository;
@@ -148,5 +149,7 @@ class OrderServiceImplTest {
         assertThrows(Exception.class, () -> orderService.getOrderDetails(userId, orderId));
         verify(orderRepository, times(1)).findByOrderIdAndUserId(orderId, userId);
     }
+
+
 
 }
