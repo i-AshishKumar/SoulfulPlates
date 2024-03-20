@@ -1,9 +1,7 @@
 package com.Group11.soulfulplates.services.impl;
 
 import com.Group11.soulfulplates.models.MenuItem;
-import com.Group11.soulfulplates.repository.CategoryRepository;
 import com.Group11.soulfulplates.repository.MenuItemRepository;
-import com.Group11.soulfulplates.repository.SubcategoryRepository;
 import com.Group11.soulfulplates.services.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +13,6 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Autowired
     private MenuItemRepository menuItemRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private SubcategoryRepository subcategoryRepository;
 
     public void createMenuItem(MenuItem menuItem) {
         menuItemRepository.save(menuItem);

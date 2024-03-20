@@ -1,11 +1,9 @@
 package com.Group11.soulfulplates.services.impl;
 
 import com.Group11.soulfulplates.payload.request.CreatePaymentRequest;
-import com.Group11.soulfulplates.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
@@ -14,24 +12,6 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PaymentServiceImplTest {
-
-    @Mock
-    private TransactionRepository transactionRepository;
-
-    @Mock
-    private PaymentRepository paymentRepository;
-
-    @Mock
-    private OrderRepository orderRepository;
-
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private StoreRepository storeRepository;
-
-    @Mock
-    private CartItemRepository cartItemRepository;
 
     @InjectMocks
     private PaymentServiceImpl paymentService;
