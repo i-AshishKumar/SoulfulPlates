@@ -1,11 +1,11 @@
 package com.Group11.soulfulplates.controllers;
 
-import com.Group11.soulfulplates.controllers.UserController;
 import com.Group11.soulfulplates.models.Address;
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.AddressRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
+import com.Group11.soulfulplates.services.AddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -15,9 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +35,12 @@ class UserControllerTest {
 
     @Mock
     private AddressRepository addressRepository;
+
+    @Mock
+    private AddressService addressService;
+
+    @Mock
+    private UserDetailsService userDetailsService;
 
     @BeforeEach
     void setUp() {
@@ -139,6 +147,37 @@ class UserControllerTest {
     }
 
     @Test
+    void testDeleteAddressForUser_UserAndAddressExist_AddressDeletedSuccessfully() {
+        // Given
+        Long userId = 1L;
+        Long addressId = 1L;
+        Address address = new Address();
+        address.setAddressId(addressId);
+
+        User user = new User();
+        user.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(addressRepository.findById(addressId)).thenReturn(Optional.of(address));
+
+        // When
+        ResponseEntity<MessageResponse> responseEntity = userController.deleteAddressForUser(userId, addressId);
+
+        // Then
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        MessageResponse response = responseEntity.getBody();
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Address deleted successfully!", response.getDescription());
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(addressRepository, times(1)).findById(addressId);
+        verify(addressRepository, times(1)).delete(address);
+    }
+
+
+    @Test
     void testUpdateAddressForUser_UserAndAddressExist_AddressUpdatedSuccessfully() {
         // Given
         Long userId = 1L;
@@ -176,6 +215,58 @@ class UserControllerTest {
         verify(userRepository, times(1)).findById(userId);
         verify(addressRepository, times(1)).findById(addressId);
         verify(addressRepository, times(1)).save(existingAddress);
+    }
+
+    @Test
+    void testGetUserAndNearestStore_AddressExists_NearestStoreFound() {
+        // Given
+        Long addressId = 1L;
+        Double maxDistance = 10.0;
+
+        Address userAddress = new Address();
+        userAddress.setAddressId(addressId);
+        userAddress.setLatitude(40.7128);
+        userAddress.setLongitude(-74.0060);
+
+        List<Map<String, Object>> storesLatLon = new ArrayList<>();
+        Map<String, Object> store1 = Map.of("lat", 40.7129, "lon", -74.0061);
+        Map<String, Object> store2 = Map.of("lat", 40.7127, "lon", -74.0059);
+        storesLatLon.add(store1);
+        storesLatLon.add(store2);
+
+        when(addressRepository.findById(addressId)).thenReturn(Optional.of(userAddress));
+        when(addressService.getAllStoresLatLon()).thenReturn(storesLatLon);
+
+        // When
+        ResponseEntity<MessageResponse> responseEntity = userController.getUserAndNearestStore(addressId, maxDistance);
+
+        // Then
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        MessageResponse response = responseEntity.getBody();
+        assertNotNull(response);
+        assertEquals(1, response.getCode());
+        assertEquals("Nearest store within 10.0 km found", response.getDescription());
+        assertNotNull(response.getData());
+
+        verify(addressRepository, times(1)).findById(addressId);
+        verify(addressService, times(1)).getAllStoresLatLon();
+    }
+
+    @Test
+    void testUpdateAddressForUser_UserAndAddressDoNotExist_ExceptionThrown() {
+        // Given
+        Long userId = 1L;
+        Long addressId = 1L;
+        Address updatedAddressDetails = new Address();
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        // When/Then
+        assertThrows(RuntimeException.class, () -> userController.updateAddressForUser(userId, addressId, updatedAddressDetails));
+        verify(userRepository, times(1)).findById(userId);
+        verify(addressRepository, never()).findById(addressId);
+        verify(addressRepository, never()).save(any());
     }
 
 }

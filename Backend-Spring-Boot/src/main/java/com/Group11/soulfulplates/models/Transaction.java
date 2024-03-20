@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -30,6 +31,13 @@ public class Transaction {
 
     @Column(name = "status", nullable = false)
     private String status;
+
+    @Column
+    private Date createdAt;
+
+    @Column
+    private Date updatedAt;
+
 
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Payment> payments;
@@ -83,6 +91,22 @@ public class Transaction {
         this.status = status;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public String toString() {
         return "Transaction{" +
@@ -92,6 +116,8 @@ public class Transaction {
                 ", cardExpiry=" + cardExpiry +
                 ", cvv='" + cvv + '\'' +
                 ", status='" + status + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
                 '}';
     }
 

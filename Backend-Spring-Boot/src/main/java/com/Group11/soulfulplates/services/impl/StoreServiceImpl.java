@@ -1,7 +1,6 @@
 package com.Group11.soulfulplates.services.impl;
 
 import com.Group11.soulfulplates.models.Store;
-import com.Group11.soulfulplates.repository.StoreRepo;
 import com.Group11.soulfulplates.repository.StoreRepository;
 import com.Group11.soulfulplates.services.StoreService;
 import jakarta.transaction.Transactional;
@@ -9,15 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 @Service
 public class StoreServiceImpl implements StoreService {
 
-    private final StoreRepo storeRepository;
+    private final StoreRepository storeRepository;
 
     @Autowired
-    public StoreServiceImpl(StoreRepo storeRepo) {
-        this.storeRepository = storeRepo;
+    public StoreServiceImpl(StoreRepository storeRepository) {
+        this.storeRepository = storeRepository;
     }
 
 
@@ -61,7 +61,6 @@ public class StoreServiceImpl implements StoreService {
     public boolean existsById(Long id) {
         return storeRepository.existsById(id);
     }
-
 
 }
 
