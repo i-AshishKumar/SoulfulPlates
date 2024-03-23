@@ -107,18 +107,24 @@ public class OrderServiceImpl implements OrderService {
         return new OrderDetailsResponse(1, "Success", data);
     }
 
-    private OrderDetailsResponse.OrderDetails mapOrderToOrderDetailsData(Order order) throws Exception{
+    private OrderDetailsResponse.OrderDetails mapOrderToOrderDetailsData(Order order) throws Exception {
         OrderDetailsResponse.OrderDetails orderDetails = new OrderDetailsResponse.OrderDetails();
 
         orderDetails.setOrderId(order.getOrderId());
         orderDetails.setOrderStatus(order.getStatus());
         orderDetails.setCreatedDate(order.getCreatedAt());
-//                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        orderDetails.setUserId(order.getUser().getId());
+
+        // Check if user is null
+        if (order.getUser() != null) {
+            orderDetails.setUserId(order.getUser().getId());
+        } else {
+            throw new Exception("User not found for order");
+        }
+
         orderDetails.setStoreId(order.getStore().getStoreId());
         orderDetails.setInstructions(order.getInstructions());
 
-        if(order.getRating()!= null){
+        if (order.getRating() != null) {
             orderDetails.setRating(order.getRating().getRating());
             orderDetails.setFeedback(order.getRating().getFeedback());
         } else {
@@ -126,22 +132,18 @@ public class OrderServiceImpl implements OrderService {
             orderDetails.setFeedback(null);
         }
 
-        if(order.getOrderId() != null){
+        if (order.getOrderId() != null) {
             Optional<Payment> payment = paymentRepository.findFirstByOrderOrderIdOrderByPaymentIdDesc(order.getOrderId());
-            if(!payment.isEmpty()){
+            if (payment.isPresent()) {
                 orderDetails.setPaymentStatus(payment.get().getStatus());
             }
         }
 
         List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(order.getOrderId());
-        List<Long> itemIds = null;
-        Double totalAmount = null;
-        if(cartItems.size() > 0){
-            itemIds = CartItemUtils.extractItemIds(cartItems);
-            totalAmount = CartItemUtils.getTotalForOrderId(cartItems);
-        }
+        List<Long> itemIds = CartItemUtils.extractItemIds(cartItems);
+        Double totalAmount = CartItemUtils.getTotalForOrderId(cartItems);
 
-        if(itemIds == null){
+        if (itemIds.isEmpty()) {
             throw new Exception("Menu Items not found");
         }
 
@@ -155,6 +157,7 @@ public class OrderServiceImpl implements OrderService {
 
         return orderDetails;
     }
+
 
     private OrderDetailsResponse.OrderDetails.MenuItemDTO mapMenuItemToDTO(MenuItem menuItem) {
         OrderDetailsResponse.OrderDetails.MenuItemDTO menuItemDTO = new OrderDetailsResponse.OrderDetails.MenuItemDTO();
@@ -201,7 +204,7 @@ public class OrderServiceImpl implements OrderService {
         return new OrdersResponse(1, "Success", orderDataList);
     }
 
-    private OrdersResponse.OrderData convertToOrderData(Order order) {
+    OrdersResponse.OrderData convertToOrderData(Order order) {
         OrdersResponse.OrderData orderData = new OrdersResponse.OrderData();
         orderData.setOrderId(order.getOrderId());
         orderData.setOrderStatus(order.getStatus());
