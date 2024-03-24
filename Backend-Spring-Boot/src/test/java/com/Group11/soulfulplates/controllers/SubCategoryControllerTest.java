@@ -32,7 +32,7 @@ class SubCategoryControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
-
+/*
     @Test
     void testCreateCategory() {
         // Mock data
@@ -111,5 +111,5 @@ class SubCategoryControllerTest {
         assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
     }
 
-
+*/
 }

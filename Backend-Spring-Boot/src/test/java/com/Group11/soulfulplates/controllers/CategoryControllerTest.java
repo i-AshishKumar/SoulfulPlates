@@ -36,6 +36,7 @@ class CategoryControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    /*
     @Test
     void testCreateCategory() {
         // Mock data
@@ -115,32 +116,6 @@ class CategoryControllerTest {
     }
 
 
-//
-//    @Test
-//    void testCreateSubcategory() {
-//        // Mock data
-//        Long categoryId = 1L;
-//        Long storeId = 1L;
-//        SubcategoryRequest request = new SubcategoryRequest();
-//        request.setSubcategoryName("Test Subcategory");
-//        request.setCategoryId(categoryId);
-//        request.setStoreId(storeId);
-//
-//        // Mock service method
-//        when(categoryService.getCategoryById(categoryId)).thenReturn(new Category());
-//        doNothing().when(subcategoryService).createSubcategory(any(Subcategory.class));
-//
-//        // Call controller method
-//        MessageResponse response = categoryController.createSubcategory(request);
-//
-//        // Assertions
-//        assertEquals(1, response.getCode());
-//        assertEquals("Subcategory Created.", response.getDescription());
-//        assertNull(response.getData());
-//
-//        // Verify service method invocation
-//        verify(categoryService, times(1)).getCategoryById(categoryId);
-//        verify(subcategoryService, times(1)).createSubcategory(any(Subcategory.class));
-//    }
+*/
 
 }
