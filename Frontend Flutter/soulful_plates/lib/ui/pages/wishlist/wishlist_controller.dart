@@ -1,7 +1,14 @@
+import 'package:soulful_plates/app_singleton.dart';
+import 'package:soulful_plates/model/location/address_model.dart';
+
 import '../../../constants/enums/view_state.dart';
 import '../../../controller/base_controller.dart';
 import '../../../model/data_model.dart';
+import '../../../network/network_interfaces/end_points.dart';
+import '../../../network/network_interfaces/i_dio_singleton.dart';
+import '../../../network/network_utils/api_call.dart';
 import '../../../utils/pagination_utils.dart';
+import '../../../utils/utils.dart';
 
 class WishlistController extends BaseController
     with PaginationUtils<DataModel> {
@@ -21,33 +28,115 @@ class WishlistController extends BaseController
 
   void getDataFromAPI() async {
     updateLoader(ViewStateEnum.busy);
+    updateLoader(ViewStateEnum.idle);
+    update();
+  }
 
-    /*
-    var result = ; //male api call here
+  void getAddress() async {
+    updateLoader(ViewStateEnum.busy);
+    var response = await ApiCall().call<AddressModel>(
+      method: RequestMethod.get,
+      endPoint:
+          "${EndPoints.addAddress}/${AppSingleton.loggedInUserProfile?.id}",
+      obj: AddressModel(),
+      apiCallType: ApiCallType.seller,
+    );
+    print("Response $response ");
+    updateLoader(ViewStateEnum.idle);
+    update();
+  }
 
-    if (result.hasException) {
-      dataList = [];
-      updateLoader(ViewStateEnum.idle);
-      update();
-      return;
-    }
+  void getNearByStores() async {
+    updateLoader(ViewStateEnum.busy);
+    var response = await ApiCall().call<AddressModel>(
+      method: RequestMethod.get,
+      endPoint: "${EndPoints.getNearByStores}/${6}/201",
+      obj: AddressModel(),
+      apiCallType: ApiCallType.seller,
+    );
+    print("Response $response ");
+    updateLoader(ViewStateEnum.idle);
+    update();
+  }
 
-    if (result.data != null && result.data!.containsKey('data')) {
-      List<DataModel> temp = DataModel.fromJsonArray(result.data!['data']);
-      if (temp.isEmpty || temp.length < recordsPerPage) {
-        hasReachedMax = true;
-      }
-      if (pageNo == 0) {
-        dataList.clear();
-      }
-      if (temp.isNotEmpty) {
-        dataList.addAll(temp);
-      }
-      updateLoader(ViewStateEnum.idle);
+  void addAddress({data}) async {
+    updateLoader(ViewStateEnum.busy);
+    var response = await ApiCall().call(
+        method: RequestMethod.post,
+        endPoint:
+            "${EndPoints.addAddress}/${AppSingleton.loggedInUserProfile?.id}",
+        apiCallType: ApiCallType.seller,
+        parameters: data);
+    print("Response $response ");
+    if (response != null && response['code'] == 1) {
+      Utils.showSuccessToast("Address created successfully.", true);
     } else {
-      dataList = [];
-      updateLoader(ViewStateEnum.idle);
-    }*/
+      setLoaderState(ViewStateEnum.idle);
+      Utils.showSuccessToast(
+          "Issue while creating Address. Please try again later.", false);
+    }
+    updateLoader(ViewStateEnum.idle);
+    update();
+  }
+
+  void updateAddress({data}) async {
+    updateLoader(ViewStateEnum.busy);
+    var response = await ApiCall().call(
+        method: RequestMethod.post,
+        endPoint:
+            "${EndPoints.addAddress}/${AppSingleton.loggedInUserProfile?.id}/${data['id']}",
+        apiCallType: ApiCallType.seller,
+        parameters: data);
+    print("Response $response ");
+    if (response != null && response['code'] == 1) {
+      Utils.showSuccessToast("Address update successfully.", true);
+    } else {
+      setLoaderState(ViewStateEnum.idle);
+      Utils.showSuccessToast(
+          "Issue while update Address. Please try again later.", false);
+    }
+    updateLoader(ViewStateEnum.idle);
+    update();
+  }
+
+  void deleteAddress({data}) async {
+    updateLoader(ViewStateEnum.busy);
+    var response = await ApiCall().call(
+        method: RequestMethod.delete,
+        endPoint:
+            "${EndPoints.addAddress}/${AppSingleton.loggedInUserProfile?.id}/${data['id']}",
+        apiCallType: ApiCallType.seller,
+        parameters: data);
+    print("Response $response ");
+    if (response != null && response['code'] == 1) {
+      Utils.showSuccessToast("Address delete successfully.", true);
+    } else {
+      setLoaderState(ViewStateEnum.idle);
+      Utils.showSuccessToast(
+          "Issue while delete Address. Please try again later.", false);
+    }
+    updateLoader(ViewStateEnum.idle);
+    update();
+  }
+
+  void updateNotificationStatus({data}) async {
+    updateLoader(ViewStateEnum.busy);
+    var response = await ApiCall().call(
+        method: RequestMethod.put,
+        endPoint:
+            "${EndPoints.updateNotificationStatus}/${AppSingleton.loggedInUserProfile?.id}",
+        apiCallType: ApiCallType.seller,
+        parameters: data);
+    print("Response $response ");
+    if (response != null && response['code'] == 1) {
+      Utils.showSuccessToast("updateNotificationStatus successfully.", true);
+    } else {
+      setLoaderState(ViewStateEnum.idle);
+      Utils.showSuccessToast(
+          "Issue while updateNotificationStatus. Please try again later.",
+          false);
+    }
+    updateLoader(ViewStateEnum.idle);
     update();
   }
 

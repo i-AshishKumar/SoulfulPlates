@@ -1,18 +1,19 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Category;
-import com.Group11.soulfulplates.models.SubCategory;
-import com.Group11.soulfulplates.payload.request.CategoryRequest;
 import com.Group11.soulfulplates.payload.request.SubcategoryRequest;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
-import com.Group11.soulfulplates.services.CategoryService;
-import com.Group11.soulfulplates.services.SubcategoryService;
+import com.Group11.soulfulplates.services.impl.CategoryService;
+import com.Group11.soulfulplates.services.impl.SubcategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,8 +26,6 @@ class CategoryControllerTest {
     @Mock
     private CategoryService categoryService;
 
-    @Mock
-    private SubcategoryService subcategoryService;
 
 
     @InjectMocks
@@ -40,62 +39,41 @@ class CategoryControllerTest {
     @Test
     void testCreateCategory() {
         // Mock data
-        CategoryRequest request = new CategoryRequest();
+        Category request = new Category();
         request.setCategoryName("Test Category");
-        request.setStoreId(1L);
+        request.setStoreId("1");
 
         // Mock service method
-        doNothing().when(categoryService).createCategory(any(Category.class));
+        when(categoryService.createCategory(any(Category.class))).thenReturn(request);
 
         // Call controller method
-        MessageResponse response = categoryController.createCategory(request);
+        ResponseEntity<?> responseEntity = categoryController.createCategory(request);
 
-        // Assertions
-        assertEquals(1, response.getCode());
-        assertEquals("Category Created.", response.getDescription());
-        assertEquals(null, response.getData());
-    }
-
-    @Test
-    void testGetAllCategoriesWithSubcategoriesByStoreId() {
-        // Mock data
-        Long storeId = 1L;
-        Category category = new Category("Test Category", storeId);
-        SubCategory subCategory = new SubCategory("Test Subcategory", category, storeId);
-        category.setSubcategories(Collections.singletonList(subCategory));
-
-        // Mock service method
-        when(categoryService.findAllCategoriesWithSubcategoriesByStoreId(storeId)).thenReturn(Collections.singletonList(category));
-
-        // Call controller method
-        MessageResponse response = categoryController.getAllCategoriesWithSubcategoriesByStoreId(storeId);
-
-        // Assertions
-        assertEquals(1, response.getCode());
-        assertEquals("Categories with Subcategories", response.getDescription());
-        assertEquals(Collections.singletonList(category), response.getData());
+        // Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Category created.", ((MessageResponse) responseEntity.getBody()).getDescription());
+        assertEquals(request, ((MessageResponse) responseEntity.getBody()).getData());
     }
 
     @Test
     void testEditCategory() {
         // Mock data
         Long categoryId = 1L;
-        CategoryRequest request = new CategoryRequest();
+        Category request = new Category();
+        request.setCategoryId(categoryId);
         request.setCategoryName("Updated Test Category");
 
         // Mock service method
-        when(categoryService.getCategoryById(categoryId)).thenReturn(new Category());
+        when(categoryService.findById(categoryId)).thenReturn(request);
 
         // Call controller method
-        MessageResponse response = categoryController.editCategory(request, categoryId);
+        ResponseEntity<?> responseEntity = categoryController.updateCategory( categoryId,request);
 
-        // Assertions
-        assertEquals(1, response.getCode());
-        assertEquals("Category updated.", response.getDescription());
-        assertNull(response.getData());
-
-        // Verify service method invocation
-        verify(categoryService, times(1)).getCategoryById(categoryId);
+        // Then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Category updated.", ((MessageResponse) responseEntity.getBody()).getDescription());
     }
 
     @Test
@@ -105,84 +83,64 @@ class CategoryControllerTest {
 
         // Mock service method
         doNothing().when(categoryService).deleteCategory(categoryId);
+        when(categoryService.findById(categoryId)).thenReturn(new Category());
 
         // Call controller method
-        MessageResponse response = categoryController.deleteCategory(categoryId);
+        ResponseEntity<?> responseEntity = categoryController.deleteCategory(categoryId);
 
         // Assertions
-        assertEquals(1, response.getCode());
-        assertEquals("Category deleted.", response.getDescription());
-        assertNull(response.getData());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Category deleted.", ((MessageResponse) responseEntity.getBody()).getDescription());
+        assertNull(((MessageResponse) responseEntity.getBody()).getData());
 
         // Verify service method invocation
         verify(categoryService, times(1)).deleteCategory(categoryId);
     }
 
     @Test
-    void testCreateSubcategory() {
-        // Mock data
-        Long categoryId = 1L;
-        Long storeId = 1L;
-        SubcategoryRequest request = new SubcategoryRequest();
-        request.setSubcategoryName("Test Subcategory");
-        request.setCategoryId(categoryId);
-        request.setStoreId(storeId);
+    void testGetAllByStoreId() {
 
         // Mock service method
-        when(categoryService.getCategoryById(categoryId)).thenReturn(new Category());
-        doNothing().when(subcategoryService).createSubcategory(any(SubCategory.class));
+        when(categoryService.getAllByStoreId()).thenReturn( new ArrayList<>());
 
         // Call controller method
-        MessageResponse response = categoryController.createSubcategory(request);
+        ResponseEntity<?> responseEntity = categoryController.getAllByStoreId();
 
         // Assertions
-        assertEquals(1, response.getCode());
-        assertEquals("Subcategory Created.", response.getDescription());
-        assertNull(response.getData());
-
-        // Verify service method invocation
-        verify(categoryService, times(1)).getCategoryById(categoryId);
-        verify(subcategoryService, times(1)).createSubcategory(any(SubCategory.class));
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, ((MessageResponse) responseEntity.getBody()).getCode());
+        assertEquals("Category fetched.", ((MessageResponse) responseEntity.getBody()).getDescription());
+        assertEquals(new ArrayList<>(),((MessageResponse) responseEntity.getBody()).getData());
     }
 
-    @Test
-    public void testEditSubcategory() {
-        // Prepare test data
-        SubcategoryRequest request = new SubcategoryRequest();
-        request.setSubcategoryName("Updated Subcategory Name");
 
-        SubCategory subcategory = new SubCategory();
-        subcategory.setSubcategoryName("Original Subcategory Name");
-
-        // Mock behavior
-        when(subcategoryService.getSubcategoryById(anyLong())).thenReturn(subcategory);
-
-        // Invoke controller method
-        MessageResponse response = categoryController.editSubcategory(request, 1L);
-
-        // Verify behavior
-        verify(subcategoryService, times(1)).getSubcategoryById(1L);
-        verify(subcategoryService, times(1)).editSubcategory(subcategory);
-
-        // Assertions
-        assertEquals(1, response.getCode());
-        assertEquals("Subcategory updated.", response.getDescription());
-        assertEquals(null, response.getData());
-        assertEquals(request.getSubcategoryName(), subcategory.getSubcategoryName());
-    }
-    @Test
-    public void testDeleteSubcategory() {
-        // Invoke controller method
-        MessageResponse response = categoryController.deleteSubcategory(1L);
-
-        // Verify behavior
-        verify(subcategoryService, times(1)).deleteSubcategory(1L);
-
-        // Assertions
-        assertEquals(1, response.getCode());
-        assertEquals("Subcategory deleted.", response.getDescription());
-        assertEquals(null, response.getData());
-    }
-
+//
+//    @Test
+//    void testCreateSubcategory() {
+//        // Mock data
+//        Long categoryId = 1L;
+//        Long storeId = 1L;
+//        SubcategoryRequest request = new SubcategoryRequest();
+//        request.setSubcategoryName("Test Subcategory");
+//        request.setCategoryId(categoryId);
+//        request.setStoreId(storeId);
+//
+//        // Mock service method
+//        when(categoryService.getCategoryById(categoryId)).thenReturn(new Category());
+//        doNothing().when(subcategoryService).createSubcategory(any(Subcategory.class));
+//
+//        // Call controller method
+//        MessageResponse response = categoryController.createSubcategory(request);
+//
+//        // Assertions
+//        assertEquals(1, response.getCode());
+//        assertEquals("Subcategory Created.", response.getDescription());
+//        assertNull(response.getData());
+//
+//        // Verify service method invocation
+//        verify(categoryService, times(1)).getCategoryById(categoryId);
+//        verify(subcategoryService, times(1)).createSubcategory(any(Subcategory.class));
+//    }
 
 }
