@@ -161,7 +161,7 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderDetailsResponse.OrderDetails.MenuItemDTO mapMenuItemToDTO(MenuItem menuItem) {
         OrderDetailsResponse.OrderDetails.MenuItemDTO menuItemDTO = new OrderDetailsResponse.OrderDetails.MenuItemDTO();
-        menuItemDTO.setItemId(menuItem.getMenuItemId());
+        menuItemDTO.setItemId(menuItem.getItemId());
         menuItemDTO.setStoreId(menuItem.getStoreId());
         menuItemDTO.setItemName(menuItem.getItemName());
         menuItemDTO.setItemImage(menuItem.getItemImage());
@@ -173,16 +173,16 @@ public class OrderServiceImpl implements OrderService {
             menuItemDTO.setCategory(category.getCategoryName());
         }
 
-        menuItemDTO.setSubCategoryId(menuItem.getSubCategoryId());
-        SubCategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubCategoryId());
+        menuItemDTO.setSubCategoryId(menuItem.getSubcategoryId());
+        Subcategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubcategoryId());
         if(subCategory != null){
-            menuItemDTO.setSubCategory(subCategory.getSubcategoryName());
+            menuItemDTO.setSubCategory(subCategory.getSubCategoryName());
         }
 
         menuItemDTO.setServingType(menuItem.getServingType());
         menuItemDTO.setPortion(menuItem.getPortion());
-        menuItemDTO.setInStock(menuItem.getInStock());
-        menuItemDTO.setIsRecommended(menuItem.getIsRecommended());
+        menuItemDTO.setInStock(menuItem.isInStock());
+        menuItemDTO.setIsRecommended(menuItem.isRecommended());
         menuItemDTO.setDescription(menuItem.getDescription());
 
         return menuItemDTO;
@@ -248,7 +248,7 @@ public class OrderServiceImpl implements OrderService {
 
     private OrdersResponse.OrderData.ItemData convertToItemData(MenuItem menuItem) {
         OrdersResponse.OrderData.ItemData itemData = new OrdersResponse.OrderData.ItemData();
-        itemData.setItemId(menuItem.getMenuItemId());
+        itemData.setItemId(menuItem.getItemId());
         itemData.setStoreId(menuItem.getStoreId());
         itemData.setItemName(menuItem.getItemName());
         itemData.setItemImage(menuItem.getItemImage());
@@ -263,18 +263,18 @@ public class OrderServiceImpl implements OrderService {
             itemData.setCategory(null);
         }
 
-        itemData.setSubCategoryId(menuItem.getSubCategoryId());
-        SubCategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubCategoryId());
+        itemData.setSubCategoryId(menuItem.getSubcategoryId());
+        Subcategory subCategory = subCategoryRepository.getReferenceById(menuItem.getSubcategoryId());
         if(subCategory != null){
-            itemData.setSubCategory(subCategory.getSubcategoryName());
+            itemData.setSubCategory(subCategory.getSubCategoryName());
         } else {
             itemData.setSubCategory(null);
         }
 
         itemData.setServingType(menuItem.getServingType());
         itemData.setPortion(menuItem.getPortion());
-        itemData.setInStock(menuItem.getInStock());
-        itemData.setIsRecommended(menuItem.getIsRecommended());
+        itemData.setInStock(menuItem.isInStock());
+        itemData.setIsRecommended(menuItem.isRecommended());
         itemData.setDescription(menuItem.getDescription());
 
         return itemData;
