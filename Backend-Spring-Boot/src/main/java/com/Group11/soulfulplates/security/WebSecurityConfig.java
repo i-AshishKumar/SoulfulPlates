@@ -20,7 +20,7 @@ import com.Group11.soulfulplates.security.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableMethodSecurity
-public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -62,6 +62,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                         auth
                                 .requestMatchers("/public/uploads/**").permitAll() // Allow access without
                                 .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/api/cart/**").permitAll()
                                 .anyRequest().authenticated()

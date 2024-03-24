@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Entity
@@ -34,6 +35,12 @@ public class Payment {
 
     @Column(name = "status", nullable = false)
     private String status;
+
+    @Column
+    private Date createdAt;
+
+    @Column
+    private Date updatedAt;;
 
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
@@ -89,6 +96,22 @@ public class Payment {
         this.store = store;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public String toString() {
         return "Payment{" +
@@ -98,6 +121,8 @@ public class Payment {
                 ", amount=" + amount +
                 ", status='" + status + '\'' +
                 ", store=" + store +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

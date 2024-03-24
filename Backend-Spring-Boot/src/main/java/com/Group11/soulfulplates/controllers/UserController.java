@@ -1,15 +1,16 @@
 package com.Group11.soulfulplates.controllers;
+
 import com.Group11.soulfulplates.models.Address;
 import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.AddressRepository;
 import com.Group11.soulfulplates.repository.UserRepository;
+import com.Group11.soulfulplates.services.AddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,9 @@ public class UserController {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private AddressService addressService;
 
     @PutMapping("/toggle-notification/{userId}")
     public ResponseEntity<MessageResponse> toggleNotificationFlag(@PathVariable Long userId) {
@@ -56,6 +60,14 @@ public class UserController {
         addressRepository.save(address);
 
         return ResponseEntity.ok(new MessageResponse(1, "Address saved successfully!", null));
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<MessageResponse> getUserById(@PathVariable Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return ResponseEntity.ok(new MessageResponse(1, "User information received", user));
     }
 
 
@@ -88,7 +100,7 @@ public class UserController {
 
 
     // Update an existing address for a user
-    @PutMapping("/addresses/{userId}/{addressId}")
+    @PostMapping("/addresses/{userId}/{addressId}")
     public ResponseEntity<MessageResponse> updateAddressForUser(@PathVariable Long userId, @PathVariable Long addressId, @RequestBody Address addressDetails) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
@@ -169,4 +181,77 @@ public class UserController {
         }
     }
 
+    @GetMapping("/latlong/{addressId}/{maxDistance}")
+    public ResponseEntity<MessageResponse> getUserAndNearestStore(
+            @PathVariable Long addressId,
+            @PathVariable Double maxDistance) {
+
+        try {
+            // Fetch the address by addressId
+            Address userAddress = addressRepository.findById(addressId)
+                    .orElseThrow(() -> new RuntimeException("Address not found with id: " + addressId));
+
+            // Check if the fetched address belongs to the given user
+            if (userAddress == null) {
+                throw new RuntimeException("Address does not belong to the user with id: " + addressId);
+            }
+
+            // Get the latitude and longitude of the user's address
+            Double userLatitude = userAddress.getLatitude();
+            Double userLongitude = userAddress.getLongitude();
+
+            // Get all stores' latitude and longitude
+            List<Map<String, Object>> storesLatLon = addressService.getAllStoresLatLon();
+
+            // Find the nearest store within the specified maximum distance
+            List<Map<String, Object>> nearestStores = new ArrayList<>();
+            double minDistance = Double.MAX_VALUE;
+
+            for (Map<String, Object> store : storesLatLon) {
+                Double storeLatitude = (Double) store.get("lat");
+                Double storeLongitude = (Double) store.get("lon");
+
+                if(storeLatitude == null || storeLongitude == null){
+                    Map<String, Object> nearestStore = new HashMap<>(store); // Create a new map to store distance
+                    nearestStore.put("distance", 0);
+
+                    nearestStores.add(nearestStore);
+                    continue;
+                }
+                // Calculate distance using Haversine formula
+                double distance = calculateDistance(userLatitude, userLongitude, storeLatitude, storeLongitude);
+
+                // Check if the current store is within the specified maximum distance of the user's address
+                if (distance <= maxDistance && distance < minDistance) {
+                    minDistance = distance;
+                    Map<String, Object> nearestStore = new HashMap<>(store); // Create a new map to store distance
+                    nearestStore.put("distance", distance);
+                    nearestStores.add(nearestStore);
+                }
+            }
+
+            if (nearestStores == null || nearestStores.size() < 1) {
+                return ResponseEntity.ok(new MessageResponse(1, "No store near by available at the moment.",  nearestStores));
+            }
+
+            return ResponseEntity.ok(new MessageResponse(1, "Nearest store within " + maxDistance + " km found", nearestStores));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new MessageResponse(-1, e.getMessage(), null));
+        }
+
+    }
+
+    // Method to calculate distance using Haversine formula
+    private Double calculateDistance(Double lat1, Double lon1, Double lat2, Double lon2) {
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c;
+    }
 }

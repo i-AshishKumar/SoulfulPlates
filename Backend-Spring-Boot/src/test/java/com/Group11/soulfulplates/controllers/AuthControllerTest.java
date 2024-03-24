@@ -2,9 +2,11 @@ package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.ERole;
 import com.Group11.soulfulplates.models.Role;
-
+import com.Group11.soulfulplates.models.Store;
 import com.Group11.soulfulplates.models.User;
+import com.Group11.soulfulplates.payload.request.ForgetPasswordRequest;
 import com.Group11.soulfulplates.payload.request.LoginRequest;
+import com.Group11.soulfulplates.payload.request.ResetPasswordRequest;
 import com.Group11.soulfulplates.payload.request.SignupRequest;
 import com.Group11.soulfulplates.payload.response.JwtResponse;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
@@ -17,26 +19,31 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-
 public class AuthControllerTest {
+
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Mock
     private PasswordEncoder encoder;
@@ -45,33 +52,31 @@ public class AuthControllerTest {
     private RoleRepository roleRepository;
 
     @Mock
-    private SignupRequest signupRequest;
-
-    @Mock
     private AuthenticationManager authenticationManager;
 
     @Mock
     private SecurityContextHolder securityContextHolder;
 
     @Mock
-    private StoreRepository storeRepository;
+    JwtUtils jwtUtils;
+
 
     @Mock
-    private LoginRequest loginRequest;
+    private StoreRepository storeRepository;
 
     @InjectMocks
-    AuthController auth;
+    private AuthController authController;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
         openMocks(this);
     }
 
 
     @Test
-    void testRegisterUserUsernameTaken (){
-
-        MessageResponse m = new MessageResponse(-1,"Error: Username is already taken!",null);
+    void testRegisterUserUsernameTaken() {
+        MessageResponse expectedResponse = new MessageResponse(-1, "Error: Username is already taken!", null);
 
         SignupRequest signupRequest = new SignupRequest();
         signupRequest.setUsername("tester");
@@ -79,65 +84,189 @@ public class AuthControllerTest {
         signupRequest.setPassword("testing123");
 
         when(userRepository.existsByUsername(anyString())).thenReturn(true);
-        assertEquals(ResponseEntity.badRequest().body(m),auth.registerUser(signupRequest));
 
+        ResponseEntity<MessageResponse> responseEntity = authController.registerUser(signupRequest);
+
+        assertEquals(ResponseEntity.badRequest().body(expectedResponse), responseEntity);
     }
 
     @Test
-    void testRegisterUserEmailTaken(){
-        MessageResponse m = new MessageResponse(-1, "Error: Email is already in use!", null);
+    void testRegisterUserEmailTaken() {
+        MessageResponse expectedResponse = new MessageResponse(-1, "Error: Email is already in use!", null);
 
         when(userRepository.existsByEmail(any())).thenReturn(true);
-        assertEquals(ResponseEntity.badRequest().body(m), auth.registerUser(signupRequest));
+
+        ResponseEntity<MessageResponse> responseEntity = authController.registerUser(new SignupRequest());
+
+        assertEquals(ResponseEntity.badRequest().body(expectedResponse), responseEntity);
     }
 
-
-
     @Test
-    void testRegisterSuccessful(){
-        MessageResponse m = new MessageResponse(1,"User registered successfully!",null);
+    void testRegisterSuccessful() {
+        MessageResponse expectedResponse = new MessageResponse(1, "User registered successfully!", null);
 
-        Role buyerRole = new Role(ERole.ROLE_BUYER);
-//        Role sellerRole = new Role(ERole.ROLE_SELLER);
-//        Role adminRole = new Role(ERole.ROLE_ADMIN);
-        when(roleRepository.findByName(ERole.ROLE_BUYER)).thenReturn(Optional.of(buyerRole));
+        when(roleRepository.findByName(any())).thenReturn(Optional.of(new Role(ERole.ROLE_BUYER)));
         when(userRepository.save(any())).thenReturn(new User());
 
-        assertEquals(ResponseEntity.ok(m),auth.registerUser(signupRequest));
+        ResponseEntity<MessageResponse> responseEntity = authController.registerUser(new SignupRequest());
+
+        assertEquals(ResponseEntity.ok(expectedResponse), responseEntity);
     }
 
+    @Test
+    void testGenerateForgetPasswordCode_ValidEmail() {
+        ForgetPasswordRequest request = new ForgetPasswordRequest();
+        request.setEmail("test@test.com");
+
+        when(userRepository.existsByEmail(any())).thenReturn(true);
+
+        ResponseEntity<MessageResponse> responseEntity = authController.generateForgetPasswordCode(request);
+
+        assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).getCode());
+    }
 
     @Test
-    void testRegisterUser_Success() {
-        MessageResponse m = new MessageResponse(1,"User registered successfully!",null);
+    void testGenerateForgetPasswordCode_InvalidEmail() {
+        ForgetPasswordRequest request = new ForgetPasswordRequest();
+        request.setEmail("invalid@test.com");
 
-        // Mocking the signUpRequest
-        SignupRequest signUpRequest = new SignupRequest();
+        when(userRepository.existsByEmail(any())).thenReturn(false);
 
-        // Mocking the userRepository behavior
-        when(userRepository.existsByUsername(signUpRequest.getUsername())).thenReturn(false);
-        when(userRepository.existsByEmail(signUpRequest.getEmail())).thenReturn(false);
+        ResponseEntity<MessageResponse> responseEntity = authController.generateForgetPasswordCode(request);
 
-        // Mocking the roleRepository behavior
-        Role buyerRole = new Role(ERole.ROLE_BUYER);
-        when(roleRepository.findByName(ERole.ROLE_BUYER)).thenReturn(java.util.Optional.of(buyerRole));
+        assertEquals(-1, responseEntity.getBody().getCode());
+    }
 
-        // Mocking the passwordEncoder behavior
-        when(encoder.encode(signUpRequest.getPassword())).thenReturn("encodedPassword");
+    @Test
+    void testGenerateForgetPasswordCode_Exception() {
+        ForgetPasswordRequest request = new ForgetPasswordRequest();
+        request.setEmail("test@test.com");
 
-        // Test the registerUser method
-        ResponseEntity<MessageResponse> responseEntity = auth.registerUser(signUpRequest);
+        when(userRepository.existsByEmail(any())).thenThrow(RuntimeException.class);
 
-        // Verify userRepository.save is called once
-        verify(userRepository, times(1)).save(any());
+        ResponseEntity<MessageResponse> responseEntity = authController.generateForgetPasswordCode(request);
+
+        assertEquals(-1, responseEntity.getBody().getCode());
+    }
+
+    @Test
+    void testResetPassword_ValidEmail_NotFound() {
+        ResetPasswordRequest request = new ResetPasswordRequest();
+        request.setEmail("test@test.com");
+        request.setNewPassword("newPassword123");
+
+        when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
+
+        ResponseEntity<MessageResponse> responseEntity = authController.resetPassword(request);
+
+        assertEquals(-1, responseEntity.getBody().getCode());
+    }
+
+    @Test
+    void testGenerateForgetPasswordCode_EmailDoesNotExist() {
+        // Prepare request with a non-existing email
+        ForgetPasswordRequest request = new ForgetPasswordRequest();
+        request.setEmail("nonexisting@test.com");
+
+        // Mock UserRepository to return false for email existence check
+        when(userRepository.existsByEmail(any())).thenReturn(false);
+
+        // Call the method under test
+        ResponseEntity<MessageResponse> responseEntity = authController.generateForgetPasswordCode(request);
 
         // Verify the response
-        assertEquals(1, responseEntity.getBody().getCode());
-        assertEquals(ResponseEntity.ok(m), auth.registerUser(signUpRequest));
+        assertEquals(-1, responseEntity.getBody().getCode());
+        assertEquals("Error: Email does not exist!", responseEntity.getBody().getDescription());
+        assertNull(responseEntity.getBody().getData());
+    }
+
+
+
+    @Test
+    void testResetPassword_InvalidEmail() {
+        ResetPasswordRequest request = new ResetPasswordRequest();
+        request.setEmail("invalid@test.com");
+        request.setNewPassword("newPassword123");
+
+        when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
+
+        ResponseEntity<MessageResponse> responseEntity = authController.resetPassword(request);
+
+        assertEquals(-1, responseEntity.getBody().getCode());
     }
 
     @Test
-    void testAuthenticateUser(){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+    void testResetPassword_Exception() {
+        ResetPasswordRequest request = new ResetPasswordRequest();
+        request.setEmail("test@test.com");
+        request.setNewPassword("newPassword123");
+
+        when(userRepository.findByEmail(any())).thenThrow(RuntimeException.class);
+
+        ResponseEntity<MessageResponse> responseEntity = authController.resetPassword(request);
+
+        assertEquals(-1, responseEntity.getBody().getCode());
     }
+
+    @Test
+    void testAuthenticateUser_Success() {
+        String jwtToken = "fakeJwtToken";
+
+        // Mock authentication result
+        Authentication authentication = mock(Authentication.class);
+        when(authenticationManager.authenticate(any())).thenReturn(authentication);
+
+
+        // Create a mock User object
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("testUser");
+        user.setEmail("test@test.com");
+        user.setPassword("encodedPassword");
+
+        // Mock UserDetailsImpl.build method
+        UserDetailsImpl userDetails = UserDetailsImpl.build(user);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        // Mock JWT token generation
+        JwtUtils jwtUtils = mock(JwtUtils.class);
+        when(jwtUtils.generateJwtToken(any())).thenReturn(jwtToken);
+
+        // Test login request
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("testUser");
+        loginRequest.setPassword("password123");
+
+        ResponseEntity<MessageResponse> responseEntity = authController.authenticateUser(loginRequest);
+
+        System.out.println(responseEntity.getStatusCodeValue());
+
+        // Verify response
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(1, Objects.requireNonNull(responseEntity.getBody()).getCode());
+    }
+
+
+
+    @Test
+    void testAuthenticateUser_Failure() {
+        // Mock authentication result
+        when(authenticationManager.authenticate(any()))
+                .thenThrow(BadCredentialsException.class);
+
+        // Test login request
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("testUser");
+        loginRequest.setPassword("password123");
+
+        ResponseEntity<MessageResponse> responseEntity = authController.authenticateUser(loginRequest);
+
+        // Verify response
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), responseEntity.getStatusCodeValue());
+        assertEquals(-1, responseEntity.getBody().getCode());
+        assertNull(responseEntity.getBody().getData());
+    }
+
+
+
 }

@@ -1,17 +1,12 @@
 package com.Group11.soulfulplates.controllers;
 
 import com.Group11.soulfulplates.models.Store;
-import com.Group11.soulfulplates.models.User;
 import com.Group11.soulfulplates.payload.response.MessageResponse;
 import com.Group11.soulfulplates.repository.StoreRepository;
-import com.Group11.soulfulplates.services.AddressService;
+import com.Group11.soulfulplates.repository.UserRepository;
 import com.Group11.soulfulplates.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import com.Group11.soulfulplates.repository.UserRepository;
-import com.Group11.soulfulplates.services.AddressService;
-import com.Group11.soulfulplates.services.StoreService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,18 +19,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Objects;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/stores")
 public class StoreController {
 
-    private final StoreService storeService;
+    @Autowired
+    private StoreService storeService;
 
     @Autowired
     private StoreRepository storeRepository;
@@ -43,10 +37,7 @@ public class StoreController {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    public StoreController(StoreService storeService, AddressService addressService) {
-        this.storeService = storeService;
-    }
+
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')")
@@ -154,6 +145,9 @@ public class StoreController {
         } catch (IOException e) {
             return ResponseEntity.ok(new MessageResponse(-1, "Failed to store file " + fileName + ". Please try again!", null));
         }
+
     }
+
+
 }
 

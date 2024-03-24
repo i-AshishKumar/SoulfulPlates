@@ -1,15 +1,25 @@
 package com.Group11.soulfulplates.services.impl;
 
+import com.Group11.soulfulplates.models.CartItem;
 import com.Group11.soulfulplates.models.Payment;
 import com.Group11.soulfulplates.models.Transaction;
 import com.Group11.soulfulplates.payload.request.CreatePaymentRequest;
+import com.Group11.soulfulplates.payload.response.PaymentFilterResponse;
 import com.Group11.soulfulplates.repository.*;
 import com.Group11.soulfulplates.services.PaymentService;
+import com.Group11.soulfulplates.utils.CartItemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -21,13 +31,20 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentRepository paymentRepository;
 
     @Autowired
-    private OrderRepository orderRepository; // Assume this exists
+    private OrderRepository orderRepository;
 
     @Autowired
-    private UserRepository userRepository; // Assume this exists
+    private UserRepository userRepository;
 
     @Autowired
-    private StoreRepository storeRepository; // Assume this exists
+    private StoreRepository storeRepository;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
+    @Autowired
+    private MenuItemRepository menuItemRepository;
+
 
     @Override
     @Transactional
@@ -42,6 +59,8 @@ public class PaymentServiceImpl implements PaymentService {
         transaction.setCardExpiry(request.getCardExpiry()); // Adjust for your model
         transaction.setCvv(request.getCvv());
         transaction.setStatus("Processing");
+        transaction.setCreatedAt(new Date());
+        transaction.setUpdatedAt(new Date());
 
         if(request.getOrderId() == null && request.getOrderId() <= 0) {
             throw new Exception("Invalid Order Id");
@@ -50,11 +69,27 @@ public class PaymentServiceImpl implements PaymentService {
         Transaction savedTransaction = transactionRepository.save(transaction);
 
         if(savedTransaction.getTransactionId()!=null){
+
+            List<CartItem> cartItems = cartItemRepository.findByOrderOrderId(request.getOrderId());
+            List<Long> itemIds = null;
+            Double totalAmount = null;
+            if(cartItems.size() > 0){
+                totalAmount = CartItemUtils.getTotalForOrderId(cartItems);
+                System.out.println(totalAmount);
+                if(totalAmount > request.getAmount().doubleValue()){
+                    savedTransaction.setStatus("Failed");
+                    transactionRepository.save(savedTransaction);
+                    throw new Exception("Payment Failed: Payment Amount is lesser than expected");
+                }
+            }
+
             Payment payment = new Payment();
             payment.setTransaction(savedTransaction);
             payment.setOrder(orderRepository.findById(request.getOrderId()).orElseThrow(() -> new Exception("Order not found")));
             payment.setAmount(request.getAmount());
             payment.setStatus("Pending");
+            payment.setCreatedAt(new Date());
+            payment.setUpdatedAt(new Date());
             if(request.getStoreId() != null && request.getStoreId() > 0) {
                 payment.setStore(storeRepository.findById(request.getStoreId()).orElseThrow(() -> new Exception("Store not found")));
             } else {
@@ -81,6 +116,66 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         payment.setStatus(status);
+        payment.setUpdatedAt(new Date());
         paymentRepository.save(payment);
+    }
+
+    @Override
+    public List<PaymentFilterResponse> filterPayments(Long userId, String status, Integer limit, Integer offset) {
+        System.out.println(limit);
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        Page<Payment> payments = paymentRepository.findByTransactionUserIdAndStatusOrderByCreatedAtDesc(
+                userId,
+                status,
+                pageRequest);
+
+        return payments.stream().map(payment -> {
+            Transaction transaction = payment.getTransaction();
+            return new PaymentFilterResponse(
+                    transaction.getUser().getId(),
+                    payment.getStore().getStoreId(),
+                    payment.getAmount(),
+                    payment.getOrder().getOrderId(),
+                    "12**-****-**61",
+                    transaction.getCardExpiry(),
+                    "***",
+                    payment.getStatus(),
+                    payment.getPaymentId(),
+                    transaction.getTransactionId(),
+                    transaction.getStatus(),
+                    transaction.getCreatedAt(),
+                    transaction.getUpdatedAt()
+            );
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PaymentFilterResponse> filterSellerPayments(Long storeId, String status, Integer limit, Integer offset) {
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        Page<Payment> payments = paymentRepository.findByStoreStoreIdAndStatusOrderByCreatedAtDesc(
+                storeId,
+                status,
+                pageRequest);
+
+        return payments.stream().map(payment -> {
+            Transaction transaction = payment.getTransaction();
+            return new PaymentFilterResponse(
+                    transaction.getUser().getId(),
+                    payment.getStore().getStoreId(),
+                    payment.getAmount(),
+                    payment.getOrder().getOrderId(),
+                    "12**-****-**61",
+                    transaction.getCardExpiry(),
+                    "***",
+                    payment.getStatus(),
+                    payment.getPaymentId(),
+                    transaction.getTransactionId(),
+                    transaction.getStatus(),
+                    transaction.getCreatedAt(),
+                    transaction.getUpdatedAt()
+            );
+        }).collect(Collectors.toList());
     }
 }
