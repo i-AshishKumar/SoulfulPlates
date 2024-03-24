@@ -39,6 +39,36 @@ class WishlistScreen extends GetView<WishlistController> with BaseCommonWidget {
         BaseButton(
             text: "Get Address",
             onSubmit: () {
+              // controller.addMenuItem(data: {
+              //   "itemName": "berger 2 9",
+              //   "itemImage": "",
+              //   "itemPrice": "13",
+              //   "type": "Veg",
+              //   "storeId": 1,
+              //   "categoryId": 2,
+              //   "subcategoryId": 9,
+              //   "servingType": 2,
+              //   "portion": "Medium",
+              //   "inStock": true,
+              //   "isRecommended": false,
+              //   "description": "It contains mayo and margarita cheese sauce."
+              // });
+
+              // controller.addCategory(
+              //     data: {"categoryName": "Category 2", "storeId": 1});
+
+              // controller.addSubCategory(data: {
+              //   "categoryId": 2,
+              //   "subCategoryName": "Subcategory 123",
+              //   "storeId": 1
+              // });
+
+              // controller.editSubCategory(data: {
+              //   "categoryId": 2,
+              //   "subCategoryName": "Subcategory 123",
+              //   "storeId": 1
+              // });
+
               // controller.addAddress(data: {
               //   "street": "123 Main St",
               //   "city": "New York",
@@ -62,13 +92,99 @@ class WishlistScreen extends GetView<WishlistController> with BaseCommonWidget {
               //   "label": "Home"
               // });
 
+              // controller.createOrder(data: {
+              //   "userId": 1,
+              //   "storeId": 1,
+              //   "instructions": "Leave at door",
+              //   "selectedItems": [
+              //     {
+              //       "menuItemId": 1,
+              //       "itemName": "Banana shake",
+              //       "quantity": 2,
+              //       "price": 10.25
+              //     }
+              //   ]
+              // });
+
+              // controller.updateOrderStatus(
+              //     data: {"orderId": 1, "status": "COMPLETED"});
+
+              // controller.getOrderDetails(data: {"userId": 1, "orderId": 1});
+
+              // controller.getOrdersForUser(data: {
+              //   "userId": 1,
+              //   "status": "Pending",
+              //   "limit": 20,
+              //   "offset": 0
+              // });
+
+              // controller.getOrdersForStore(data: {
+              //   "storeId": 1,
+              //   "status": "Pending",
+              //   "limit": 20,
+              //   "offset": 0
+              // });
+
+              // controller.createPayment(data: {
+              //   "userId": 1,
+              //   "storeId": 1,
+              //   "amount": 25.25,
+              //   "orderId": 1,
+              //   "cardNumber": "1234-4567-4561",
+              //   "cardExpiry": "01/25",
+              //   "cvv": "456"
+              // });
+
+              // controller.updatePaymentStatus(data: {
+              //   "paymentId": 1,
+              //   "transactionId": 1,
+              //   "status": "Completed"
+              // });
+
+              // controller.createRating(data: {
+              //   "userId": 1,
+              //   "storeId": 1,
+              //   "orderId": 1,
+              //   "rating": 5,
+              //   "feedback": "Excellent service"
+              // });
+
+              // controller.createRating(data: {
+              //   "userId": 1,
+              //   "storeId": 1,
+              //   "orderId": 1,
+              //   "rating": 5,
+              //   "feedback": "Excellent service"
+              // });
+
+              controller.getAverageRating();
+              //
+              // controller.updateTransactionStatus(
+              //     data: {"transactionId": 1, "status": "completed"});
+
+              // controller.getPaymentHistoryBuyer(data: {
+              //   "userId": 1,
+              //   "limit": 20,
+              //   "offset": 0,
+              //   "status": "Pending"
+              // });
+
+              // controller.getPaymentHistorySeller(data: {
+              //   "storeId": 1,
+              //   "limit": 20,
+              //   "offset": 0,
+              //   "status": "Pending"
+              // });
+
               // controller.deleteAddress(data: {"id": "2"});
 
               // controller.getAddress();
 
+              // controller.getMenuItems();
+
               // controller.updateNotificationStatus();
 
-              controller.getNearByStores();
+              // controller.getNearByStores();
             }),
         12.rVerticalSizedBox(),
         Expanded(

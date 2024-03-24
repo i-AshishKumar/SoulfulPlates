@@ -48,6 +48,8 @@ class DioSing implements IDioSing {
         headers = <String, dynamic>{
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${userModel?.token}',
+          // 'Authorization':
+          //     'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXllciIsImlhdCI6MTcxMDk5MjIwMiwiZXhwIjoxNzExMDc4NjAyfQ.9YxgeNnJI5S_MSnNvzb01kkn2C30SMuTQ8YSQWqLt_Y',
         };
         break;
       case ApiCallType.seller:
