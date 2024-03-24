@@ -1,6 +1,5 @@
 package com.Group11.soulfulplates.services.impl;
 
-import com.Group11.soulfulplates.models.Category;
 import com.Group11.soulfulplates.models.Subcategory;
 import com.Group11.soulfulplates.repository.SubcategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,7 +21,7 @@ public class SubcategoryService {
 
     public Subcategory findById(Long subCategoryId){
         Subcategory subcategory = subcategoryRepository.findById(subCategoryId)
-                .orElseThrow(() -> new EntityNotFoundException("SubCategory not found with id: " + subCategoryId));
+                .orElseThrow(() -> new EntityNotFoundException("Subcategory not found with id: " + subCategoryId));
         return subcategory;
     }
 

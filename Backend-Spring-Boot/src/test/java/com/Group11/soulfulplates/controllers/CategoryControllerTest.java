@@ -128,7 +128,7 @@ class CategoryControllerTest {
 //
 //        // Mock service method
 //        when(categoryService.getCategoryById(categoryId)).thenReturn(new Category());
-//        doNothing().when(subcategoryService).createSubcategory(any(SubCategory.class));
+//        doNothing().when(subcategoryService).createSubcategory(any(Subcategory.class));
 //
 //        // Call controller method
 //        MessageResponse response = categoryController.createSubcategory(request);
@@ -140,7 +140,7 @@ class CategoryControllerTest {
 //
 //        // Verify service method invocation
 //        verify(categoryService, times(1)).getCategoryById(categoryId);
-//        verify(subcategoryService, times(1)).createSubcategory(any(SubCategory.class));
+//        verify(subcategoryService, times(1)).createSubcategory(any(Subcategory.class));
 //    }
 
 }

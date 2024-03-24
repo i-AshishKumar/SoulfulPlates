@@ -33,7 +33,7 @@ public class MenuItemService {
     }
     public MenuItem findMenuById(Long menuId) {
         MenuItem menuItem = menuItemRepository.findById(menuId)
-                .orElseThrow(() -> new EntityNotFoundException("SubCategory not found with id: " + menuId));
+                .orElseThrow(() -> new EntityNotFoundException("Subcategory not found with id: " + menuId));
         return menuItem;
 
     }
